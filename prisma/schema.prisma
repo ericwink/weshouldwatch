@@ -11,10 +11,26 @@ datasource db {
 }
 
 model User {
-  id String @id @default(auto()) @map("_id") @db.ObjectId
-  username String
-  password String
-  image String
+  id        String    @id @default(auto()) @map("_id") @db.ObjectId
+  username  String
+  email     String    @unique
+  password  String
+  image     String
+
+  groupIDs  String[]  @db.ObjectId
+  groups    Group[]   @relation(fields: [groupIDs], references: [id])
 }
+
+model Group {
+  id      String   @id @default(auto()) @map("_id") @db.ObjectId
+  name    String
+
+  userIDs String[] @db.ObjectId
+  users   User[]   @relation(fields: [userIDs], references: [id])
+
+  //add media info when media model created
+}
+
+
 
 //any additional changes, we'll need to manually invoke npx prisma generate 
