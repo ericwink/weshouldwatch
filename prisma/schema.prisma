@@ -18,19 +18,32 @@ model User {
   image     String
 
   groupIDs  String[]  @db.ObjectId
-  groups    Group[]   @relation(fields: [groupIDs], references: [id])
+  groups    Group[]   @relation(fields: [groupIDs], references: [id]) //not in DB
 }
 
 model Group {
-  id      String   @id @default(auto()) @map("_id") @db.ObjectId
-  name    String
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  name      String
 
-  userIDs String[] @db.ObjectId
-  users   User[]   @relation(fields: [userIDs], references: [id])
+  userIDs   String[] @db.ObjectId
+  users     User[]   @relation(fields: [userIDs], references: [id]) //not in DB
 
-  //add media info when media model created
+  mediaIDs  String[] @db.ObjectId
+  media     Media @relation(fields: [mediaIDs], references: [id]) //not in DB
 }
 
+model Media{
+  id      String   @id @default(auto()) @map("_id") @db.ObjectId
+  tmbd_id String
+  title   String
+  release_date  String
+  vote_average  String
+  genre_ids     String[]
+  overview      String
+  poster_path   String
+  backdrop_path String
 
+  groups Group[]
+}
 
 //any additional changes, we'll need to manually invoke npx prisma generate 
