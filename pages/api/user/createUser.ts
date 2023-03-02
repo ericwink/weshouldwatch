@@ -4,7 +4,7 @@ import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
 const createUser = async (req: NextApiRequest, res: NextApiResponse) => {
-  const { username, password, image } = req.body;
+  const { username, email, password, image } = req.body;
   console.log(username, password, image);
 
   try {
@@ -12,6 +12,7 @@ const createUser = async (req: NextApiRequest, res: NextApiResponse) => {
       data: {
         username: username,
         password: password,
+        email: email,
         image: image,
       },
     });
