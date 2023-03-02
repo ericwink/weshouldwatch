@@ -6,31 +6,34 @@ const prisma = new PrismaClient();
 const createGroup = async (req: NextApiRequest, res: NextApiResponse) => {
   const { email, groupName } = req.body;
 
-  //find user by email
-  const currentUser = await prisma.user.findUnique({
-    where: {
-      email: email,
-    },
-  });
-
-  //create new group and add user as first member
   try {
+    const currentUser = await prisma.user.findUnique({
+      where: {
+        email: email,
+      },
+    });
     const newGroup = await prisma.group.create({
       data: {
         name: groupName,
         userIDs: currentUser?.id,
       },
     });
-    currentUser?.groupIDs.push(newGroup.id);
+    const updateUser = await prisma.user.update({
+      where: {
+        id: currentUser?.id,
+      },
+      data: {
+        groupIDs: {
+          push: newGroup.id,
+        },
+      },
+    });
 
-    console.log({ newGroup });
-    console.log({ currentUser });
-  } catch (error) {
+    res.json({ message: "group created!" });
+  } catch (error: any) {
     console.log(error);
-    res.json({ message: error });
+    res.json({ message: error.message });
   }
-
-  res.json({ message: "group created!" });
 };
 
 export default createGroup;
