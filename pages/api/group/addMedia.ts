@@ -1,0 +1,44 @@
+import { NextApiRequest, NextApiResponse } from "next";
+import { PrismaClient } from "@prisma/client";
+
+const prisma = new PrismaClient();
+
+const addMedia = async (req: NextApiRequest, res: NextApiResponse) => {
+  const { groupID, mediaID, title, poster_path } = req.body;
+
+  try {
+    const foundMedia = await prisma.media.findUnique({
+      where: {
+        id: mediaID,
+      },
+    });
+
+    if (!foundMedia) {
+      const createMedia = await prisma.media.create({
+        data: {
+          id: mediaID,
+          poster_path: poster_path,
+          title: title,
+        },
+      });
+    }
+
+    const updateGroup = await prisma.group.update({
+      where: {
+        id: groupID,
+      },
+      data: {
+        mediaIDs: {
+          push: mediaID,
+        },
+      },
+    });
+
+    res.send({ message: "movie added to group" });
+  } catch (error: any) {
+    console.log(error);
+    res.send({ message: error.message });
+  }
+};
+
+export default addMedia;
