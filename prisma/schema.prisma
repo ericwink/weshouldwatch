@@ -28,16 +28,15 @@ model Group {
   userIDs   String[] @db.ObjectId
   users     User[]   @relation(fields: [userIDs], references: [id]) //not in DB
 
-  mediaIDs  String[] 
-  media     Media @relation(fields: [mediaIDs], references: [id]) //not in DB
+  media  Media[] 
 }
 
-model Media{
-  id      String   @id @map("_id") //use TMDB id as primary id - do not autogen
+type Media{
+  id      String   
   title   String
   poster_path   String
-
-  groups Group[]
+  watched Boolean @default(false)
 }
+
 
 //any additional changes, we'll need to manually invoke npx prisma generate 
