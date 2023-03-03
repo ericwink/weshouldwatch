@@ -28,20 +28,14 @@ model Group {
   userIDs   String[] @db.ObjectId
   users     User[]   @relation(fields: [userIDs], references: [id]) //not in DB
 
-  mediaIDs  String[] @db.ObjectId
+  mediaIDs  String[] 
   media     Media @relation(fields: [mediaIDs], references: [id]) //not in DB
 }
 
 model Media{
-  id      String   @id @default(auto()) @map("_id") @db.ObjectId
-  tmbd_id String
+  id      String   @id @map("_id") //use TMDB id as primary id - do not autogen
   title   String
-  release_date  String
-  vote_average  String
-  genre_ids     String[]
-  overview      String
   poster_path   String
-  backdrop_path String
 
   groups Group[]
 }

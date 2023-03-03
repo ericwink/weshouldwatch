@@ -12,12 +12,14 @@ const createGroup = async (req: NextApiRequest, res: NextApiResponse) => {
         email: email,
       },
     });
+
     const newGroup = await prisma.group.create({
       data: {
         name: groupName,
         userIDs: currentUser?.id,
       },
     });
+
     const updateUser = await prisma.user.update({
       where: {
         id: currentUser?.id,
