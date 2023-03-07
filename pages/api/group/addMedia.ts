@@ -5,6 +5,7 @@ const prisma = new PrismaClient();
 
 const addMedia = async (req: NextApiRequest, res: NextApiResponse) => {
   const { groupID, mediaID, title, poster_path } = req.body;
+
   try {
     const updateGroup = await prisma.group.update({
       where: {
