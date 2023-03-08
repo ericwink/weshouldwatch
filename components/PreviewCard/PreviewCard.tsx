@@ -1,3 +1,5 @@
+import findGenre from "../../utilities/findGenre";
+
 interface MediaProps {
   adult: boolean;
   backdrop_path: string;
@@ -28,26 +30,43 @@ const PreviewCard = ({ id, title, poster_path, release_date, vote_average, genre
     return `${string}...`;
   };
 
+  const genres = genre_ids.map(each => {
+    return (
+      <p
+        data-testid="genre"
+        key={each}
+        className="genre"
+      >
+        {findGenre(each)}
+      </p>
+    );
+  });
+
   return (
-    <>
-      <h1>{title}</h1>
-      <img
-        src={poster}
-        alt={title}
-      />
-      <p>{release_date}</p>
-      <p>{vote_average}</p>
+    <article className="flex flex-col gap-4 mx-auto p-6 border rounded-xl bg-slate-400 max-w-xs shadow-lg items-center">
+      <div className="flex gap-4">
+        <img
+          src={poster}
+          alt={title}
+          className="h-40 w-40"
+        />
 
-      {genre_ids.map(each => {
-        return <p data-testid="genre">{each}</p>;
-      })}
-
+        <div className="flex flex-col justify-between">
+          <h1 className="text-lg font-medium text-center">{title}</h1>
+          <div className="flex flex-wrap gap-2 justify-center">{genres}</div>
+          <div className="flex gap-4">
+            <p>{release_date}</p>
+            <p>{vote_average}</p>
+          </div>
+        </div>
+      </div>
       <p>{description(overview)}</p>
-
       {/* to be replaced with components later */}
-      <button>Add To List</button>
-      <button>View Details</button>
-    </>
+      <div className="flex gap-8">
+        <button className="button">Add To List</button>
+        <button className="button">View Details</button>
+      </div>
+    </article>
   );
 };
 

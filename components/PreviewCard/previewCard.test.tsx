@@ -47,6 +47,16 @@ describe("Preview Card", () => {
     expect(genres).toHaveLength(3);
   });
 
+  it("should display the genres by name", () => {
+    render(<PreviewCard {...movieInfo} />);
+    const action = screen.getByText("Action");
+    const adventure = screen.getByText("Adventure");
+    const sciFi = screen.getByText("Science Fiction");
+    expect(action).toBeVisible();
+    expect(adventure).toBeVisible();
+    expect(sciFi).toBeVisible();
+  });
+
   it("should display the description, maximum of 20 words", () => {
     render(<PreviewCard {...movieInfo} />);
     const description = screen.getByText("Queen Ramonda, Shuri, M’Baku, Okoye and the Dora Milaje fight to protect their nation from intervening world powers in the...");
