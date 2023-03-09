@@ -1,7 +1,5 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import { PrismaClient } from "@prisma/client";
-
-const prisma = new PrismaClient();
+import prisma from "@/prisma/prisma";
 
 const fetchGroup = async (req: NextApiRequest, res: NextApiResponse) => {
   const { groupID } = req.body;
