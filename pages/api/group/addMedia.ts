@@ -7,16 +7,30 @@ const addMedia = async (req: NextApiRequest, res: NextApiResponse) => {
   const { groupID, mediaID, title, poster_path } = req.body;
 
   try {
+    const foundMedia = await prisma.media.findUnique({
+      where: {
+        id: mediaID,
+      },
+    });
+
+    if (!foundMedia) {
+      const addMedia = await prisma.media.create({
+        data: {
+          id: mediaID,
+          poster_path: poster_path,
+          title: title,
+        },
+      });
+    }
+
     const updateGroup = await prisma.group.update({
       where: {
         id: groupID,
       },
       data: {
-        media: {
+        collection: {
           push: {
             id: mediaID,
-            poster_path: poster_path,
-            title: title,
             watched: false,
           },
         },
