@@ -28,14 +28,18 @@ model Group {
   userIDs   String[] @db.ObjectId
   users     User[]   @relation(fields: [userIDs], references: [id]) //not in DB
 
-  media  Media[] 
+  collection  CollectionData[] 
 }
 
-type Media{
-  id      String   
+model Media{
+  id      String   @id @map("_id") //use TMDB id as primary do not autogen
   title   String
   poster_path   String
-  watched Boolean @default(false)
+}
+
+type CollectionData{
+  id String
+  watched Boolean
 }
 
 
