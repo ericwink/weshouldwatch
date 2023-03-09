@@ -1,7 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import { PrismaClient } from "@prisma/client";
-
-const prisma = new PrismaClient();
+import prisma from "@/prisma/prisma";
 
 const addUser = async (req: NextApiRequest, res: NextApiResponse) => {
   const { email, groupID } = req.body;
