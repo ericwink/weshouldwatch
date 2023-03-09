@@ -21,6 +21,8 @@ interface MediaProps {
 const PreviewCard = ({ id, title, poster_path, release_date, vote_average, genre_ids, overview }: MediaProps) => {
   const poster = `https://image.tmdb.org/t/p/w200/${poster_path}`;
 
+  const releaseYear = release_date.slice(0, 4);
+  const rating = vote_average.toFixed(1);
   const description = (text: string) => {
     let string = "";
     let array = text.split(" ");
@@ -54,9 +56,9 @@ const PreviewCard = ({ id, title, poster_path, release_date, vote_average, genre
         <div className="flex flex-col justify-between">
           <h1 className="text-lg font-medium text-center">{title}</h1>
           <div className="flex flex-wrap gap-2 justify-center">{genres}</div>
-          <div className="flex gap-4">
-            <p>{release_date}</p>
-            <p>{vote_average}</p>
+          <div className="flex item gap-4 justify-center">
+            <p>{releaseYear}</p>
+            <p>{`${rating}/10`}</p>
           </div>
         </div>
       </div>

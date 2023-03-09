@@ -33,14 +33,6 @@ describe("Preview Card", () => {
     expect(poster).toBeVisible();
   });
 
-  it("should display the year and rating", () => {
-    render(<PreviewCard {...movieInfo} />);
-    const year = screen.getByText("2022-11-09");
-    const rating = screen.getByText("7.347");
-    expect(year).toBeVisible();
-    expect(rating).toBeVisible();
-  });
-
   it("should display the correct amount of genres", () => {
     render(<PreviewCard {...movieInfo} />);
     const genres = screen.getAllByTestId("genre");
@@ -69,5 +61,17 @@ describe("Preview Card", () => {
     const viewDetails = screen.getByRole("button", { name: "View Details" });
     expect(addToList).toBeVisible();
     expect(viewDetails).toBeVisible();
+  });
+
+  it("should display the year only of the release date", () => {
+    render(<PreviewCard {...movieInfo} />);
+    const year = screen.getByText("2022");
+    expect(year).toBeVisible();
+  });
+
+  it("should display the rating rounded to the tenth decimial out of ten", () => {
+    render(<PreviewCard {...movieInfo} />);
+    const rating = screen.getByText("7.3/10");
+    expect(rating).toBeVisible();
   });
 });
