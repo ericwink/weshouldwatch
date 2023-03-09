@@ -17,11 +17,11 @@ const createUser = async (req: NextApiRequest, res: NextApiResponse) => {
       },
     });
     console.log(newUser);
-  } catch (error) {
+    res.json({ message: "user created" });
+  } catch (error: any) {
     console.log(error);
+    res.json({ message: error.message });
   }
-
-  res.json({ message: "test" });
 };
 
 export default createUser;
