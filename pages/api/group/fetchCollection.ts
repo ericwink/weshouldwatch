@@ -22,7 +22,7 @@ const fetchCollection = async (req: NextApiRequest, res: NextApiResponse) => {
     //opted for a for..of loop here rather than .map for readability and to avoid use of Promise.all
     const collection = [];
     if (foundGroup) {
-      for (let each of foundGroup?.collection) {
+      for (const each of foundGroup?.collection) {
         let data = await findMedia(each.id);
         collection.push({ ...data, watched: each.watched });
       }

@@ -1,22 +1,5 @@
 import findGenre from "../../utilities/findGenre";
-
-interface MediaProps {
-  adult: boolean;
-  backdrop_path: string;
-  id: number;
-  title: string;
-  original_language: string;
-  original_title: string;
-  overview: string;
-  poster_path: string;
-  media_type: string;
-  genre_ids: number[];
-  popularity: number;
-  release_date: string;
-  video: boolean;
-  vote_average: number;
-  vote_count: number;
-}
+import { MediaProps } from "@/utilities/interface";
 
 const PreviewCard = ({ id, title, poster_path, release_date, vote_average, genre_ids, overview }: MediaProps) => {
   const poster = `https://image.tmdb.org/t/p/w200/${poster_path}`;
@@ -65,7 +48,12 @@ const PreviewCard = ({ id, title, poster_path, release_date, vote_average, genre
       <p>{description(overview)}</p>
       {/* to be replaced with components later */}
       <div className="flex gap-8">
-        <button className="button">Add To List</button>
+        <button
+          onClick={() => console.log("add to whatever clicked")}
+          className="button"
+        >
+          Add To List
+        </button>
         <button className="button">View Details</button>
       </div>
     </article>
