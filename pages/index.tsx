@@ -1,5 +1,6 @@
 import PosterButton from "@/components/PosterButton/PosterButton";
 import PreviewCard from "@/components/PreviewCard/PreviewCard";
+import Trending from "@/components/Trending/Trending";
 import Head from "next/head";
 
 const movieInfo = {
@@ -40,9 +41,7 @@ export default function Home() {
         />
       </Head>
       <main>
-        <PosterButton {...movieInfo}>
-          <PreviewCard {...movieInfo} />
-        </PosterButton>
+        <Trending mediaType="movie" />
       </main>
     </>
   );
