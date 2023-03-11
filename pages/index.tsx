@@ -1,4 +1,5 @@
 import PosterButton from "@/components/PosterButton/PosterButton";
+import PreviewCard from "@/components/PreviewCard/PreviewCard";
 import Head from "next/head";
 
 const movieInfo = {
@@ -39,7 +40,9 @@ export default function Home() {
         />
       </Head>
       <main>
-        <PosterButton {...movieInfo} />
+        <PosterButton {...movieInfo}>
+          <PreviewCard {...movieInfo} />
+        </PosterButton>
       </main>
     </>
   );

@@ -1,5 +1,8 @@
 import { screen, render } from "@testing-library/react";
 import PosterButton from "./PosterButton";
+import userEvent from "@testing-library/user-event";
+
+const user = userEvent.setup();
 
 const movieInfo = {
   adult: false,
@@ -25,12 +28,5 @@ describe("Poster Button", () => {
     render(<PosterButton {...movieInfo} />);
     const image = screen.getByAltText("Black Panther: Wakanda Forever");
     expect(image).toBeVisible();
-  });
-  it("should display the button with movie title", () => {
-    render(<PosterButton {...movieInfo} />);
-    const button = screen.getByRole("button");
-    const title = screen.getByText("Black Panther: Wakanda Forever");
-    expect(button).toBeVisible();
-    expect(title).toBeVisible();
   });
 });

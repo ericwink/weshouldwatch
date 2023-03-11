@@ -48,7 +48,12 @@ const PreviewCard = ({ id, title, poster_path, release_date, vote_average, genre
       <p>{description(overview)}</p>
       {/* to be replaced with components later */}
       <div className="flex gap-8">
-        <button className="button">Add To List</button>
+        <button
+          onClick={() => console.log("add to whatever clicked")}
+          className="button"
+        >
+          Add To List
+        </button>
         <button className="button">View Details</button>
       </div>
     </article>
