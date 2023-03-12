@@ -11,6 +11,7 @@ const PreviewCard = ({ id, title, name, poster_path, release_date, first_air_dat
   const description = (text: string) => {
     let string = "";
     let array = text.split(" ");
+    if (array.length < 20) return text;
     for (let i = 0; i < 20; i++) {
       string = string + " " + array[i];
     }
