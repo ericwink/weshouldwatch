@@ -1,7 +1,7 @@
 import findGenre from "../../utilities/findGenre";
-import { MediaProps } from "@/utilities/interface";
+import { Movie } from "@/utilities/interface";
 
-const PreviewCard = ({ id, title, poster_path, release_date, vote_average, genre_ids, overview }: MediaProps) => {
+const PreviewCard = ({ id, title, poster_path, release_date, vote_average, genre_ids, overview }: Movie) => {
   const poster = `https://image.tmdb.org/t/p/w200/${poster_path}`;
 
   const releaseYear = release_date.slice(0, 4);

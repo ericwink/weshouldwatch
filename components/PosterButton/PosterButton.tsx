@@ -1,9 +1,9 @@
-import { MediaProps } from "@/utilities/interface";
+import { Movie } from "@/utilities/interface";
 import { PropsWithChildren, useState } from "react";
 import getPoster from "../../utilities/getPoster";
 import style from "./PosterButton.module.css";
 
-const PosterButton = ({ poster_path, title, children }: PropsWithChildren<MediaProps>) => {
+const PosterButton = ({ poster_path, title, children }: PropsWithChildren<Movie>) => {
   const [childVisible, setChildVisible] = useState(false);
 
   const handleClick = (e: any) => {

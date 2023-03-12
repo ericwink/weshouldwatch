@@ -1,5 +1,3 @@
-import PosterButton from "@/components/PosterButton/PosterButton";
-import PreviewCard from "@/components/PreviewCard/PreviewCard";
 import Trending from "@/components/Trending/Trending";
 import Head from "next/head";
 
@@ -41,7 +39,7 @@ export default function Home() {
         />
       </Head>
       <main>
-        <Trending mediaType="movie" />
+        <Trending mediaType="person" />
       </main>
     </>
   );
