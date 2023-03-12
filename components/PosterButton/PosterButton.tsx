@@ -1,13 +1,13 @@
-import { Movie } from "@/utilities/interface";
+import { Movie, TV } from "@/utilities/interface";
 import { PropsWithChildren, useState } from "react";
 import getPoster from "../../utilities/getPoster";
 import style from "./PosterButton.module.css";
 
-const PosterButton = ({ poster_path, title, children }: PropsWithChildren<Movie>) => {
+const PosterButton = ({ poster_path, title, name, children }: PropsWithChildren<Movie | TV>) => {
   const [childVisible, setChildVisible] = useState(false);
-
+  const mediaTitle = title ? title : name;
   const handleClick = (e: any) => {
-    if (e.target.alt === title || e.target.role === "backdrop") {
+    if (e.target.alt === mediaTitle || e.target.role === "backdrop") {
       setChildVisible(prev => !prev);
     }
   };
@@ -32,7 +32,7 @@ const PosterButton = ({ poster_path, title, children }: PropsWithChildren<Movie>
       <button onClick={handleClick}>
         <img
           src={getPoster(poster_path, "200")}
-          alt={title}
+          alt={mediaTitle}
           className={style.button}
         />
       </button>

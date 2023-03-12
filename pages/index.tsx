@@ -1,6 +1,24 @@
 import Trending from "@/components/Trending/Trending";
 import Head from "next/head";
 
+const tvInfo = {
+  adult: false,
+  backdrop_path: "/7vCSrzwqS5PEm0i5mHlkDfjHcnX.jpg",
+  first_air_date: "2022-12-30",
+  genre_ids: [18],
+  id: 136283,
+  media_type: "tv",
+  name: "The Glory",
+  origin_country: ["KR"],
+  original_language: "ko",
+  original_name: "더 글로리",
+  overview: "After a childhood marked by pain and violence, a woman puts a carefully planned revenge scheme in motion.",
+  popularity: 430.662,
+  poster_path: "/6jOpyXVzQyYL4QB12VRpHUxdwg1.jpg",
+  vote_average: 8.537,
+  vote_count: 216,
+};
+
 const movieInfo = {
   adult: false,
   backdrop_path: "/xDMIl84Qo5Tsu62c9DGWhmPI67A.jpg",
@@ -39,7 +57,7 @@ export default function Home() {
         />
       </Head>
       <main>
-        <Trending mediaType="person" />
+        <Trending mediaType="movie" />
       </main>
     </>
   );

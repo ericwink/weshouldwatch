@@ -1,10 +1,12 @@
 import findGenre from "../../utilities/findGenre";
-import { Movie } from "@/utilities/interface";
+import { Movie, TV } from "@/utilities/interface";
 
-const PreviewCard = ({ id, title, poster_path, release_date, vote_average, genre_ids, overview }: Movie) => {
+const PreviewCard = ({ id, title, name, poster_path, release_date, first_air_date, vote_average, genre_ids, overview }: Movie | TV) => {
   const poster = `https://image.tmdb.org/t/p/w200/${poster_path}`;
 
-  const releaseYear = release_date.slice(0, 4);
+  const releaseYear = release_date ? release_date.slice(0, 4) : first_air_date.slice(0, 4);
+  const mediaTitle = title ? title : name;
+
   const rating = vote_average.toFixed(1);
   const description = (text: string) => {
     let string = "";
@@ -32,12 +34,12 @@ const PreviewCard = ({ id, title, poster_path, release_date, vote_average, genre
       <div className="flex gap-4">
         <img
           src={poster}
-          alt={title}
+          alt={mediaTitle}
           className="h-40 w-40"
         />
 
         <div className="flex flex-col justify-between">
-          <h1 className="text-lg font-medium text-center">{title}</h1>
+          <h1 className="text-lg font-medium text-center">{mediaTitle}</h1>
           <div className="flex flex-wrap gap-2 justify-center">{genres}</div>
           <div className="flex item gap-4 justify-center">
             <p>{releaseYear}</p>
