@@ -2,14 +2,14 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import PosterButton from "../PosterButton/PosterButton";
 import PreviewCard from "../PreviewCard/PreviewCard";
-import { MediaProps } from "@/utilities/interface";
+import { Movie } from "@/utilities/interface";
 
 interface Props {
   mediaType: "movie" | "person" | "tv";
 }
 
 const Trending = ({ mediaType }: Props) => {
-  const [data, setData] = useState<MediaProps[] | null>(null);
+  const [data, setData] = useState<Movie[] | null>(null);
   const [isLoading, setLoading] = useState(false);
 
   useEffect(() => {
