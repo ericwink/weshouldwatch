@@ -2,9 +2,11 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import axios from "axios";
 const tmdbKey = process.env.MOVIE_DB_API;
 
-const trendingActors = async (req: NextApiRequest, res: NextApiResponse) => {
+const trending = async (req: NextApiRequest, res: NextApiResponse) => {
+  const { mediaType } = req.query;
+
   try {
-    const { data } = await axios.get(`https://api.themoviedb.org/3/trending/person/day?api_key=${tmdbKey}`);
+    const { data } = await axios.get(`https://api.themoviedb.org/3/trending/${mediaType}/day?api_key=${tmdbKey}`);
     //send an array of the data
     res.send(data.results);
   } catch (error: any) {
@@ -14,4 +16,4 @@ const trendingActors = async (req: NextApiRequest, res: NextApiResponse) => {
   }
 };
 
-export default trendingActors;
+export default trending;
