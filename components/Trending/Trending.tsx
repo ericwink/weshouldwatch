@@ -4,6 +4,8 @@ import PosterButton from "../PosterButton/PosterButton";
 import PreviewCard from "../PreviewCard/PreviewCard";
 import ActorButton from "../ActorButton/ActorButton";
 import { Movie, TV, Person } from "@/utilities/interface";
+import { Swiper, SwiperSlide } from "swiper/react";
+import "swiper/css";
 
 interface Props {
   mediaType: "movie" | "person" | "tv";
@@ -11,7 +13,8 @@ interface Props {
 
 const Trending = ({ mediaType }: Props) => {
   const [data, setData] = useState<Movie[] | TV[] | Person[] | null>(null);
-  const [isLoading, setLoading] = useState(false);
+  const [isLoading, setLoading] = useState(true);
+  const breakpoints = { 0: { slidesPerView: 3, spaceBetween: 10 }, 400: { slidesPerView: 4, spaceBetween: 10 }, 640: { slidesPerView: 6, spaceBetween: 10 }, 900: { slidesPerView: 8, spaceBetween: 10 }, 1200: { slidesPerView: 10, spaceBetween: 10 } };
 
   useEffect(() => {
     getData(mediaType);
@@ -20,6 +23,7 @@ const Trending = ({ mediaType }: Props) => {
   const getData = async (mediaType: string) => {
     const { data } = await axios.get("/api/tmdb/trending", { params: { mediaType: mediaType } });
     setData(data);
+    setLoading(false);
     console.log(data);
   };
 
@@ -28,24 +32,30 @@ const Trending = ({ mediaType }: Props) => {
 
   if (mediaType === "person") {
     return (
-      <div>
+      <Swiper breakpoints={breakpoints}>
         {data.map(each => {
-          return <ActorButton {...each} />;
+          return (
+            <SwiperSlide>
+              <ActorButton {...each} />
+            </SwiperSlide>
+          );
         })}
-      </div>
+      </Swiper>
     );
   }
 
   return (
-    <div>
+    <Swiper breakpoints={breakpoints}>
       {data.map(each => {
         return (
-          <PosterButton {...each}>
-            <PreviewCard {...each} />
-          </PosterButton>
+          <SwiperSlide>
+            <PosterButton {...each}>
+              <PreviewCard {...each} />
+            </PosterButton>
+          </SwiperSlide>
         );
       })}
-    </div>
+    </Swiper>
   );
 };
 
