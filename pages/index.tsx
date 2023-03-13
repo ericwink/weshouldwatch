@@ -73,6 +73,7 @@ export default function Home() {
       <main>
         <Trending mediaType="movie" />
         <Trending mediaType="tv" />
+        <Trending mediaType="person" />
       </main>
     </>
   );
