@@ -1,5 +1,19 @@
+import ActorButton from "@/components/ActorButton/ActorButton";
 import Trending from "@/components/Trending/Trending";
 import Head from "next/head";
+
+const actorInfo = {
+  adult: false,
+  gender: 1,
+  id: 974169,
+  known_for_department: "Acting",
+  known_for: null,
+  media_type: "person",
+  name: "Jenna Ortega",
+  original_name: "Jenna Ortega",
+  popularity: 174.025,
+  profile_path: "/jmLhlMCHgqlHIlneIPpcckpkzaz.jpg",
+};
 
 const tvInfo = {
   adult: false,
