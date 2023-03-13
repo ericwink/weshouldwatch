@@ -71,8 +71,11 @@ export default function Home() {
         />
       </Head>
       <main>
+        <p>Trending Movies...</p>
         <Trending mediaType="movie" />
+        <p>Trending TV Shows...</p>
         <Trending mediaType="tv" />
+        <p>Trending Actors</p>
         <Trending mediaType="person" />
       </main>
     </>
