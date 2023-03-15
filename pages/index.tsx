@@ -1,4 +1,4 @@
-import ActorButton from "@/components/ActorButton/ActorButton";
+import ActorButton from "@/components/ActorLink/ActorLink";
 import Trending from "@/components/Trending/Trending";
 import Head from "next/head";
 

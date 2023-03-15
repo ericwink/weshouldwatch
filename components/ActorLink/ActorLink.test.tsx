@@ -1,5 +1,5 @@
 import { screen, render } from "@testing-library/react";
-import ActorButton from "./ActorButton";
+import ActorButton from "./ActorLink";
 
 const actorInfo = {
   adult: false,

@@ -1,8 +1,8 @@
 import { Person } from "@/utilities/interface";
 import getPoster from "../../utilities/getPoster";
-import styles from "./actorButton.module.css";
+import styles from "./actorLink.module.css";
 
-const ActorButton = ({ profile_path, name }: Person) => {
+const ActorLink = ({ profile_path, name, media_type, id }: Person) => {
   const actorImage = getPoster(profile_path, "200");
   const actorName = (name: string) => {
     if (name.length < 18) return name;
@@ -13,7 +13,7 @@ const ActorButton = ({ profile_path, name }: Person) => {
   return (
     <a
       className={styles.button}
-      href="/actor/id"
+      href={`/${media_type}/${id}`}
     >
       <img
         src={actorImage}
@@ -25,4 +25,4 @@ const ActorButton = ({ profile_path, name }: Person) => {
   );
 };
 
-export default ActorButton;
+export default ActorLink;
