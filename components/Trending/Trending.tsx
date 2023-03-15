@@ -1,8 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import PosterButton from "../PosterButton/PosterButton";
-import PreviewCard from "../PreviewCard/PreviewCard";
-import ActorButton from "../ActorButton/ActorButton";
+import ActorLink from "../ActorLink/ActorLink";
 import { Movie, TV, Person } from "@/utilities/interface";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
@@ -36,7 +35,7 @@ const Trending = ({ mediaType }: Props) => {
         {data.map(each => {
           return (
             <SwiperSlide>
-              <ActorButton {...each} />
+              <ActorLink {...each} />
             </SwiperSlide>
           );
         })}
@@ -49,9 +48,7 @@ const Trending = ({ mediaType }: Props) => {
       {data.map(each => {
         return (
           <SwiperSlide>
-            <PosterButton {...each}>
-              <PreviewCard {...each} />
-            </PosterButton>
+            <PosterButton {...each} />
           </SwiperSlide>
         );
       })}

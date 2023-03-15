@@ -3,7 +3,7 @@ import { PropsWithChildren, useState } from "react";
 import getPoster from "../../utilities/getPoster";
 import style from "./PosterButton.module.css";
 
-const PosterButton = ({ poster_path, title, name, children }: PropsWithChildren<Movie | TV>) => {
+const PosterButton = ({ poster_path, title, name, children, id, media_type }: PropsWithChildren<Movie | TV>) => {
   const [childVisible, setChildVisible] = useState(false);
   const mediaTitle = title ? title : name;
   const handleClick = (e: any) => {
@@ -27,19 +27,37 @@ const PosterButton = ({ poster_path, title, name, children }: PropsWithChildren<
     </div>
   );
 
-  return (
-    <>
-      <button onClick={handleClick}>
-        <img
-          src={getPoster(poster_path, "200")}
-          alt={mediaTitle}
-          className={style.button}
-        />
-      </button>
+  if (children) {
+    return (
+      <>
+        <button onClick={handleClick}>
+          <img
+            src={getPoster(poster_path, "200")}
+            alt={mediaTitle}
+            className={style.button}
+          />
+        </button>
 
-      {childVisible ? modal : null}
-    </>
-  );
+        {childVisible ? modal : null}
+      </>
+    );
+  }
+
+  if (!children) {
+    return (
+      <>
+        <a href={`/${media_type}/${id}`}>
+          <img
+            src={getPoster(poster_path, "200")}
+            alt={mediaTitle}
+            className={style.button}
+          />
+        </a>
+
+        {childVisible ? modal : null}
+      </>
+    );
+  }
 };
 
 export default PosterButton;
