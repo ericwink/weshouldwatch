@@ -1,0 +1,55 @@
+.card {
+  border-radius: 10px;
+  max-width: 300px;
+  padding: 10px;
+  background-color: lightgrey;
+  display: inline-flex;
+  flex-direction: column;
+  gap: 1.2rem;
+  align-items: center;
+}
+
+.genreList {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  min-width: 100%;
+}
+
+.genre {
+  border: 1px solid black;
+  border-radius: 10px;
+  padding: 2px;
+}
+
+.yearRating {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+}
+
+.mainInfo {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.poster {
+  max-width: 7rem;
+  border-radius: 5px;
+}
+
+.buttons {
+  display: flex;
+  justify-content: space-between;
+  min-width: 100%;
+}
+
+.titleAndYear {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.title {
+  font-size: 1.5rem;
+}

@@ -1,5 +1,6 @@
 import findGenre from "../../utilities/findGenre";
 import { Movie, TV } from "@/utilities/interface";
+import styles from "./previewCard.module.css";
 
 const PreviewCard = ({ id, title, name, poster_path, release_date, first_air_date, vote_average, genre_ids, overview }: Movie | TV) => {
   const poster = `https://image.tmdb.org/t/p/w200/${poster_path}`;
@@ -23,7 +24,7 @@ const PreviewCard = ({ id, title, name, poster_path, release_date, first_air_dat
       <p
         data-testid="genre"
         key={each}
-        className="genre"
+        className={styles.genre}
       >
         {findGenre(each)}
       </p>
@@ -31,35 +32,36 @@ const PreviewCard = ({ id, title, name, poster_path, release_date, first_air_dat
   });
 
   return (
-    <article className="flex flex-col gap-4 mx-auto p-6 border rounded-xl bg-slate-400 max-w-xs shadow-lg items-center">
-      <div className="flex gap-4">
+    <div
+      role="dialog"
+      aria-modal="true"
+      className={styles.card}
+    >
+      <div className={styles.mainInfo}>
         <img
           src={poster}
           alt={mediaTitle}
-          className="h-40 w-40"
+          className={styles.poster}
         />
+        <div className={styles.titleAndYear}>
+          <h1 className={styles.title}>{mediaTitle}</h1>
 
-        <div className="flex flex-col justify-between">
-          <h1 className="text-lg font-medium text-center">{mediaTitle}</h1>
-          <div className="flex flex-wrap gap-2 justify-center">{genres}</div>
-          <div className="flex item gap-4 justify-center">
+          <div className={styles.yearRating}>
             <p>{releaseYear}</p>
             <p>{`${rating}/10`}</p>
           </div>
         </div>
       </div>
+
+      <div className={styles.genreList}>{genres}</div>
+
       <p>{description(overview)}</p>
       {/* to be replaced with components later */}
-      <div className="flex gap-8">
-        <button
-          onClick={() => console.log("add to whatever clicked")}
-          className="button"
-        >
-          Add To List
-        </button>
-        <button className="button">View Details</button>
+      <div className={styles.buttons}>
+        <button onClick={() => console.log("add to whatever clicked")}>Add To List</button>
+        <button>View Details</button>
       </div>
-    </article>
+    </div>
   );
 };
 
