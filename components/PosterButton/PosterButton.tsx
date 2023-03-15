@@ -18,23 +18,21 @@ const PosterButton = ({ poster_path, title, name, children, id, media_type }: Pr
       className={style.modalBackground}
       role="backdrop"
     >
-      <div
-        role="dialog"
-        aria-modal={childVisible}
-      >
-        {children}
-      </div>
+      {children}
     </div>
   );
 
   if (children) {
     return (
       <>
-        <button onClick={handleClick}>
+        <button
+          className={style.button}
+          onClick={handleClick}
+        >
           <img
             src={getPoster(poster_path, "200")}
             alt={mediaTitle}
-            className={style.button}
+            className={style.poster}
           />
         </button>
 

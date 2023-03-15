@@ -1,4 +1,6 @@
 import ActorButton from "@/components/ActorLink/ActorLink";
+import PosterButton from "@/components/PosterButton/PosterButton";
+import PreviewCard from "@/components/PreviewCard/PreviewCard";
 import Trending from "@/components/Trending/Trending";
 import Head from "next/head";
 
