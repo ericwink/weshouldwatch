@@ -79,6 +79,10 @@ export default function Home() {
         <Trending mediaType="tv" />
         <p>Trending Actors</p>
         <Trending mediaType="person" />
+
+        <PosterButton {...movieInfo}>
+          <PreviewCard {...movieInfo} />
+        </PosterButton>
       </main>
     </>
   );

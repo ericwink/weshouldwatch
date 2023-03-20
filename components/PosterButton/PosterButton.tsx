@@ -43,17 +43,13 @@ const PosterButton = ({ poster_path, title, name, children, id, media_type }: Pr
 
   if (!children) {
     return (
-      <>
-        <a href={`/${media_type}/${id}`}>
-          <img
-            src={getPoster(poster_path, "200")}
-            alt={mediaTitle}
-            className={style.button}
-          />
-        </a>
-
-        {childVisible ? modal : null}
-      </>
+      <a href={`/${media_type}/${id}`}>
+        <img
+          src={getPoster(poster_path, "200")}
+          alt={mediaTitle}
+          className={style.button}
+        />
+      </a>
     );
   }
 };
