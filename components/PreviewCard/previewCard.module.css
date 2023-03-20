@@ -12,7 +12,7 @@
 .genreList {
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-between;
+  justify-content: space-around;
   min-width: 100%;
 }
 
@@ -20,6 +20,7 @@
   border: 1px solid black;
   border-radius: 10px;
   padding: 2px;
+  margin: 2px;
 }
 
 .yearRating {
