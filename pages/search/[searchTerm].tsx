@@ -5,6 +5,7 @@ import { Movie, TV, Person } from "@/utilities/interface";
 import PosterButton from "@/components/PosterButton/PosterButton";
 import PreviewCard from "@/components/PreviewCard/PreviewCard";
 import ActorLink from "@/components/ActorLink/ActorLink";
+import SearchBar from "@/components/SearchBar/SearchBar";
 
 interface IData {
   movie: Movie[];
@@ -20,8 +21,8 @@ const Results = () => {
 
   useEffect(() => {
     setLoading(true);
-    const results = fetchResults(searchTerm);
-  }, [searchTerm]);
+    fetchResults(searchTerm);
+  }, [router]);
 
   const fetchResults = async (searchTerm: string) => {
     const { data } = await axios.get("/api/tmdb/search", { params: { searchTerm: searchTerm } });
@@ -57,6 +58,7 @@ const Results = () => {
 
     return (
       <>
+        <SearchBar />
         <p>Movies:</p>
         {mapResults("movie")}
         <p>TV:</p>
