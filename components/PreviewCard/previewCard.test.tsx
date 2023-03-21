@@ -69,9 +69,9 @@ describe("Preview Card", () => {
     expect(year).toBeVisible();
   });
 
-  it("should display the rating rounded to the tenth decimial out of ten", () => {
+  it("should display the rating as a percentage", () => {
     render(<PreviewCard {...movieInfo} />);
-    const rating = screen.getByText("7.3/10");
+    const rating = screen.getByText("73%");
     expect(rating).toBeVisible();
   });
 });

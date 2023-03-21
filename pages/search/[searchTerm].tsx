@@ -33,7 +33,6 @@ const Results = () => {
 
   const separateData = (data: [Movie | TV | Person]) => {
     const tempData = { movie: [], tv: [], person: [] };
-    //for each object in data, add to array based on media_type
     data.forEach(entry => {
       tempData[entry.media_type].push(entry);
     });
@@ -43,7 +42,7 @@ const Results = () => {
   if (loading) return <p>Loading...</p>;
 
   if (data) {
-    const mapResults = (mediaType: string) => {
+    const mapResults = (mediaType: "movie" | "tv" | "person") => {
       return data[mediaType].map(each => {
         if (mediaType === "person") {
           return <ActorLink {...each} />;

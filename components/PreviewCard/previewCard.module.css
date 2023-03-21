@@ -5,14 +5,15 @@
   background-color: lightgrey;
   display: inline-flex;
   flex-direction: column;
-  gap: 1.2rem;
+  gap: 1.8rem;
   align-items: center;
 }
 
 .genreList {
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-around;
+  justify-content: center;
+  gap: 2px 5px;
   min-width: 100%;
 }
 
@@ -45,12 +46,25 @@
   min-width: 100%;
 }
 
-.titleAndYear {
+.button {
+  background: none;
+  border: none;
   display: flex;
-  flex-direction: column;
-  justify-content: space-between;
+  align-items: center;
+  justify-content: center;
+  gap: 0.3rem;
+}
+.button:hover {
+  cursor: pointer;
 }
 
 .title {
   font-size: 1.5rem;
+  text-align: center;
+}
+
+.subInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
