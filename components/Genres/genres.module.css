@@ -1,0 +1,14 @@
+.genreList {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 2px 5px;
+  min-width: 100%;
+}
+
+.genre {
+  border: 1px solid black;
+  border-radius: 10px;
+  padding: 2px;
+  margin: 2px;
+}
