@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCirclePlus, faCircleInfo } from "@fortawesome/free-solid-svg-icons";
 import Genres from "../Genres/Genres";
 
-const PreviewCard = ({ id, title, name, poster_path, release_date, first_air_date, vote_average, genre_ids, overview }: Movie | TV) => {
+const PreviewCard = ({ id, title, name, poster_path, release_date, first_air_date, vote_average, genre_ids, overview, media_type }: Movie | TV) => {
   const add = <FontAwesomeIcon icon={faCirclePlus} />;
   const info = <FontAwesomeIcon icon={faCircleInfo} />;
 
@@ -55,7 +55,12 @@ const PreviewCard = ({ id, title, name, poster_path, release_date, first_air_dat
       {/* to be replaced with components later */}
       <div className={styles.buttons}>
         <button className={styles.button}>{add}Add To List</button>
-        <button className={styles.button}>{info}View Details</button>
+        <a
+          href={`/media/${id}/?media_type=${media_type}`}
+          className={styles.button}
+        >
+          {info}View Details
+        </a>
       </div>
     </div>
   );

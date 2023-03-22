@@ -5,6 +5,7 @@ import { Movie, TV } from "../../utilities/interface";
 import getPoster from "@/utilities/getPoster";
 import Genres from "@/components/Genres/Genres";
 import StreamingOptions from "@/components/StreamingOptions/StreamingOptions";
+import SearchBar from "@/components/SearchBar/SearchBar";
 
 const MediaDetails = () => {
   const router = useRouter();
@@ -32,6 +33,7 @@ const MediaDetails = () => {
 
     return (
       <>
+        <SearchBar />
         <img
           src={backdrop}
           alt={title}
