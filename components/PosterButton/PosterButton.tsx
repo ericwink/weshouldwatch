@@ -43,7 +43,7 @@ const PosterButton = ({ poster_path, title, name, children, id, media_type }: Pr
 
   if (!children) {
     return (
-      <a href={`/${media_type}/${id}`}>
+      <a href={`/media/${id}/?media_type=${media_type}`}>
         <img
           src={getPoster(poster_path, "200")}
           alt={mediaTitle}

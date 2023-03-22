@@ -83,11 +83,11 @@ export default function Home() {
         <Trending mediaType="tv" />
         <p>Trending Actors</p>
         <Trending mediaType="person" />
-
+        {/* 
         <StreamingOptions
           media_type="movie"
           id={550}
-        />
+        /> */}
       </main>
     </>
   );

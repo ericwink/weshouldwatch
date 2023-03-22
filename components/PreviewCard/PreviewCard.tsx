@@ -1,8 +1,8 @@
-import findGenre from "../../utilities/findGenre";
 import { Movie, TV } from "@/utilities/interface";
 import styles from "./previewCard.module.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCirclePlus, faCircleInfo } from "@fortawesome/free-solid-svg-icons";
+import Genres from "../Genres/Genres";
 
 const PreviewCard = ({ id, title, name, poster_path, release_date, first_air_date, vote_average, genre_ids, overview }: Movie | TV) => {
   const add = <FontAwesomeIcon icon={faCirclePlus} />;
@@ -23,18 +23,6 @@ const PreviewCard = ({ id, title, name, poster_path, release_date, first_air_dat
     }
     return `${string}...`;
   };
-
-  const genres = genre_ids.map(each => {
-    return (
-      <p
-        data-testid="genre"
-        key={each}
-        className={styles.genre}
-      >
-        {findGenre(each)}
-      </p>
-    );
-  });
 
   return (
     <div
@@ -59,7 +47,10 @@ const PreviewCard = ({ id, title, name, poster_path, release_date, first_air_dat
         </div>
       </div>
 
-      <div className={styles.genreList}>{genres}</div>
+      <Genres
+        genre_ids={genre_ids}
+        type="nums"
+      />
 
       {/* to be replaced with components later */}
       <div className={styles.buttons}>

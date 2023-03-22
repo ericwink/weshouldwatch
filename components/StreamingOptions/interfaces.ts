@@ -1,6 +1,6 @@
 export interface Props {
   media_type: string;
-  id: number;
+  id: string;
 }
 
 export interface ProviderData {
