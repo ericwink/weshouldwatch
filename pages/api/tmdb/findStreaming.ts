@@ -14,3 +14,5 @@ export default async function findByID(req: NextApiRequest, res: NextApiResponse
     res.status(status).send(message);
   }
 }
+
+// 980078?media_type=movie

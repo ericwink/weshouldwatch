@@ -20,9 +20,10 @@ const Results = () => {
   const [loading, setLoading] = useState(null);
 
   useEffect(() => {
+    if (!router.isReady) return;
     setLoading(true);
     fetchResults(searchTerm);
-  }, [router]);
+  }, [router.isReady]);
 
   const fetchResults = async (searchTerm: string) => {
     const { data } = await axios.get("/api/tmdb/search", { params: { searchTerm: searchTerm } });
