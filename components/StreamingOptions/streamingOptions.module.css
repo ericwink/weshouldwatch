@@ -1,0 +1,14 @@
+.container {
+  display: grid;
+  grid-template-columns: 0.5fr 1fr 0.5fr;
+  border: 1px solid black;
+  align-items: center;
+}
+.image {
+  width: 2.5rem;
+}
+
+.options {
+  display: flex;
+  gap: 0.3rem;
+}

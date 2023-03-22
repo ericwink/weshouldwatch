@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { Movie, TV } from "../../utilities/interface";
 import getPoster from "@/utilities/getPoster";
 import Genres from "@/components/Genres/Genres";
+import StreamingOptions from "@/components/StreamingOptions/StreamingOptions";
 
 const MediaDetails = () => {
   const router = useRouter();
@@ -14,8 +15,6 @@ const MediaDetails = () => {
     if (!router.isReady) return;
     getData();
   }, [router.isReady]);
-
-  //fetch function to call api with media id and media type
 
   const getData = async () => {
     const { data } = await axios.get("/api/tmdb/findByID", { params: { mediaType: media_type, id: mediaID } });
@@ -52,6 +51,12 @@ const MediaDetails = () => {
           {rating}
         </div>
         {mediaData.overview}
+        <StreamingOptions
+          id={mediaID}
+          media_type={media_type}
+        />
+        {/* cast */}
+        {/* recommendations */}
       </>
     );
   }

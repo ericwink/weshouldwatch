@@ -2,6 +2,7 @@ import ActorButton from "@/components/ActorLink/ActorLink";
 import PosterButton from "@/components/PosterButton/PosterButton";
 import PreviewCard from "@/components/PreviewCard/PreviewCard";
 import SearchBar from "@/components/SearchBar/SearchBar";
+import StreamingOptions from "@/components/StreamingOptions/StreamingOptions";
 import Trending from "@/components/Trending/Trending";
 import Head from "next/head";
 
@@ -82,6 +83,11 @@ export default function Home() {
         <Trending mediaType="tv" />
         <p>Trending Actors</p>
         <Trending mediaType="person" />
+        {/* 
+        <StreamingOptions
+          media_type="movie"
+          id={550}
+        /> */}
       </main>
     </>
   );
