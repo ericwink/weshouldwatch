@@ -1,38 +1,27 @@
 import axios from "axios";
-import { useState } from "react";
-
-interface Props {
-  media_type: string;
-  id: number;
-}
-
-interface ProviderData {
-  logo_path: string;
-  provider_name: string;
-}
-
-interface AvailabilityData {
-  rent: ProviderData[];
-  buy: ProviderData[];
-  flatrate: ProviderData[];
-  link: string;
-}
-
-interface StreamOptions {
-  [provider_name: string]: { logo_path: string; watchOption: string[] };
-}
+import { useEffect, useState } from "react";
+import getPoster from "@/utilities/getPoster";
+import { Props, finalStreamData, AvailabilityData, StreamOptions } from "./interfaces";
+import styles from "./streamingOptions.module.css";
 
 const StreamingOptions = ({ media_type, id }: Props) => {
-  const [data, setData] = useState(null);
+  const [streamData, setStreamData] = useState<finalStreamData[] | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    getData();
+  }, []);
 
   const getData = async () => {
     const { data } = await axios.get("/api/tmdb/findStreaming", { params: { mediaType: media_type, id: id } });
-    if (data.results.us) setData(data.results.us);
-    console.log(data.results.US);
-    reorderData(data.results.US);
+    if (data.results.US) {
+      // console.log(data.results.US);
+      const reordered = reorderData(data.results.US);
+      // console.log({ reordered });
+      setStreamData(reordered);
+    }
+    setLoading(false);
   };
-
-  getData();
 
   const reorderData = (obj: AvailabilityData) => {
     const data: StreamOptions = {};
@@ -45,10 +34,39 @@ const StreamingOptions = ({ media_type, id }: Props) => {
         data[host].watchOption.push(watchOption);
       }
     }
-    console.log(data);
+    const array = [];
+    for (let each in data) {
+      array.push({ provider: each, ...data[each] });
+    }
+    return array;
   };
 
-  return <h1>Streaming Options</h1>;
+  if (loading) return <h1>Loading...</h1>;
+  if (!streamData) return <h1>No Data Found</h1>;
+
+  const streamInfo = streamData.map(entry => {
+    return (
+      <div
+        key={entry.provider}
+        className={styles.container}
+      >
+        <img
+          src={getPoster(entry.logo_path, "200")}
+          alt={entry.provider}
+          className={styles.image}
+        />
+        <p>{entry.provider}</p>
+        <div className={styles.options}>
+          {entry.watchOption.map(each => {
+            if (each === "flatrate") return <p>Streaming</p>;
+            return <p>{each}</p>;
+          })}
+        </div>
+      </div>
+    );
+  });
+
+  return <>{streamInfo}</>;
 };
 
 export default StreamingOptions;
