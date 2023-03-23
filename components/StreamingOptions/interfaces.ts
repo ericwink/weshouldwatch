@@ -18,9 +18,3 @@ export interface AvailabilityData {
 export interface StreamOptions {
   [provider_name: string]: { logo_path: string; watchOption: string[] };
 }
-
-export interface finalStreamData {
-  provider: string;
-  logo_path: string;
-  watchOption: string[];
-}
