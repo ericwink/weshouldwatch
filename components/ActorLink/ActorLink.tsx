@@ -1,5 +1,4 @@
 import { Person } from "@/utilities/interface";
-import { faHourglass1 } from "@fortawesome/free-solid-svg-icons";
 import getPoster from "../../utilities/getPoster";
 import styles from "./actorLink.module.css";
 
