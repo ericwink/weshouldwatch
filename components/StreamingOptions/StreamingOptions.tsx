@@ -15,9 +15,9 @@ const StreamingOptions = ({ media_type, id }: Props) => {
   const getData = async () => {
     const { data } = await axios.get("/api/tmdb/findStreaming", { params: { mediaType: media_type, id: id } });
     if (data.results.US) {
-      // console.log(data.results.US);
+      console.log(data.results.US);
       const reordered = reorderData(data.results.US);
-      // console.log({ reordered });
+      console.log({ reordered });
       setStreamData(reordered);
     }
     setLoading(false);
