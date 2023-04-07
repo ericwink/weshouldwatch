@@ -12,14 +12,13 @@ const Credits = ({ mediaType, id }: Props) => {
   const getCredits = async () => {
     const { data } = await axios.get("/api/tmdb/getCredits", { params: { mediaType, id } });
     setData(data);
-    console.log(data);
   };
 
   useEffect(() => {
     getCredits();
   }, []);
 
-  if (!data) return "No Data Found";
+  if (!data) return <h1>No Credits Data Found</h1>;
   return (
     <>
       <h1>Cast</h1>
