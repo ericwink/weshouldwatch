@@ -1,8 +1,5 @@
-import ActorButton from "@/components/ActorLink/ActorLink";
-import PosterButton from "@/components/PosterButton/PosterButton";
-import PreviewCard from "@/components/PreviewCard/PreviewCard";
 import SearchBar from "@/components/SearchBar/SearchBar";
-import StreamingOptions from "@/components/StreamingOptions/StreamingOptions";
+import SignIn from "@/components/SignIn/SignIn";
 import Trending from "@/components/Trending/Trending";
 import Head from "next/head";
 
@@ -88,6 +85,8 @@ export default function Home() {
           media_type="movie"
           id={550}
         /> */}
+
+        <SignIn />
       </main>
     </>
   );
