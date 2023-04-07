@@ -37,4 +37,6 @@ export interface Person {
   original_name: string;
   popularity: number;
   profile_path: string;
+  job?: string;
+  character?: string;
 }

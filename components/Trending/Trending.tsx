@@ -1,10 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-import PosterButton from "../PosterButton/PosterButton";
-import ActorLink from "../ActorLink/ActorLink";
 import { Movie, TV, Person } from "@/utilities/interface";
-import { Swiper, SwiperSlide } from "swiper/react";
-import "swiper/css";
+import Slider from "../Slider/Slider";
 
 interface Props {
   mediaType: "movie" | "person" | "tv";
@@ -29,31 +26,14 @@ const Trending = ({ mediaType }: Props) => {
   if (isLoading) return <h1>loading....</h1>;
   if (!data) return <h1>No data found</h1>;
 
-  if (mediaType === "person") {
+  if (data) {
     return (
-      <Swiper breakpoints={breakpoints}>
-        {data.map(each => {
-          return (
-            <SwiperSlide>
-              <ActorLink {...each} />
-            </SwiperSlide>
-          );
-        })}
-      </Swiper>
+      <Slider
+        mediaType={mediaType}
+        data={data}
+      />
     );
   }
-
-  return (
-    <Swiper breakpoints={breakpoints}>
-      {data.map(each => {
-        return (
-          <SwiperSlide>
-            <PosterButton {...each} />
-          </SwiperSlide>
-        );
-      })}
-    </Swiper>
-  );
 };
 
 export default Trending;
