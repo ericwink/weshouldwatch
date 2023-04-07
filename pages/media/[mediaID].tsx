@@ -6,6 +6,7 @@ import getPoster from "@/utilities/getPoster";
 import Genres from "@/components/Genres/Genres";
 import StreamingOptions from "@/components/StreamingOptions/StreamingOptions";
 import SearchBar from "@/components/SearchBar/SearchBar";
+import Credits from "@/components/Credits/Credits";
 
 const MediaDetails = () => {
   const router = useRouter();
@@ -57,7 +58,10 @@ const MediaDetails = () => {
           id={mediaID}
           media_type={media_type}
         />
-        {/* cast */}
+        <Credits
+          mediaType={media_type}
+          id={mediaID}
+        />
         {/* recommendations */}
       </>
     );
