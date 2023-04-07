@@ -12,6 +12,7 @@ const Credits = ({ mediaType, id }: Props) => {
   const getCredits = async () => {
     const { data } = await axios.get("/api/tmdb/getCredits", { params: { mediaType, id } });
     setData(data);
+    console.log(data);
   };
 
   useEffect(() => {

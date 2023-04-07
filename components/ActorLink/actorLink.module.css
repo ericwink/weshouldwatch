@@ -9,6 +9,7 @@
 
 .img {
   border-radius: 50%;
+  min-height: 150px;
 }
 
 .name {
