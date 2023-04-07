@@ -16,7 +16,7 @@ const Genres = ({ genre_ids, type }: Props) => {
     return (
       <p
         data-testid="genre"
-        key={each}
+        key={each.name}
         className={styles.genre}
       >
         {type === "nums" ? findGenre(each) : each.name}

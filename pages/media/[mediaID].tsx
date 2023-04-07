@@ -7,6 +7,8 @@ import Genres from "@/components/Genres/Genres";
 import StreamingOptions from "@/components/StreamingOptions/StreamingOptions";
 import SearchBar from "@/components/SearchBar/SearchBar";
 import Credits from "@/components/Credits/Credits";
+import Recommended from "@/components/Recommneded/Recommended";
+import Similar from "@/components/Similar/Similar";
 
 const MediaDetails = () => {
   const router = useRouter();
@@ -54,15 +56,26 @@ const MediaDetails = () => {
           {rating}
         </div>
         {mediaData.overview}
+
         <StreamingOptions
           id={mediaID}
           media_type={media_type}
         />
+
         <Credits
           mediaType={media_type}
           id={mediaID}
         />
-        {/* recommendations */}
+
+        <Recommended
+          mediaType={media_type}
+          id={mediaID}
+        />
+
+        <Similar
+          mediaType={media_type}
+          id={mediaID}
+        />
       </>
     );
   }

@@ -38,7 +38,7 @@ const StreamingOptions = ({ media_type, id }: Props) => {
   };
 
   if (loading) return <h1>Loading...</h1>;
-  if (!streamData) return <h1>No Data Found</h1>;
+  if (!streamData) return <h1>No Streaming Options Found</h1>;
 
   const streamInfo = (provider: string) => {
     const providerData = streamData[provider];
