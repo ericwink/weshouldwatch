@@ -1,25 +1,21 @@
 import { Movie, TV } from "@/utilities/interface";
-import { PropsWithChildren, useState } from "react";
+import { PropsWithChildren } from "react";
 import getPoster from "../../utilities/getPoster";
 import style from "./PosterButton.module.css";
+import useModal from "../Modal/useModal";
+import Modal from "../Modal/Modal";
 
 const PosterButton = ({ poster_path, title, name, children, id, media_type }: PropsWithChildren<Movie | TV>) => {
-  const [childVisible, setChildVisible] = useState(false);
+  const { isOpen, openModal, closeModal } = useModal();
   const mediaTitle = title ? title : name;
-  const handleClick = (e: any) => {
-    if (e.target.alt === mediaTitle || e.target.role === "backdrop") {
-      setChildVisible(prev => !prev);
-    }
-  };
 
   const modal = (
-    <div
-      onClick={handleClick}
-      className={style.modalBackground}
-      role="backdrop"
+    <Modal
+      isOpen={isOpen}
+      onClose={closeModal}
     >
       {children}
-    </div>
+    </Modal>
   );
 
   if (children) {
@@ -27,7 +23,7 @@ const PosterButton = ({ poster_path, title, name, children, id, media_type }: Pr
       <>
         <button
           className={style.button}
-          onClick={handleClick}
+          onClick={openModal}
         >
           <img
             src={getPoster(poster_path, "200")}
@@ -36,7 +32,7 @@ const PosterButton = ({ poster_path, title, name, children, id, media_type }: Pr
           />
         </button>
 
-        {childVisible ? modal : null}
+        {isOpen ? modal : null}
       </>
     );
   }
