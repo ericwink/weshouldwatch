@@ -3,7 +3,6 @@ import prisma from "@/prisma/prisma";
 
 const addMedia = async (req: NextApiRequest, res: NextApiResponse) => {
   const { groupID, mediaID, title, poster_path } = req.body;
-  console.log(req.body);
 
   try {
     const foundMedia = await prisma.media.findUnique({

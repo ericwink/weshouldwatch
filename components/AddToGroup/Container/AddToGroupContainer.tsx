@@ -1,10 +1,17 @@
 import axios from "axios";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
+import GroupEntry from "../GroupEntry/GroupEntry";
+
+interface Collection {
+  id: string;
+  watched: boolean;
+}
 
 interface GroupInfo {
   id: string;
   name: string;
+  collection: Collection[];
 }
 
 interface Props {
@@ -15,15 +22,16 @@ interface Props {
   };
 }
 
-const AddToGroupSelect = ({ mediaInfo }: Props) => {
+const AddToGroupContainer = ({ mediaInfo }: Props) => {
   const { data: session } = useSession();
   const [data, setData] = useState<GroupInfo[] | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [addClick, setAddClick] = useState(false);
 
   useEffect(() => {
     fetchGroups();
-  }, []);
+  }, [addClick]);
 
   const fetchGroups = async () => {
     try {
@@ -40,6 +48,7 @@ const AddToGroupSelect = ({ mediaInfo }: Props) => {
   const addToGroup = async (groupID: string) => {
     try {
       const add = await axios.post("/api/group/addMedia", { groupID: groupID, mediaID: mediaInfo.id, title: mediaInfo.title, poster_path: mediaInfo.poster_path });
+      setAddClick(prev => !prev);
       console.log(add);
     } catch (error) {
       console.log(error);
@@ -49,20 +58,22 @@ const AddToGroupSelect = ({ mediaInfo }: Props) => {
   if (loading) return <h1>Loading...</h1>;
   if (error) return <h1>{error}</h1>;
   if (data) {
-    const groups = data.map(each => {
-      return (
-        <h1
-          key={each.name}
-          onClick={() => addToGroup(each.id)}
-        >
-          {each.name}
-        </h1>
-      );
-    });
-    return <div style={{ backgroundColor: "white" }}>{groups}</div>;
+    return (
+      <div style={{ backgroundColor: "white" }}>
+        {data.map(each => {
+          return (
+            <GroupEntry
+              {...each}
+              onClick={addToGroup}
+              movieID={mediaInfo.id}
+            />
+          );
+        })}
+      </div>
+    );
   }
 
   return <h1>No groups available</h1>;
 };
 
-export default AddToGroupSelect;
+export default AddToGroupContainer;

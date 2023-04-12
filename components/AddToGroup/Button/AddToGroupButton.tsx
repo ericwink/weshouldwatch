@@ -3,7 +3,7 @@ import { faCirclePlus } from "@fortawesome/free-solid-svg-icons";
 import style from "./addToGroup.module.css";
 import Modal from "../../Modal/Modal";
 import useModal from "../../Modal/useModal";
-import AddToGroupSelect from "../Selection/AddToGroupSelect";
+import AddToGroupContainer from "../Container/AddToGroupContainer";
 
 interface Props {
   mediaInfo: {
@@ -22,7 +22,7 @@ const AddToGroupButton = ({ mediaInfo }: Props) => {
       isOpen={isOpen}
       onClose={closeModal}
     >
-      <AddToGroupSelect mediaInfo={mediaInfo} />
+      <AddToGroupContainer mediaInfo={mediaInfo} />
     </Modal>
   );
 
