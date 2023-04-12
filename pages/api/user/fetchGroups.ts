@@ -10,11 +10,14 @@ const fetchGroups = async (req: NextApiRequest, res: NextApiResponse) => {
       where: {
         email: email,
       },
+      include: {
+        groups: {},
+      },
     });
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
-    res.json(user.groupIDs);
+    res.json(user.groups);
   } catch (error: any) {
     console.error("Error fetching user", error);
     return res.status(500).json({ message: "Error fetching user", error });
