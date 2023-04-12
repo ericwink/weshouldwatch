@@ -10,16 +10,3 @@
 .button:hover {
   cursor: pointer;
 }
-
-.modalBackground {
-  min-height: 100vh;
-  min-width: 100vw;
-  background-color: rgba(0, 0, 0, 0.503);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  position: fixed;
-  top: 0;
-  z-index: 999;
-}
