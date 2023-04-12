@@ -2,7 +2,7 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import prisma from "@/prisma/prisma";
 
 const fetchGroups = async (req: NextApiRequest, res: NextApiResponse) => {
-  const { email } = req.body;
+  const { email } = req.query;
   console.log({ email });
 
   try {
