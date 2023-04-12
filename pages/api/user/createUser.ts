@@ -3,7 +3,6 @@ import prisma from "@/prisma/prisma";
 
 const createUser = async (req: NextApiRequest, res: NextApiResponse) => {
   const { username, email, password, image } = req.body;
-  console.log(username, password, image);
 
   try {
     const newUser = await prisma.user.create({
