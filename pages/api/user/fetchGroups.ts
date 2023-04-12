@@ -2,8 +2,7 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import prisma from "@/prisma/prisma";
 
 const fetchGroups = async (req: NextApiRequest, res: NextApiResponse) => {
-  const { email } = req.body;
-  console.log({ email });
+  const { email } = req.query;
 
   try {
     const user = await prisma.user.findUnique({

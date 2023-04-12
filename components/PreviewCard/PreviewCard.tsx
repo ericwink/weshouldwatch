@@ -1,17 +1,23 @@
 import { Movie, TV } from "@/utilities/interface";
 import styles from "./previewCard.module.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCirclePlus, faCircleInfo } from "@fortawesome/free-solid-svg-icons";
+import { faCircleInfo } from "@fortawesome/free-solid-svg-icons";
 import Genres from "../Genres/Genres";
+import AddToGroupButton from "../AddToGroup/Button/AddToGroupButton";
 
 const PreviewCard = ({ id, title, name, poster_path, release_date, first_air_date, vote_average, genre_ids, overview, media_type }: Movie | TV) => {
-  const add = <FontAwesomeIcon icon={faCirclePlus} />;
   const info = <FontAwesomeIcon icon={faCircleInfo} />;
 
   const poster = `https://image.tmdb.org/t/p/w200/${poster_path}`;
 
   const releaseYear = release_date ? release_date.slice(0, 4) : first_air_date.slice(0, 4);
   const mediaTitle = title ? title : name;
+
+  const mediaInfo = {
+    id: id.toString(),
+    title: mediaTitle,
+    poster_path: poster_path,
+  };
 
   const rating = `${Math.floor(vote_average * 10)}%`;
   const description = (text: string) => {
@@ -54,7 +60,7 @@ const PreviewCard = ({ id, title, name, poster_path, release_date, first_air_dat
 
       {/* to be replaced with components later */}
       <div className={styles.buttons}>
-        <button className={styles.button}>{add}Add To List</button>
+        <AddToGroupButton mediaInfo={mediaInfo} />
         <a
           href={`/media/${id}/?media_type=${media_type}`}
           className={styles.button}
