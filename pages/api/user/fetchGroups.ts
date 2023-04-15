@@ -5,7 +5,7 @@ const fetchGroups = async (req: NextApiRequest, res: NextApiResponse) => {
   const { email } = req.query;
 
   try {
-    const user = await prisma.user.findUnique({
+    const foundUser = await prisma.user.findUnique({
       where: {
         email: email,
       },
@@ -13,10 +13,10 @@ const fetchGroups = async (req: NextApiRequest, res: NextApiResponse) => {
         groups: {},
       },
     });
-    if (!user) {
+    if (!foundUser) {
       return res.status(404).json({ message: "User not found" });
     }
-    res.json(user.groups);
+    res.json(foundUser.groups);
   } catch (error: any) {
     console.error("Error fetching user", error);
     return res.status(500).json({ message: "Error fetching user", error });

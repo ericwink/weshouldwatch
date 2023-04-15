@@ -45,11 +45,12 @@ type CollectionData{
   watched Boolean
 }
 
-model Invitation{
+model Invitation {
   id                String  @id @default(auto()) @map("_id") @db.ObjectId
   groupId           String
   invitedUserEmail  String
-  invitationToken   String
+  invitationToken   String @unique
+  expires           DateTime
 }
 
 //NextAuth Requirements:
