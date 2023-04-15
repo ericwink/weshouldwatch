@@ -31,11 +31,16 @@ const inviteUser = async (req: NextApiRequest, res: NextApiResponse) => {
   };
 
   try {
+    const ONE_DAY_IN_SECONDS = 86400;
+    const two_minutes_in_seconds = 120;
+    const expires = new Date(Date.now() + ONE_DAY_IN_SECONDS * 1000);
+
     await prisma.invitation.create({
       data: {
         groupId,
         invitedUserEmail,
         invitationToken,
+        expires,
       },
     });
 
