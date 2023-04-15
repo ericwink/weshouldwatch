@@ -45,6 +45,13 @@ type CollectionData{
   watched Boolean
 }
 
+model Invitation{
+  id                String  @id @default(auto()) @map("_id") @db.ObjectId
+  groupId           String
+  invitedUserEmail  String
+  invitationToken   String
+}
+
 //NextAuth Requirements:
 model Account {
   id                 String  @id @default(auto()) @map("_id") @db.ObjectId

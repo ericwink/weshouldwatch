@@ -9,6 +9,7 @@ import SearchBar from "@/components/SearchBar/SearchBar";
 import Credits from "@/components/Credits/Credits";
 import Recommended from "@/components/Recommneded/Recommended";
 import Similar from "@/components/Similar/Similar";
+import AddToGroupButton from "@/components/AddToGroup/Button/AddToGroupButton";
 
 const MediaDetails = () => {
   const router = useRouter();
@@ -34,6 +35,12 @@ const MediaDetails = () => {
     const backdrop = `https://image.tmdb.org/t/p/w500/${mediaData.backdrop_path}`;
     const rating = `${Math.floor(mediaData.vote_average * 10)}%`;
 
+    const mediaInfo = {
+      id: mediaData.id.toString(),
+      title: title,
+      poster_path: mediaData.poster_path,
+    };
+
     return (
       <>
         <SearchBar />
@@ -50,6 +57,9 @@ const MediaDetails = () => {
           genre_ids={mediaData.genres}
           type="obj"
         />
+
+        <AddToGroupButton mediaInfo={mediaInfo} />
+
         <div>
           {mediaData.release_date}
           {mediaData.runtime}

@@ -21,21 +21,21 @@ const GroupEntry = ({ onClick, collection, id, name, movieID }: Props) => {
 
   const checkIfIncluded = (collection: Collection[]) => {
     for (let each of collection) {
-      console.log(each);
-
       if (each.id === movieID) return true;
     }
     return false;
   };
 
-  const buttonText = checkIfIncluded(collection) ? check : add;
+  const checkResult = checkIfIncluded(collection);
+
+  const buttonText = checkResult ? check : add;
 
   return (
     <div className={style.container}>
       <h1 key={name}>{name}</h1>
       <button
         onClick={() => onClick(id)}
-        disabled={checkIfIncluded(collection)}
+        disabled={checkResult}
       >
         {buttonText}
       </button>
