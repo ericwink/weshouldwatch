@@ -1,4 +1,5 @@
 import CreateGroup from "@/components/CreateGroup/CreateGroup";
+import InviteToGroupButton from "@/components/InviteToGroup/Button/InviteToGroupButton";
 import SearchBar from "@/components/SearchBar/SearchBar";
 import SignIn from "@/components/SignIn/SignIn";
 import Trending from "@/components/Trending/Trending";
@@ -90,6 +91,8 @@ export default function Home() {
         <SignIn />
 
         <CreateGroup />
+
+        <InviteToGroupButton />
       </main>
     </>
   );

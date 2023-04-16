@@ -2,17 +2,7 @@ import axios from "axios";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import GroupEntry from "../GroupEntry/GroupEntry";
-
-interface Collection {
-  id: string;
-  watched: boolean;
-}
-
-interface GroupInfo {
-  id: string;
-  name: string;
-  collection: Collection[];
-}
+import { Collection, GroupInfo } from "@/utilities/interface";
 
 interface Props {
   mediaInfo: {

@@ -40,3 +40,14 @@ export interface Person {
   job?: string;
   character?: string;
 }
+
+export interface Collection {
+  id: string;
+  watched: boolean;
+}
+
+export interface GroupInfo {
+  id: string;
+  name: string;
+  collection: Collection[];
+}
