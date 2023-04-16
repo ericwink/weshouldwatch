@@ -17,7 +17,8 @@ const acceptInvite = async (req: NextApiRequest, res: NextApiResponse) => {
     });
 
     if (!invitation || invitation.invitedUserEmail !== email) {
-      throw new Error("Invitation not found or expired");
+      res.status(404).json({ error: "Invitation not found!" });
+      return;
     }
 
     const currentUser = await prisma.user.update({
