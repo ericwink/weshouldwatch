@@ -20,6 +20,12 @@ const Modal = ({ children, isOpen, onClose }: Props) => {
         className={style.modalContent}
         onClick={e => e.stopPropagation()}
       >
+        <button
+          className={style.button}
+          onClick={onClose}
+        >
+          X
+        </button>
         {children}
       </div>
     </div>
