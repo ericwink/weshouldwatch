@@ -54,6 +54,7 @@ const InviteForm = () => {
           type="email"
           name="email"
           id="email"
+          value={email}
           placeholder="example@mail.com"
           onChange={e => setEmail(e.target.value)}
         />

@@ -35,7 +35,7 @@ const Invite = () => {
   const acceptInvite = async () => {
     try {
       const { data } = await axios.post("/api/group/acceptInvite", { email: session?.user?.email, invitationToken: token });
-      console.log(data);
+      setMessage(data.message);
     } catch (error: any) {
       setError(error.response.data.error);
     }
