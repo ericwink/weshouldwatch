@@ -1,8 +1,8 @@
 import axios from "axios";
 import { useSession } from "next-auth/react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import GroupEntry from "../GroupEntry/GroupEntry";
-import { Collection, GroupInfo } from "@/utilities/interface";
+import useFetchGroups from "@/hooks/useFetchGroups";
 
 interface Props {
   mediaInfo: {
@@ -14,26 +14,8 @@ interface Props {
 
 const AddToGroupContainer = ({ mediaInfo }: Props) => {
   const { data: session } = useSession();
-  const [data, setData] = useState<GroupInfo[] | null>(null);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
   const [addClick, setAddClick] = useState(false);
-
-  useEffect(() => {
-    fetchGroups();
-  }, [addClick]);
-
-  const fetchGroups = async () => {
-    try {
-      setLoading(true);
-      const groups = await axios.get("/api/user/fetchGroups", { params: { email: session?.user?.email } });
-      setData(groups.data);
-      setLoading(false);
-    } catch (error: any) {
-      console.log(error);
-      setError(error.message);
-    }
-  };
+  const { loading, error, groups } = useFetchGroups(session?.user?.email, addClick);
 
   const addToGroup = async (groupID: string) => {
     try {
@@ -47,10 +29,10 @@ const AddToGroupContainer = ({ mediaInfo }: Props) => {
 
   if (loading) return <h1>Loading...</h1>;
   if (error) return <h1>{error}</h1>;
-  if (data) {
+  if (groups) {
     return (
       <div style={{ backgroundColor: "white" }}>
-        {data.map(each => {
+        {groups.map(each => {
           return (
             <GroupEntry
               {...each}

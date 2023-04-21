@@ -1,35 +1,18 @@
-import { useEffect, useState } from "react";
+import { FormEvent, useState } from "react";
 import { GroupInfo } from "@/utilities/interface";
 import { useSession } from "next-auth/react";
 import axios from "axios";
 import style from "./inviteForm.module.css";
+import useFetchGroups from "@/hooks/useFetchGroups";
 
 const InviteForm = () => {
   const { data: session } = useSession();
-  const [groups, setGroups] = useState<GroupInfo[] | []>([]);
-  const [loading, setLoading] = useState(false);
+  const { loading, error, groups } = useFetchGroups(session?.user?.email);
   const [message, setMessage] = useState("");
   const [selectedGroup, setSelectedGroup] = useState("");
   const [email, setEmail] = useState("");
 
-  useEffect(() => {
-    fetchGroups();
-  }, []);
-
-  //split to own file, using twice, here and in AddToGroup
-  const fetchGroups = async () => {
-    try {
-      setLoading(true);
-      const groups = await axios.get("/api/user/fetchGroups", { params: { email: session?.user?.email } });
-      setGroups(groups.data);
-      setLoading(false);
-    } catch (error: any) {
-      console.log(error);
-      setMessage(error.message);
-    }
-  };
-
-  const handleSubmit = async e => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
       const { data } = await axios.post("/api/group/inviteUser", { invitedUserEmail: email, groupId: selectedGroup });
@@ -40,7 +23,7 @@ const InviteForm = () => {
     }
   };
 
-  const options = groups.map(group => {
+  const options = groups.map((group: GroupInfo) => {
     return (
       <option
         value={group.id}
@@ -54,6 +37,7 @@ const InviteForm = () => {
   if (!session) return <h1>Please sign in to invite</h1>;
   if (loading) return <h1>Loading...</h1>;
   if (message) return <h1>{message}</h1>;
+  if (error) return <h1>{error}</h1>;
 
   return (
     <form
