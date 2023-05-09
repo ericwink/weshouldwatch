@@ -3,12 +3,12 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { Movie, TV } from "../../utilities/interface";
 import getPoster from "@/utilities/getPoster";
-import Genres from "@/components/Genres/Genres";
+import Genres from "@/app/components/Genres/Genres";
 import StreamingOptions from "@/components/StreamingOptions/StreamingOptions";
 import SearchBar from "@/components/SearchBar/SearchBar";
 import Credits from "@/components/Credits/Credits";
 import Recommended from "@/components/Recommneded/Recommended";
-import Similar from "@/components/Similar/Similar";
+import Similar from "@/app/components/Similar/Similar";
 import AddToGroupButton from "@/components/AddToGroup/Button/AddToGroupButton";
 
 const MediaDetails = () => {

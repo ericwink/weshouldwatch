@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { Movie, TV, Person } from "@/utilities/interface";
 import PosterButton from "@/components/PosterButton/PosterButton";
 import PreviewCard from "@/components/PreviewCard/PreviewCard";
-import ActorLink from "@/components/ActorLink/ActorLink";
+import ActorLink from "@/app/components/ActorLink/ActorLink";
 import SearchBar from "@/components/SearchBar/SearchBar";
 
 interface IData {

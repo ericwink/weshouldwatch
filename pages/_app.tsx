@@ -9,3 +9,5 @@ export default function App({ Component, pageProps: { session, ...pageProps } }:
     </SessionProvider>
   );
 }
+
+// get rid of this file once everything is migrated over to the app directory

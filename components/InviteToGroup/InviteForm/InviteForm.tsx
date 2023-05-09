@@ -1,3 +1,5 @@
+"use client";
+
 import { FormEvent, useState } from "react";
 import { GroupInfo } from "@/utilities/interface";
 import { useSession } from "next-auth/react";

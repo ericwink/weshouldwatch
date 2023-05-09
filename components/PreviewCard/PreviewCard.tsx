@@ -2,7 +2,7 @@ import { Movie, TV } from "@/utilities/interface";
 import styles from "./previewCard.module.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleInfo } from "@fortawesome/free-solid-svg-icons";
-import Genres from "../Genres/Genres";
+import Genres from "../../app/components/Genres/Genres";
 import AddToGroupButton from "../AddToGroup/Button/AddToGroupButton";
 
 const PreviewCard = ({ id, title, name, poster_path, release_date, first_air_date, vote_average, genre_ids, overview, media_type }: Movie | TV) => {

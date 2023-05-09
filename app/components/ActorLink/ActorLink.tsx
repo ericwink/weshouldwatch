@@ -1,5 +1,5 @@
 import { Person } from "@/utilities/interface";
-import getPoster from "../../utilities/getPoster";
+import getPoster from "../../../utilities/getPoster";
 import styles from "./actorLink.module.css";
 
 const ActorLink = ({ profile_path, name, media_type, id, job, character }: Person) => {
