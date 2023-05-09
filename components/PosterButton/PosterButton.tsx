@@ -1,3 +1,5 @@
+"use client";
+
 import { Movie, TV } from "@/utilities/interface";
 import { PropsWithChildren } from "react";
 import getPoster from "../../utilities/getPoster";
