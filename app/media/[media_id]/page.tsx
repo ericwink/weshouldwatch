@@ -1,6 +1,9 @@
 import getPoster from "@/utilities/getPoster";
 import Genres from "@/app/components/Genres/Genres";
 import Similar from "@/app/components/Similar/Similar";
+import Credits from "@/app/components/Credits/Credits";
+import Recommended from "@/app/components/Recommneded/Recommended";
+import StreamingOptions from "@/app/components/StreamingOptions/StreamingOptions";
 
 interface Props {
   params: { media_id: string };
@@ -8,12 +11,10 @@ interface Props {
 }
 
 const fetchData = async (mediaType: string, id: string) => {
-  console.log("inside", mediaType, id);
   const tmdbKey = process.env.MOVIE_DB_API;
   const url = `https://api.themoviedb.org/3/${mediaType}/${id}?api_key=${tmdbKey}&language=en-US`;
   const result = await fetch(url);
   const mediaData = await result.json();
-  console.log({ mediaData });
   return mediaData;
 };
 
@@ -46,6 +47,7 @@ const mediaPage = async ({ params, searchParams }: Props) => {
         src={poster}
         alt={title}
       />
+
       <Genres
         genre_ids={mediaData.genres}
         type="obj"
@@ -60,10 +62,26 @@ const mediaPage = async ({ params, searchParams }: Props) => {
       </div>
       {mediaData.overview}
 
-      <Similar
+      <StreamingOptions
+        media_type={media_type}
+        id={media_id}
+      />
+
+      <Credits
         mediaType={media_type}
         id={media_id}
       />
+
+      <Recommended
+        mediaType={media_type}
+        id={media_id}
+      />
+
+      {/* all similar titles have a 'type' of 'undefined' */}
+      {/* <Similar
+        mediaType={media_type}
+        id={media_id}
+      /> */}
     </main>
   );
 };
