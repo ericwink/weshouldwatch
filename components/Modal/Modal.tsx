@@ -1,3 +1,5 @@
+"use client";
+
 import { ReactNode } from "react";
 import style from "./modal.module.css";
 

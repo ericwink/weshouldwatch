@@ -1,7 +1,7 @@
 "use client";
 
-import PosterButton from "../PosterButton/PosterButton";
-import ActorLink from "../../app/components/ActorLink/ActorLink";
+import PosterButton from "../../../components/PosterButton/PosterButton";
+import ActorLink from "../ActorLink/ActorLink";
 import { Movie, TV, Person } from "@/utilities/interface";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";

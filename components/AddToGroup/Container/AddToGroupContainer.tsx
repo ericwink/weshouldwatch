@@ -3,7 +3,7 @@
 import axios from "axios";
 import { useSession } from "next-auth/react";
 import { useState } from "react";
-import GroupEntry from "../GroupEntry/GroupEntry";
+import GroupEntry from "../../../app/components/GroupEntry/GroupEntry";
 import useFetchGroups from "@/hooks/useFetchGroups";
 
 interface Props {

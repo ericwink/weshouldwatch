@@ -4,6 +4,7 @@ import Similar from "@/app/components/Similar/Similar";
 import Credits from "@/app/components/Credits/Credits";
 import Recommended from "@/app/components/Recommneded/Recommended";
 import StreamingOptions from "@/app/components/StreamingOptions/StreamingOptions";
+import GroupContainer from "@/app/components/GroupContainer/GroupContainer";
 
 interface Props {
   params: { media_id: string };
@@ -14,8 +15,7 @@ const fetchData = async (mediaType: string, id: string) => {
   const tmdbKey = process.env.MOVIE_DB_API;
   const url = `https://api.themoviedb.org/3/${mediaType}/${id}?api_key=${tmdbKey}&language=en-US`;
   const result = await fetch(url);
-  const mediaData = await result.json();
-  return mediaData;
+  return result.json();
 };
 
 const mediaPage = async ({ params, searchParams }: Props) => {
@@ -30,7 +30,7 @@ const mediaPage = async ({ params, searchParams }: Props) => {
   const rating = `${Math.floor(mediaData.vote_average * 10)}%`;
 
   const mediaInfo = {
-    id: mediaData.id.toString(),
+    mediaId: mediaData.id.toString(),
     title: title,
     poster_path: mediaData.poster_path,
   };
@@ -54,6 +54,8 @@ const mediaPage = async ({ params, searchParams }: Props) => {
       />
 
       {/* add to group button */}
+
+      <GroupContainer mediaInfo={mediaInfo} />
 
       <div>
         {mediaData.release_date}

@@ -1,7 +1,7 @@
 import CreateGroup from "@/components/CreateGroup/CreateGroup";
 import InviteToGroupButton from "@/components/InviteToGroup/Button/InviteToGroupButton";
-import SearchBar from "@/components/SearchBar/SearchBar";
-import SignIn from "@/components/SignIn/SignIn";
+import SearchBar from "@/app/components/SearchBar/SearchBar";
+import SignIn from "@/app/components/SignIn/SignIn";
 import Trending from "@/app/components/Trending/Trending";
 import Head from "next/head";
 

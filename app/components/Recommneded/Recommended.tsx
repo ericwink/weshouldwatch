@@ -1,4 +1,4 @@
-import Slider from "../../../components/Slider/Slider";
+import Slider from "../Slider/Slider";
 
 interface Props {
   mediaType: "movie" | "tv";

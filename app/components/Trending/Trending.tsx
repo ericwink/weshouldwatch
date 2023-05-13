@@ -1,4 +1,5 @@
-import Slider from "../../../components/Slider/Slider";
+import { revalidatePath } from "next/cache";
+import Slider from "../Slider/Slider";
 
 interface Props {
   mediaType: "movie" | "person" | "tv";
@@ -7,7 +8,7 @@ interface Props {
 const getData = async (mediaType: string) => {
   const tmdbKey = process.env.MOVIE_DB_API;
   const url = `https://api.themoviedb.org/3/trending/${mediaType}/day?api_key=${tmdbKey}`;
-  const result = await fetch(url);
+  const result = await fetch(url, { next: { revalidate: 86400 } });
   const media = await result.json();
   return media.results;
 };

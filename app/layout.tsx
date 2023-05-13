@@ -1,4 +1,5 @@
-import SearchBar from "@/components/SearchBar/SearchBar";
+import SearchBar from "@/app/components/SearchBar/SearchBar";
+import SProvider from "./components/SessionProvider/SProvider";
 
 export const metadata = {
   title: "We Should Watch...",
@@ -13,8 +14,10 @@ interface Props {
 export default function RootLayout({ children }: Props) {
   return (
     <html lang="en">
-      <SearchBar />
-      <body>{children}</body>
+      <body>
+        <SearchBar />
+        <SProvider>{children}</SProvider>
+      </body>
     </html>
   );
 }

@@ -1,4 +1,5 @@
 import Trending from "@/app/components/Trending/Trending";
+import SignIn from "./components/SignIn/SignIn";
 
 const HomePage = () => {
   return (
@@ -11,6 +12,8 @@ const HomePage = () => {
       <Trending mediaType="tv" />
       <p>Trending People</p>
       <Trending mediaType="person" />
+
+      <SignIn />
     </main>
   );
 };
