@@ -1,5 +1,5 @@
-import Modal from "../../Modal/Modal";
-import useModal from "../../Modal/useModal";
+import Modal from "../../../app/components/Modal/Modal";
+import useModal from "../../../app/components/Modal/useModal";
 import InviteForm from "../InviteForm/InviteForm";
 
 const InviteToGroupButton = () => {

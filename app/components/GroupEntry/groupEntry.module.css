@@ -2,6 +2,6 @@
   display: flex;
   width: 100%;
   align-items: center;
-  border: 1px solid black;
   justify-content: space-between;
+  color: white;
 }

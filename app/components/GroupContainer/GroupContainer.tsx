@@ -1,6 +1,7 @@
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "../../../pages/api/auth/[...nextauth]";
 import GroupEntry from "@/app/components/GroupEntry/GroupEntry";
+import styles from "./style.module.css";
 
 interface Collection {
   id: string;
@@ -44,7 +45,7 @@ const GroupContainer = async ({ mediaInfo }: Props) => {
     );
   });
 
-  return <ul>{entries}</ul>;
+  return <ul className={styles.container}>{entries}</ul>;
 };
 
 export default GroupContainer;

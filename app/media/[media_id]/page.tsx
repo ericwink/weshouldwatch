@@ -5,6 +5,8 @@ import Credits from "@/app/components/Credits/Credits";
 import Recommended from "@/app/components/Recommneded/Recommended";
 import StreamingOptions from "@/app/components/StreamingOptions/StreamingOptions";
 import GroupContainer from "@/app/components/GroupContainer/GroupContainer";
+import Modal from "@/app/components/Modal/Modal";
+import { FaPlusCircle } from "react-icons/fa";
 
 interface Props {
   params: { media_id: string };
@@ -55,7 +57,12 @@ const mediaPage = async ({ params, searchParams }: Props) => {
 
       {/* add to group button */}
 
-      <GroupContainer mediaInfo={mediaInfo} />
+      <Modal
+        icon={<FaPlusCircle />}
+        buttonText="Add To Group"
+      >
+        <GroupContainer mediaInfo={mediaInfo} />
+      </Modal>
 
       <div>
         {mediaData.release_date}

@@ -39,7 +39,7 @@ const GroupEntry = ({ collection, id, name, mediaInfo }: Props) => {
   const buttonText = checkResult ? check : add;
 
   return (
-    <div className={style.container}>
+    <li className={style.container}>
       <h1>{name}</h1>
       <button
         onClick={() => startTransition(() => addMediaToGroup(id, mediaInfo.mediaId, mediaInfo.title, mediaInfo.poster_path))}
@@ -47,7 +47,7 @@ const GroupEntry = ({ collection, id, name, mediaInfo }: Props) => {
       >
         {isPending ? "loading" : buttonText}
       </button>
-    </div>
+    </li>
   );
 };
 
