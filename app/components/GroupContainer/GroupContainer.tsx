@@ -28,12 +28,11 @@ const GroupContainer = async ({ mediaInfo }: Props) => {
   const fetchGroups = async () => {
     const email = session?.user.email;
     const url = `http://localhost:3000/api/user/fetchGroups?email=${email}`;
-    const result = await fetch(url, { next: { tags: ["userGroups"], revalidate: 5 } });
+    const result = await fetch(url, { next: { tags: ["userGroups"], revalidate: 3600 } });
     return result.json();
   };
 
   const data: Group[] = await fetchGroups();
-  console.log(data[0]);
 
   const entries = data.map(each => {
     return (
