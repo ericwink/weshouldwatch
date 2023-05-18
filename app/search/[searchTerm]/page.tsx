@@ -1,7 +1,6 @@
-import { Movie, TV, Person } from "@/utilities/interface";
-import PosterButton from "@/components/PosterButton/PosterButton";
-import PreviewCard from "@/components/PreviewCard/PreviewCard";
-import ActorLink from "@/app/components/ActorLink/ActorLink";
+import { Movie, TV, Person } from "@/lib/interface";
+import ActorLink from "@/components/ActorLink/ActorLink";
+import PosterLink from "@/components/PosterLink/PosterLink";
 
 interface Props {
   params: { searchTerm: string };
@@ -38,25 +37,39 @@ const SearchTermPage = async ({ params }: Props) => {
     return searchResults[mediaType].map(each => {
       if (mediaType === "person") {
         return <ActorLink {...each} />;
+      } else {
+        return <PosterLink media={each} />;
       }
-      return (
-        <PosterButton {...each}>
-          <PreviewCard {...each} />
-        </PosterButton>
-      );
     });
   };
 
+  const movies = mapResults("movie");
+  const tv = mapResults("tv");
+  const people = mapResults("person");
+
   return (
-    <>
+    <main className="container">
       <h1>Search Results</h1>
-      <p>Movies:</p>
-      {mapResults("movie")}
-      <p>TV:</p>
-      {mapResults("tv")}
-      <p>People:</p>
-      {mapResults("person")}
-    </>
+
+      {movies.length > 1 && (
+        <section>
+          <p>Movies:</p>
+          <ul className="grid grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-1 md:gap-2">{movies}</ul>
+        </section>
+      )}
+      {tv.length > 1 && (
+        <section>
+          <p>TV:</p>
+          <ul className="grid grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-1 md:gap-2">{tv}</ul>
+        </section>
+      )}
+      {people.length > 1 && (
+        <section>
+          <p>TV:</p>
+          <ul className="grid grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-1 md:gap-2">{people}</ul>
+        </section>
+      )}
+    </main>
   );
 };
 export default SearchTermPage;

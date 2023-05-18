@@ -1,5 +1,8 @@
-import SearchBar from "@/app/components/SearchBar/SearchBar";
-import SProvider from "./components/SessionProvider/SProvider";
+import "./globals.css";
+import SProvider from "../components/SessionProvider/SProvider";
+import { Toasty } from "../components/Toasty/Toasty";
+import SlidingNav from "@/components/SlidingNav/SlidingNav";
+import SearchBar from "@/components/SearchBar/SearchBar";
 
 export const metadata = {
   title: "We Should Watch...",
@@ -16,6 +19,7 @@ export default function RootLayout({ children }: Props) {
     <html lang="en">
       <body>
         <SearchBar />
+        <Toasty />
         <SProvider>{children}</SProvider>
       </body>
     </html>

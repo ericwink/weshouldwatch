@@ -1,5 +1,6 @@
-import Trending from "@/app/components/Trending/Trending";
-import SignIn from "./components/SignIn/SignIn";
+import Trending from "@/components/Trending/Trending";
+import SignIn from "../components/SignIn/SignIn";
+import CreateGroup from "../components/CreateGroup/CreateGroup";
 
 const HomePage = () => {
   return (
@@ -14,6 +15,8 @@ const HomePage = () => {
       <Trending mediaType="person" />
 
       <SignIn />
+
+      <CreateGroup />
     </main>
   );
 };

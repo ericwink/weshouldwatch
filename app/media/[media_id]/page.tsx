@@ -1,12 +1,13 @@
-import getPoster from "@/utilities/getPoster";
-import Genres from "@/app/components/Genres/Genres";
-import Similar from "@/app/components/Similar/Similar";
-import Credits from "@/app/components/Credits/Credits";
-import Recommended from "@/app/components/Recommneded/Recommended";
-import StreamingOptions from "@/app/components/StreamingOptions/StreamingOptions";
-import GroupContainer from "@/app/components/GroupContainer/GroupContainer";
-import Modal from "@/app/components/Modal/Modal";
+import getPoster from "@/lib/getPoster";
+import Genres from "@/components/Genres/Genres";
+import Similar from "@/components/Similar/Similar";
+import Credits from "@/components/Credits/Credits";
+import Recommended from "@/components/Recommneded/Recommended";
+import StreamingOptions from "@/components/StreamingOptions/StreamingOptions";
+import GroupContainer from "@/components/GroupContainer/GroupContainer";
+import Modal from "@/components/Modal/Modal";
 import { FaPlusCircle } from "react-icons/fa";
+import ModalTwo from "@/components/Modal/ModalTwo";
 
 interface Props {
   params: { media_id: string };
@@ -55,14 +56,14 @@ const mediaPage = async ({ params, searchParams }: Props) => {
         type="obj"
       />
 
-      {/* add to group button */}
-
-      <Modal
+      <ModalTwo
         icon={<FaPlusCircle />}
-        buttonText="Add To Group"
+        text="Add To Group"
+        title="Add To Group"
+        description="Select from your groups below!"
       >
         <GroupContainer mediaInfo={mediaInfo} />
-      </Modal>
+      </ModalTwo>
 
       <div>
         {mediaData.release_date}
