@@ -1,5 +1,6 @@
-import findGenre from "@/utilities/findGenre";
+import findGenre from "@/lib/findGenre";
 import styles from "./genres.module.css";
+import { Badge } from "@/components/ui/badge";
 
 interface genreObject {
   id: number;
@@ -14,13 +15,12 @@ interface Props {
 const Genres = ({ genre_ids, type }: Props) => {
   const genres = genre_ids.map(each => {
     return (
-      <p
+      <Badge
         data-testid="genre"
         key={each.name}
-        className={styles.genre}
       >
         {type === "nums" ? findGenre(each) : each.name}
-      </p>
+      </Badge>
     );
   });
 

@@ -1,47 +1,37 @@
-import axios from "axios";
-import { useEffect, useState } from "react";
-import getPoster from "@/utilities/getPoster";
+import getPoster from "@/lib/getPoster";
 import { Props, AvailabilityData, StreamOptions } from "./interfaces";
 import styles from "./streamingOptions.module.css";
 
-const StreamingOptions = ({ media_type, id }: Props) => {
-  const [streamData, setStreamData] = useState<StreamOptions | null>(null);
-  const [loading, setLoading] = useState(true);
+const fetchStreamingOptions = async (mediaType: string, id: string) => {
+  const tmdbKey = process.env.MOVIE_DB_API;
+  const url = `https://api.themoviedb.org/3/${mediaType}/${id}/watch/providers?api_key=${tmdbKey}`;
+  const results = await fetch(url);
+  const unorderedStreamingOptions = await results.json();
+  const streamingOptions = reorderData(unorderedStreamingOptions.results.US);
+  return streamingOptions;
+};
 
-  useEffect(() => {
-    getData();
-  }, []);
-
-  const getData = async () => {
-    const { data } = await axios.get("/api/tmdb/findStreaming", { params: { mediaType: media_type, id: id } });
-    if (data.results.US) {
-      console.log(data.results.US);
-      const reordered = reorderData(data.results.US);
-      console.log({ reordered });
-      setStreamData(reordered);
+const reorderData = (obj: AvailabilityData) => {
+  const data: StreamOptions = {};
+  for (let watchOption in obj) {
+    if (watchOption === "link") continue;
+    for (let provider of obj[watchOption]) {
+      let host = provider.provider_name;
+      let logo = provider.logo_path;
+      if (!data[host]) data[host] = { logo_path: logo, watchOption: [] };
+      data[host].watchOption.push(watchOption);
     }
-    setLoading(false);
-  };
+  }
+  return data;
+};
 
-  const reorderData = (obj: AvailabilityData) => {
-    const data: StreamOptions = {};
-    for (let watchOption in obj) {
-      if (watchOption === "link") continue;
-      for (let provider of obj[watchOption]) {
-        let host = provider.provider_name;
-        let logo = provider.logo_path;
-        if (!data[host]) data[host] = { logo_path: logo, watchOption: [] };
-        data[host].watchOption.push(watchOption);
-      }
-    }
-    return data;
-  };
+const StreamingOptions = async ({ media_type, id }: Props) => {
+  const streamingOptions = await fetchStreamingOptions(media_type, id);
 
-  if (loading) return <h1>Loading...</h1>;
-  if (!streamData) return <h1>No Streaming Options Found</h1>;
+  if (!streamingOptions) return <h1>No Streaming Options Found</h1>;
 
   const streamInfo = (provider: string) => {
-    const providerData = streamData[provider];
+    const providerData = streamingOptions[provider];
     return (
       <div
         key={provider}
@@ -70,7 +60,7 @@ const StreamingOptions = ({ media_type, id }: Props) => {
 
   return (
     <>
-      {Object.keys(streamData).map(provider => {
+      {Object.keys(streamingOptions).map(provider => {
         return streamInfo(provider);
       })}
     </>

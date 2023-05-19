@@ -1,41 +1,24 @@
-import { useState } from "react";
-import { useSession } from "next-auth/react";
-import axios from "axios";
+"use client";
+
+import { useSession, signIn, signOut } from "next-auth/react";
+import { createGroup } from "@/lib/server-actions";
 
 const CreateGroup = () => {
-  const [input, setInput] = useState("");
-  const [loading, setLoading] = useState(false);
-  const [message, setMessage] = useState<string | null>(null);
   const { data: session } = useSession();
 
-  const handleSubmit = e => {
+  const handleSubmit = (e: React.FormEvent<HTMLInputElement>) => {
     e.preventDefault();
-    sendData();
-    setInput("");
   };
-
-  const sendData = async () => {
-    setLoading(true);
-    const email = session?.user?.email;
-    const { data } = await axios.post("/api/group/createGroup", { email: email, groupName: input });
-    setMessage(data.message);
-    setLoading(false);
-  };
-
-  if (loading) return <h1>Loading...</h1>;
 
   return (
     <>
-      <form action="/something">
+      <form action={handleSubmit}>
         <input
-          onChange={e => setInput(e.target.value)}
           type="text"
-          value={input}
+          placeholder="group name..."
         />
-        <button onClick={handleSubmit}>Submit</button>
+        <button type="submit">Submit</button>
       </form>
-
-      {message ? <h1>{message}</h1> : null}
     </>
   );
 };

@@ -1,39 +1,28 @@
-import { useEffect, useState } from "react";
-import axios from "axios";
-import { Movie, TV, Person } from "@/utilities/interface";
 import Slider from "../Slider/Slider";
 
 interface Props {
   mediaType: "movie" | "person" | "tv";
 }
 
-const Trending = ({ mediaType }: Props) => {
-  const [data, setData] = useState<Movie[] | TV[] | Person[] | null>(null);
-  const [isLoading, setLoading] = useState(true);
-  const breakpoints = { 0: { slidesPerView: 3, spaceBetween: 10 }, 400: { slidesPerView: 4, spaceBetween: 10 }, 640: { slidesPerView: 6, spaceBetween: 10 }, 900: { slidesPerView: 8, spaceBetween: 10 }, 1200: { slidesPerView: 10, spaceBetween: 10 } };
+const getData = async (mediaType: string) => {
+  const tmdbKey = process.env.MOVIE_DB_API;
+  const url = `https://api.themoviedb.org/3/trending/${mediaType}/day?api_key=${tmdbKey}`;
+  const result = await fetch(url, { next: { revalidate: 86400 } });
+  const media = await result.json();
+  return media.results;
+};
 
-  useEffect(() => {
-    getData(mediaType);
-  }, []);
+const Trending = async ({ mediaType }: Props) => {
+  const media = await getData(mediaType);
 
-  const getData = async (mediaType: string) => {
-    const { data } = await axios.get("/api/tmdb/trending", { params: { mediaType: mediaType } });
-    setData(data);
-    setLoading(false);
-    console.log(data);
-  };
+  if (!media) return <h1>No data found</h1>;
 
-  if (isLoading) return <h1>loading....</h1>;
-  if (!data) return <h1>No data found</h1>;
-
-  if (data) {
-    return (
-      <Slider
-        mediaType={mediaType}
-        data={data}
-      />
-    );
-  }
+  return (
+    <Slider
+      mediaType={mediaType}
+      data={media}
+    />
+  );
 };
 
 export default Trending;

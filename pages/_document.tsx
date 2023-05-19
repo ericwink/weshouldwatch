@@ -1,4 +1,4 @@
-import { Html, Head, Main, NextScript } from 'next/document'
+import { Html, Head, Main, NextScript } from "next/document";
 
 export default function Document() {
   return (
@@ -9,5 +9,7 @@ export default function Document() {
         <NextScript />
       </body>
     </Html>
-  )
+  );
 }
+
+// get rid of this file once everything is migrated over to the app directory

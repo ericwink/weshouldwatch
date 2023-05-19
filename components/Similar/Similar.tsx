@@ -1,5 +1,3 @@
-import axios from "axios";
-import { useEffect, useState } from "react";
 import Slider from "../Slider/Slider";
 
 interface Props {
@@ -7,28 +5,24 @@ interface Props {
   id: string;
 }
 
-const Similar = ({ mediaType, id }: Props) => {
-  const [data, setData] = useState();
-  const [loading, setLoading] = useState(true);
+const getSimilar = async (mediaType: string, id: string) => {
+  const tmdbKey = process.env.MOVIE_DB_API;
+  const url = `https://api.themoviedb.org/3/${mediaType}/${id}/similar?api_key=${tmdbKey}&language=en-US`;
+  const results = await fetch(url);
+  const similarTitles = await results.json();
+  return similarTitles.results;
+};
 
-  const getSimilar = async () => {
-    const { data } = await axios.get("/api/tmdb/getSimilar", { params: { mediaType, id } });
-    setData(data.results);
-    setLoading(false);
-  };
+const Similar = async ({ mediaType, id }: Props) => {
+  const similarTitles = await getSimilar(mediaType, id);
 
-  useEffect(() => {
-    getSimilar();
-  }, []);
-
-  if (loading) return <h1>Loading...</h1>;
-  if (!data) return <h1>No suggestions found</h1>;
+  if (!similarTitles) return <h1>No suggestions found</h1>;
   return (
     <>
       <h1>Similar Titles</h1>
       <Slider
         mediaType={mediaType}
-        data={data}
+        data={similarTitles}
       />
     </>
   );

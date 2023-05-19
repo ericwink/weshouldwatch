@@ -1,5 +1,3 @@
-import axios from "axios";
-import { useEffect, useState } from "react";
 import Slider from "../Slider/Slider";
 
 interface Props {
@@ -7,30 +5,31 @@ interface Props {
   id: number;
 }
 
-const Credits = ({ mediaType, id }: Props) => {
-  const [data, setData] = useState();
-  const getCredits = async () => {
-    const { data } = await axios.get("/api/tmdb/getCredits", { params: { mediaType, id } });
-    setData(data);
-  };
+const fetchCredits = async (mediaType: string, id: string) => {
+  const tmdbKey = process.env.MOVIE_DB_API;
+  const url = `https://api.themoviedb.org/3/${mediaType}/${id}/credits?api_key=${tmdbKey}&language=en-US`;
+  const results = await fetch(url, { next: { revalidate: 28800 } });
+  const creditsData = await results.json();
+  return creditsData;
+};
 
-  useEffect(() => {
-    getCredits();
-  }, []);
+const Credits = async ({ mediaType, id }: Props) => {
+  const creditsData = await fetchCredits(mediaType, id.toString());
 
-  if (!data) return <h1>No Credits Data Found</h1>;
+  if (!creditsData) return <h1>No Credits Data Found</h1>;
+
   return (
     <>
       <h1>Cast</h1>
       <Slider
         mediaType="person"
-        data={data.cast}
+        data={creditsData.cast}
       />
 
       <h1>Production Staff</h1>
       <Slider
         mediaType="person"
-        data={data.crew}
+        data={creditsData.crew}
       />
     </>
   );

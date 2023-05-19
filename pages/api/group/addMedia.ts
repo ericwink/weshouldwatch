@@ -12,7 +12,7 @@ const addMedia = async (req: NextApiRequest, res: NextApiResponse) => {
     });
 
     if (!foundMedia) {
-      const addMedia = await prisma.media.create({
+      await prisma.media.create({
         data: {
           id: mediaID,
           poster_path: poster_path,
@@ -21,7 +21,7 @@ const addMedia = async (req: NextApiRequest, res: NextApiResponse) => {
       });
     }
 
-    const updateGroup = await prisma.group.update({
+    const foundGroup = await prisma.group.update({
       where: {
         id: groupID,
       },
@@ -35,10 +35,17 @@ const addMedia = async (req: NextApiRequest, res: NextApiResponse) => {
       },
     });
 
+    if (!foundGroup) throw new Error("Group not found");
+
     res.send({ message: "movie added to group" });
   } catch (error: any) {
-    console.log(error);
-    res.send({ message: error.message });
+    if (error.code === "P2025") {
+      //handle prisma error for invalid group ID
+      res.status(400).json({ error: "Invalid group ID" });
+    } else {
+      res.status(500).json({ error: error.message });
+    }
+    // console.log("error in back-end", error);
   }
 };
 

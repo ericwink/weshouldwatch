@@ -1,5 +1,3 @@
-import axios from "axios";
-import { useEffect, useState } from "react";
 import Slider from "../Slider/Slider";
 
 interface Props {
@@ -7,28 +5,25 @@ interface Props {
   id: string;
 }
 
-const Recommended = ({ mediaType, id }: Props) => {
-  const [data, setData] = useState();
-  const [loading, setLoading] = useState(true);
+const fetchRecommended = async (mediaType: string, id: string) => {
+  const tmdbKey = process.env.MOVIE_DB_API;
+  const url = `https://api.themoviedb.org/3/${mediaType}/${id}/recommendations?api_key=${tmdbKey}&language=en-US`;
+  const results = await fetch(url);
+  const recommended = await results.json();
+  return recommended.results;
+};
 
-  const getRecommended = async () => {
-    const { data } = await axios.get("/api/tmdb/getRecommended", { params: { mediaType, id } });
-    setData(data.results);
-    setLoading(false);
-  };
+const Recommended = async ({ mediaType, id }: Props) => {
+  const recommended = await fetchRecommended(mediaType, id);
 
-  useEffect(() => {
-    getRecommended();
-  }, []);
+  if (!recommended) return <h1>No suggestions found</h1>;
 
-  if (loading) return <h1>Loading...</h1>;
-  if (!data) return <h1>No suggestions found</h1>;
   return (
     <>
       <h1>Recommended Titles</h1>
       <Slider
         mediaType={mediaType}
-        data={data}
+        data={recommended}
       />
     </>
   );
