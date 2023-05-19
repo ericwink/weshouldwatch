@@ -1,5 +1,6 @@
 "use server";
 
+import axios from "axios";
 import { revalidateTag } from "next/cache";
 
 export async function addMediaToGroup(groupID: string, mediaID: string, title: string, poster_path: string) {
@@ -25,4 +26,9 @@ export async function createGroup(userEmail: string, groupName: string) {
   // const email = session?.user?.email;
   // const { data } = await axios.post("/api/group/createGroup", { email: email, groupName: input });
   // console.log(data);
+}
+
+export async function inviteUser(email: string, id: string) {
+  "use server";
+  console.log(email, id);
 }

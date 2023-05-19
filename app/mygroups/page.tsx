@@ -1,7 +1,7 @@
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "../../pages/api/auth/[...nextauth]";
-import { RxPerson } from "react-icons/rx";
-import { GrMultimedia } from "react-icons/gr";
+import GroupCard from "@/components/GroupCard/GroupCard";
+import { GroupInfo } from "@/lib/interface";
 
 const MyGroupsPage = async () => {
   const session = await getServerSession(authOptions);
@@ -13,33 +13,20 @@ const MyGroupsPage = async () => {
     return result.json();
   };
 
-  const groupData = await fetchGroups();
-  console.log(groupData);
+  const groupData: GroupInfo[] = await fetchGroups();
+  // console.log(groupData);
+  // console.log(groupData[0].collection);
   return (
-    <>
+    <main className="container py-4">
       <h1>My Groups Page</h1>
       <p>{session?.user?.email}</p>
 
       <ul className="flex flex-col gap-4">
         {groupData.map(group => {
-          const mediaCount = group.collection.length;
-          const memberCount = group.userIDs.length;
-          return (
-            <li className="flex flex-col gap-2 border border-black border-solid">
-              <h2>{group.name}</h2>
-              <div className="flex gap-2 items-center">
-                <RxPerson />
-                <p>Total Members: {memberCount}</p>
-              </div>
-              <div className="flex gap-2 items-center">
-                <GrMultimedia />
-                <p>Media in collection: {mediaCount}</p>
-              </div>
-            </li>
-          );
+          return <GroupCard {...group} />;
         })}
       </ul>
-    </>
+    </main>
   );
 };
 

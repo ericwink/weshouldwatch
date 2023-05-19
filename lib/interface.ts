@@ -48,6 +48,7 @@ export interface Collection {
 
 export interface GroupInfo {
   id: string;
+  userIDs: string[];
   name: string;
   collection: Collection[];
 }
