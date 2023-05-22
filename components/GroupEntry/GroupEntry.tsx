@@ -19,6 +19,8 @@ interface Props {
     mediaId: string;
     title: string;
     poster_path: string;
+    genres: string[];
+    mediaType: string;
   };
 }
 
@@ -33,7 +35,7 @@ const GroupEntry = ({ collection, id, name, mediaInfo }: Props) => {
   };
 
   const serverAction = async () => {
-    const success = await addMediaToGroup(id, mediaInfo.mediaId, mediaInfo.title, mediaInfo.poster_path);
+    const success = await addMediaToGroup(id, mediaInfo.mediaId, mediaInfo.title, mediaInfo.poster_path, mediaInfo.genres, mediaInfo.mediaType);
     if (success) {
       toast.success(`Movie added to ${name}!`, { toastId: `${id}-${mediaInfo.mediaId}-success` });
     } else {

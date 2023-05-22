@@ -31,11 +31,14 @@ const mediaPage = async ({ params, searchParams }: Props) => {
   const title = mediaData.title ? mediaData.title : mediaData.name;
   const backdrop = `https://image.tmdb.org/t/p/w500/${mediaData.backdrop_path}`;
   const rating = `${Math.floor(mediaData.vote_average * 10)}%`;
+  const genreNames = mediaData.genres.map((each: { id: number; name: string }) => each.name);
 
   const mediaInfo = {
     mediaId: mediaData.id.toString(),
     title: title,
     poster_path: mediaData.poster_path,
+    genres: genreNames,
+    mediaType: media_type,
   };
 
   return (
@@ -62,10 +65,7 @@ const mediaPage = async ({ params, searchParams }: Props) => {
             </ModalTwo>
           </div>
 
-          <Genres
-            genre_ids={mediaData.genres}
-            type="obj"
-          />
+          <Genres genre_ids={mediaData.genres} />
 
           <div className="container flex justify-between">
             <div className="flex gap-1 items-center">

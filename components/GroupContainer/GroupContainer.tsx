@@ -19,6 +19,8 @@ interface Props {
     mediaId: string;
     title: string;
     poster_path: string;
+    genres: string[];
+    mediaType: string;
   };
 }
 

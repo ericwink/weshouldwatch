@@ -38,6 +38,8 @@ model Media{
   id      String   @id @map("_id") //use TMDB id as primary do not autogen
   title   String
   poster_path   String
+  genres  String[]
+  mediaType String
 }
 
 type CollectionData{

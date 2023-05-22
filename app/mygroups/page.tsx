@@ -14,10 +14,8 @@ const MyGroupsPage = async () => {
   };
 
   const groupData: GroupInfo[] = await fetchGroups();
-  // console.log(groupData);
-  // console.log(groupData[0].collection);
   return (
-    <main className="container py-4">
+    <main className="container py-4 max-w-4xl">
       <h1>My Groups Page</h1>
       <p>{session?.user?.email}</p>
 

@@ -1,4 +1,3 @@
-import findGenre from "@/lib/findGenre";
 import styles from "./genres.module.css";
 import { Badge } from "@/components/ui/badge";
 
@@ -8,18 +7,17 @@ interface genreObject {
 }
 
 interface Props {
-  genre_ids: number[] | genreObject[];
-  type: "nums" | "obj";
+  genre_ids: genreObject[];
 }
 
-const Genres = ({ genre_ids, type }: Props) => {
+const Genres = ({ genre_ids }: Props) => {
   const genres = genre_ids.map(each => {
     return (
       <Badge
         data-testid="genre"
         key={each.name}
       >
-        {type === "nums" ? findGenre(each) : each.name}
+        {each.name}
       </Badge>
     );
   });

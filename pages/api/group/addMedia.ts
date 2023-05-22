@@ -2,8 +2,7 @@ import { NextApiRequest, NextApiResponse } from "next";
 import prisma from "@/prisma/prisma";
 
 const addMedia = async (req: NextApiRequest, res: NextApiResponse) => {
-  const { groupID, mediaID, title, poster_path } = req.body;
-
+  const { groupID, mediaID, title, poster_path, genres, mediaType } = req.body;
   try {
     const foundMedia = await prisma.media.findUnique({
       where: {
@@ -17,6 +16,8 @@ const addMedia = async (req: NextApiRequest, res: NextApiResponse) => {
           id: mediaID,
           poster_path: poster_path,
           title: title,
+          genres: genres,
+          mediaType: mediaType,
         },
       });
     }
