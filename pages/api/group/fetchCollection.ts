@@ -2,7 +2,8 @@ import { NextApiRequest, NextApiResponse } from "next";
 import prisma from "@/prisma/prisma";
 
 const fetchCollection = async (req: NextApiRequest, res: NextApiResponse) => {
-  const { groupID } = req.body;
+  const { groupID } = req.query;
+  console.log(groupID);
 
   const findMedia = async (id: string) => {
     return await prisma.media.findUnique({

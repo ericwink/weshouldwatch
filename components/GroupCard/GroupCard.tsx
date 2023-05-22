@@ -5,6 +5,7 @@ import { FcInvite } from "react-icons/fc";
 import { Collection, GroupInfo } from "@/lib/interface";
 import ModalTwo from "../Modal/ModalTwo";
 import InviteForm from "../InviteForm/InviteForm";
+import Link from "next/link";
 
 const GroupCard = ({ id, name, userIDs, collection }: GroupInfo) => {
   return (
@@ -34,10 +35,13 @@ const GroupCard = ({ id, name, userIDs, collection }: GroupInfo) => {
             <InviteForm groupID={id} />
           </ModalTwo>
         </div>
-        <div className="flex gap-4 items-center">
+        <Link
+          className="flex gap-2 items-center"
+          href={`/mygroups/${id}`}
+        >
           <GrCircleInformation />
           <p>see details</p>
-        </div>
+        </Link>
         <p>another option?</p>
       </CardFooter>
     </Card>
