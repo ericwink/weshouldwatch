@@ -16,7 +16,7 @@ const fetchRecommended = async (mediaType: string, id: string) => {
 const Recommended = async ({ mediaType, id }: Props) => {
   const recommended = await fetchRecommended(mediaType, id);
 
-  if (!recommended) return <h1>No suggestions found</h1>;
+  if (recommended.length < 1) return;
 
   return (
     <>

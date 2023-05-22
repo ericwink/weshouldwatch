@@ -5,8 +5,8 @@ import Credits from "@/components/Credits/Credits";
 import Recommended from "@/components/Recommneded/Recommended";
 import StreamingOptions from "@/components/StreamingOptions/StreamingOptions";
 import GroupContainer from "@/components/GroupContainer/GroupContainer";
-import Modal from "@/components/Modal/Modal";
 import { FaPlusCircle } from "react-icons/fa";
+import { BsHandThumbsUp, BsClock, BsCalendar } from "react-icons/bs";
 import ModalTwo from "@/components/Modal/ModalTwo";
 
 interface Props {
@@ -40,53 +40,71 @@ const mediaPage = async ({ params, searchParams }: Props) => {
 
   return (
     <main>
-      <h1>media page</h1>
-      <img
-        src={backdrop}
-        alt={title}
-      />
-      {title}
-      <img
-        src={poster}
-        alt={title}
-      />
+      <div
+        className="min-w-full h-80 bg-no-repeat bg-cover flex items-start justify-center"
+        style={{ backgroundImage: `url(${backdrop})` }}
+      ></div>
+      <div className="container max-w-4xl">
+        <div className="flex flex-col gap-8 mb-8 -mt-32">
+          <div className="flex gap-8 items-end justify-center">
+            <img
+              src={poster}
+              alt={title}
+            />
 
-      <Genres
-        genre_ids={mediaData.genres}
-        type="obj"
-      />
+            <ModalTwo
+              icon={<FaPlusCircle />}
+              text="Add To Group"
+              title="Add To Group"
+              description="Select from your groups below!"
+            >
+              <GroupContainer mediaInfo={mediaInfo} />
+            </ModalTwo>
+          </div>
 
-      <ModalTwo
-        icon={<FaPlusCircle />}
-        text="Add To Group"
-        title="Add To Group"
-        description="Select from your groups below!"
-      >
-        <GroupContainer mediaInfo={mediaInfo} />
-      </ModalTwo>
+          <Genres
+            genre_ids={mediaData.genres}
+            type="obj"
+          />
 
-      <div>
-        {mediaData.release_date}
-        {mediaData.runtime}
-        {rating}
+          <div className="container flex justify-between">
+            <div className="flex gap-1 items-center">
+              <BsCalendar />
+              <p>{mediaData.release_date.slice(0, 4)}</p>
+            </div>
+
+            <div className="flex gap-1 items-center">
+              <BsClock />
+              <p>{mediaData.runtime} minutes</p>
+            </div>
+            <div className="flex gap-1 items-center">
+              <BsHandThumbsUp />
+              <p>{rating}</p>
+            </div>
+          </div>
+          <p>{mediaData.overview}</p>
+
+          <section>
+            <h2 className="text-lg">Watch {title}:</h2>
+
+            <div>
+              <StreamingOptions
+                media_type={media_type}
+                id={media_id}
+              />
+            </div>
+          </section>
+        </div>
       </div>
-      {mediaData.overview}
-
-      <StreamingOptions
-        media_type={media_type}
-        id={media_id}
-      />
 
       <Credits
         mediaType={media_type}
         id={media_id}
       />
-
       <Recommended
         mediaType={media_type}
         id={media_id}
       />
-
       {/* all similar titles have a 'type' of 'undefined' */}
       {/* <Similar
         mediaType={media_type}
