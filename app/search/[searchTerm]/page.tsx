@@ -36,9 +36,17 @@ const SearchTermPage = async ({ params }: Props) => {
   const mapResults = (mediaType: "movie" | "tv" | "person") => {
     return searchResults[mediaType].map(each => {
       if (mediaType === "person") {
-        return <ActorLink {...each} />;
+        return (
+          <li>
+            <ActorLink {...each} />
+          </li>
+        );
       } else {
-        return <PosterLink media={each} />;
+        return (
+          <li>
+            <PosterLink media={each} />
+          </li>
+        );
       }
     });
   };

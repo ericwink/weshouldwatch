@@ -25,7 +25,10 @@ const Slider = ({ mediaType, data }: Props) => {
       <Swiper breakpoints={breakpoints}>
         {data.map(each => {
           return (
-            <SwiperSlide key={each.id}>
+            <SwiperSlide
+              key={each.id}
+              className="relative "
+            >
               <ActorLink {...each} />
             </SwiperSlide>
           );
@@ -38,7 +41,10 @@ const Slider = ({ mediaType, data }: Props) => {
     <Swiper breakpoints={breakpoints}>
       {data.map(each => {
         return (
-          <SwiperSlide key={each.id}>
+          <SwiperSlide
+            key={each.id}
+            className="relative"
+          >
             <PosterLink media={each} />
           </SwiperSlide>
         );

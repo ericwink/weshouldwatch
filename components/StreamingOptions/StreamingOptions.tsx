@@ -1,12 +1,14 @@
 import getPoster from "@/lib/getPoster";
 import { Props, AvailabilityData, StreamOptions } from "./interfaces";
 import styles from "./streamingOptions.module.css";
+import Image from "next/image";
 
 const fetchStreamingOptions = async (mediaType: string, id: string) => {
   const tmdbKey = process.env.MOVIE_DB_API;
   const url = `https://api.themoviedb.org/3/${mediaType}/${id}/watch/providers?api_key=${tmdbKey}`;
-  const results = await fetch(url);
+  const results = await fetch(url, { next: { revalidate: 28800 } });
   const unorderedStreamingOptions = await results.json();
+  if (!unorderedStreamingOptions.results.US) return null;
   const streamingOptions = reorderData(unorderedStreamingOptions.results.US);
   return streamingOptions;
 };
@@ -25,10 +27,10 @@ const reorderData = (obj: AvailabilityData) => {
   return data;
 };
 
-const StreamingOptions = async ({ media_type, id }: Props) => {
+const StreamingOptions = async ({ media_type, id, title }: Props) => {
   const streamingOptions = await fetchStreamingOptions(media_type, id);
 
-  if (!streamingOptions) return <h1>No Streaming Options Found</h1>;
+  if (!streamingOptions) return;
 
   const streamInfo = (provider: string) => {
     const providerData = streamingOptions[provider];
@@ -37,10 +39,12 @@ const StreamingOptions = async ({ media_type, id }: Props) => {
         key={provider}
         className={styles.container}
       >
-        <img
+        <Image
           src={getPoster(providerData.logo_path, "200")}
-          alt={provider}
-          className={styles.image}
+          alt={`logo for ${provider}`}
+          height={200}
+          width={200}
+          className="w-10"
         />
         <p>{provider}</p>
         <div className={styles.options}>
@@ -60,6 +64,8 @@ const StreamingOptions = async ({ media_type, id }: Props) => {
 
   return (
     <>
+      <h2 className="text-lg">Watch {title}:</h2>
+
       {Object.keys(streamingOptions).map(provider => {
         return streamInfo(provider);
       })}

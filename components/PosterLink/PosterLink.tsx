@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Movie, TV } from "@/lib/interface";
 import getPoster from "@/lib/getPoster";
+import Image from "next/image";
 
 interface Props {
   media: Movie | TV;
@@ -12,10 +13,12 @@ const PosterLink = ({ media }: Props) => {
 
   return (
     <Link href={`/media/${id}/?media_type=${media_type}`}>
-      <img
+      <Image
         src={getPoster(poster_path, "200")}
-        alt={mediaTitle}
-        className="rounded-md max-w-full h-auto "
+        alt={`poster for ${mediaTitle}`}
+        className="rounded-md max-w-full h-auto"
+        height={300}
+        width={200}
       />
     </Link>
   );

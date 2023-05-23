@@ -5,11 +5,12 @@ import Recommended from "@/components/Recommneded/Recommended";
 import StreamingOptions from "@/components/StreamingOptions/StreamingOptions";
 import GroupContainer from "@/components/GroupContainer/GroupContainer";
 import { FaPlusCircle } from "react-icons/fa";
-import { BsHandThumbsUp, BsClock, BsCalendar } from "react-icons/bs";
 import ModalTwo from "@/components/Modal/ModalTwo";
 import YouTubePlayer from "@/components/YouTubePlayer/YouTubePlayer";
 import { TrailerData } from "@/lib/interface";
 import DateTimeRating from "@/components/DateTimeRating/DateTimeRating";
+import Image from "next/image";
+import noBackground from "../../../public/We Should Watch.png";
 
 interface Props {
   params: { media_id: string };
@@ -46,7 +47,7 @@ const mediaPage = async ({ params, searchParams }: Props) => {
 
   const poster = getPoster(mediaData.poster_path, "200");
   const title = mediaData.title ? mediaData.title : mediaData.name;
-  const backdrop = `https://image.tmdb.org/t/p/w1280/${mediaData.backdrop_path}`;
+  const backdrop = mediaData.backdrop_path ? `https://image.tmdb.org/t/p/w1280/${mediaData.backdrop_path}` : noBackground;
   const rating = `${Math.floor(mediaData.vote_average * 10)}%`;
   const genreNames = mediaData.genres.map((each: { id: number; name: string }) => each.name);
   const releaseYear = mediaData.release_date ? mediaData.release_date.slice(0, 4) : mediaData.first_air_date.slice(0, 4);
@@ -62,16 +63,22 @@ const mediaPage = async ({ params, searchParams }: Props) => {
 
   return (
     <main>
-      <div
-        className="min-w-full h-80 bg-no-repeat bg-cover flex items-start justify-center"
-        style={{ backgroundImage: `url(${backdrop})` }}
-      ></div>
+      <div className="min-w-full h-80 relative -z-10">
+        <Image
+          src={backdrop}
+          alt={`backdrop image for ${title}`}
+          fill={true}
+          objectFit="cover"
+        />
+      </div>
       <div className="container max-w-4xl">
         <div className="flex flex-col gap-8 mb-8 -mt-32">
           <div className="flex gap-8 items-end justify-center">
-            <img
+            <Image
               src={poster}
-              alt={title}
+              alt={`movie poster for ${title}`}
+              height={300}
+              width={200}
             />
 
             <ModalTwo
@@ -85,6 +92,7 @@ const mediaPage = async ({ params, searchParams }: Props) => {
           </div>
 
           <Genres genre_ids={mediaData.genres} />
+
           <DateTimeRating
             rating={rating}
             releaseYear={releaseYear}
@@ -93,15 +101,14 @@ const mediaPage = async ({ params, searchParams }: Props) => {
 
           <p>{mediaData.overview}</p>
 
-          <YouTubePlayer youtubeId={trailer?.key} />
+          {trailer && <YouTubePlayer youtubeId={trailer?.key} />}
 
           <section>
-            <h2 className="text-lg">Watch {title}:</h2>
-
             <div>
               <StreamingOptions
                 media_type={media_type}
                 id={media_id}
+                title={title}
               />
             </div>
           </section>

@@ -4,6 +4,16 @@ const nextConfig = {
   experimental: {
     appDir: true,
     serverActions: true
+  },
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'image.tmdb.org',
+        port: '',
+        pathname: '/t/**'
+      }
+    ]
   }
 }
 

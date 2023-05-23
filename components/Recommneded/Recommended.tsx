@@ -8,7 +8,7 @@ interface Props {
 const fetchRecommended = async (mediaType: string, id: string) => {
   const tmdbKey = process.env.MOVIE_DB_API;
   const url = `https://api.themoviedb.org/3/${mediaType}/${id}/recommendations?api_key=${tmdbKey}&language=en-US`;
-  const results = await fetch(url);
+  const results = await fetch(url, { next: { revalidate: 28800 } });
   const recommended = await results.json();
   return recommended.results;
 };

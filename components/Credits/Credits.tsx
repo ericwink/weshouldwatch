@@ -16,21 +16,31 @@ const fetchCredits = async (mediaType: string, id: string) => {
 const Credits = async ({ mediaType, id }: Props) => {
   const creditsData = await fetchCredits(mediaType, id.toString());
 
-  if (!creditsData) return <h1>No Credits Data Found</h1>;
-
-  return (
+  const cast = (
     <>
       <h1>Cast</h1>
       <Slider
         mediaType="person"
         data={creditsData.cast}
       />
+    </>
+  );
 
+  const crew = (
+    <>
       <h1>Production Staff</h1>
       <Slider
         mediaType="person"
         data={creditsData.crew}
       />
+    </>
+  );
+
+  return (
+    <>
+      {creditsData.cast.length > 1 && cast}
+
+      {creditsData.crew.length > 1 && crew}
     </>
   );
 };
