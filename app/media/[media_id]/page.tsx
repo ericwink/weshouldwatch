@@ -1,6 +1,5 @@
 import getPoster from "@/lib/getPoster";
 import Genres from "@/components/Genres/Genres";
-import Similar from "@/components/Similar/Similar";
 import Credits from "@/components/Credits/Credits";
 import Recommended from "@/components/Recommneded/Recommended";
 import StreamingOptions from "@/components/StreamingOptions/StreamingOptions";
@@ -8,6 +7,9 @@ import GroupContainer from "@/components/GroupContainer/GroupContainer";
 import { FaPlusCircle } from "react-icons/fa";
 import { BsHandThumbsUp, BsClock, BsCalendar } from "react-icons/bs";
 import ModalTwo from "@/components/Modal/ModalTwo";
+import YouTubePlayer from "@/components/YouTubePlayer/YouTubePlayer";
+import { TrailerData } from "@/lib/interface";
+import DateTimeRating from "@/components/DateTimeRating/DateTimeRating";
 
 interface Props {
   params: { media_id: string };
@@ -21,17 +23,34 @@ const fetchData = async (mediaType: string, id: string) => {
   return result.json();
 };
 
+const fetchVideo = async (mediaType: string, id: string): Promise<TrailerData[]> => {
+  const tmdbKey = process.env.MOVIE_DB_API;
+  const url = `https://api.themoviedb.org/3/${mediaType}/${id}/videos?api_key=${tmdbKey}&language=en-US`;
+  const data = await fetch(url, { next: { revalidate: 28800 } });
+  const result = await data.json();
+  return result.results.reverse();
+};
+
+const findTrailer = async (mediaType: string, id: string): Promise<TrailerData | undefined> => {
+  const trailerArray = await fetchVideo(mediaType, id);
+  const trailer = trailerArray.find(each => each.type === "Trailer");
+  return trailer;
+};
+
 const mediaPage = async ({ params, searchParams }: Props) => {
   const { media_type } = searchParams;
   const { media_id } = params;
 
   const mediaData = await fetchData(media_type, media_id);
+  const trailer = await findTrailer(media_type, media_id);
 
   const poster = getPoster(mediaData.poster_path, "200");
   const title = mediaData.title ? mediaData.title : mediaData.name;
-  const backdrop = `https://image.tmdb.org/t/p/w500/${mediaData.backdrop_path}`;
+  const backdrop = `https://image.tmdb.org/t/p/w1280/${mediaData.backdrop_path}`;
   const rating = `${Math.floor(mediaData.vote_average * 10)}%`;
   const genreNames = mediaData.genres.map((each: { id: number; name: string }) => each.name);
+  const releaseYear = mediaData.release_date ? mediaData.release_date.slice(0, 4) : mediaData.first_air_date.slice(0, 4);
+  const runTime = mediaData.runtime ? mediaData.runtime : mediaData.episode_run_time[0];
 
   const mediaInfo = {
     mediaId: mediaData.id.toString(),
@@ -66,23 +85,15 @@ const mediaPage = async ({ params, searchParams }: Props) => {
           </div>
 
           <Genres genre_ids={mediaData.genres} />
+          <DateTimeRating
+            rating={rating}
+            releaseYear={releaseYear}
+            runTime={runTime}
+          />
 
-          <div className="container flex justify-between">
-            <div className="flex gap-1 items-center">
-              <BsCalendar />
-              <p>{mediaData.release_date.slice(0, 4)}</p>
-            </div>
-
-            <div className="flex gap-1 items-center">
-              <BsClock />
-              <p>{mediaData.runtime} minutes</p>
-            </div>
-            <div className="flex gap-1 items-center">
-              <BsHandThumbsUp />
-              <p>{rating}</p>
-            </div>
-          </div>
           <p>{mediaData.overview}</p>
+
+          <YouTubePlayer youtubeId={trailer?.key} />
 
           <section>
             <h2 className="text-lg">Watch {title}:</h2>
@@ -105,15 +116,8 @@ const mediaPage = async ({ params, searchParams }: Props) => {
         mediaType={media_type}
         id={media_id}
       />
-      {/* all similar titles have a 'type' of 'undefined' */}
-      {/* <Similar
-        mediaType={media_type}
-        id={media_id}
-      /> */}
     </main>
   );
 };
 
 export default mediaPage;
-
-// http://localhost:3000/media/713704?media_type=movie
