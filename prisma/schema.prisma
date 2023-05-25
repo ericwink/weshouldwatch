@@ -43,8 +43,16 @@ model Media{
 }
 
 type CollectionData{
-  id String
-  watched Boolean
+  id                String
+  watched           Boolean
+  added_reason      String
+  added_by          String @db.ObjectId
+  comments          Comments[]
+}
+
+type Comments {
+  userID String
+  comment String
 }
 
 model Invitation {

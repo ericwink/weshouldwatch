@@ -5,6 +5,7 @@ import { useTransition } from "react";
 import { addMediaToGroup } from "../../lib/server-actions";
 import { toast } from "../Toasty/Toasty";
 import { FaCheck, FaPlusCircle } from "react-icons/fa";
+import ModalTwo from "../Modal/ModalTwo";
 
 interface Collection {
   id: string;
@@ -51,6 +52,14 @@ const GroupEntry = ({ collection, id, name, mediaInfo }: Props) => {
     <>
       <li className={style.container}>
         <h1>{name}</h1>
+        <ModalTwo
+          icon="+"
+          text="open"
+          description="just a test"
+          title="test"
+        >
+          Test stuff
+        </ModalTwo>
         <button
           onClick={() => startTransition(() => serverAction())}
           disabled={checkResult}
