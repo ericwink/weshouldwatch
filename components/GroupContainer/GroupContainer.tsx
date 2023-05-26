@@ -1,7 +1,7 @@
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "../../pages/api/auth/[...nextauth]";
-import GroupEntry from "@/components/GroupEntry/GroupEntry";
 import styles from "./style.module.css";
+import GroupSendContainer from "../GroupSendContainer/GroupSendContainer";
 
 interface Collection {
   id: string;
@@ -34,19 +34,15 @@ const GroupContainer = async ({ mediaInfo }: Props) => {
     return result.json();
   };
 
-  const data: Group[] = await fetchGroups();
+  const groupData: Group[] = await fetchGroups();
 
-  const entries = data.map(each => {
-    return (
-      <GroupEntry
-        {...each}
-        mediaInfo={mediaInfo}
-        key={each.id}
-      />
-    );
-  });
-
-  return <ul className={styles.container}>{entries}</ul>;
+  return (
+    <GroupSendContainer
+      mediaInfo={mediaInfo}
+      groupData={groupData}
+      email={session?.user?.email}
+    />
+  );
 };
 
 export default GroupContainer;

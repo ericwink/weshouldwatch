@@ -3,8 +3,8 @@
 import axios from "axios";
 import { revalidateTag } from "next/cache";
 
-export async function addMediaToGroup(groupID: string, mediaID: string, title: string, poster_path: string, genres: string[], mediaType: string) {
-  const payload = { groupID: groupID, mediaID: mediaID, title: title, poster_path: poster_path, genres: genres, mediaType: mediaType };
+export async function addMediaToGroup(email: string, reason: string, groupID: string, mediaID: string, title: string, poster_path: string, genres: string[], mediaType: string) {
+  const payload = { email: email, reason: reason, groupID: groupID, mediaID: mediaID, title: title, poster_path: poster_path, genres: genres, mediaType: mediaType };
   const url = "http://localhost:3000/api/group/addMedia";
   // console.log("from the action page", url, payload);
   const result = await fetch(url, {
