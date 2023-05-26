@@ -2,7 +2,8 @@ import { NextApiRequest, NextApiResponse } from "next";
 import prisma from "@/prisma/prisma";
 
 const addMedia = async (req: NextApiRequest, res: NextApiResponse) => {
-  const { groupID, mediaID, title, poster_path, genres, mediaType } = req.body;
+  const { email, reason, groupID, mediaID, title, poster_path, genres, mediaType } = req.body;
+
   try {
     const foundMedia = await prisma.media.findUnique({
       where: {
@@ -22,6 +23,14 @@ const addMedia = async (req: NextApiRequest, res: NextApiResponse) => {
       });
     }
 
+    const foundUser = await prisma.user.findUnique({
+      where: {
+        email: email,
+      },
+    });
+
+    console.log({ foundUser });
+
     const foundGroup = await prisma.group.update({
       where: {
         id: groupID,
@@ -31,6 +40,8 @@ const addMedia = async (req: NextApiRequest, res: NextApiResponse) => {
           push: {
             id: mediaID,
             watched: false,
+            added_reason: reason,
+            added_by: foundUser.id,
           },
         },
       },
