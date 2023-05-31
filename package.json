@@ -23,6 +23,7 @@
     "class-variance-authority": "^0.6.0",
     "clsx": "^1.2.1",
     "eslint": "8.34.0",
+    "firebase": "^9.22.1",
     "lucide-react": "^0.216.0",
     "mongodb": "^4.15.0",
     "next": "^13.4.1",
