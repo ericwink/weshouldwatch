@@ -21,7 +21,12 @@ const MyGroupsPage = async () => {
 
       <ul className="flex flex-col gap-4">
         {groupData.map(group => {
-          return <GroupCard {...group} />;
+          return (
+            <GroupCard
+              {...group}
+              key={group.id}
+            />
+          );
         })}
       </ul>
     </main>

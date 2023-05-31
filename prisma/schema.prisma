@@ -10,6 +10,17 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model Media{
+  id      String   @id @default(auto()) @map("_id") @db.ObjectId
+  TMDBID  String
+  title   String
+  poster_path   String
+  genres  String[]
+  mediaType String
+
+  collections Collection[]
+}
+
 model User {
   id            String    @id @default(auto()) @map("_id") @db.ObjectId
   name          String?
@@ -31,22 +42,27 @@ model Group {
   userIDs   String[] @db.ObjectId
   users     User[]   @relation(fields: [userIDs], references: [id]) //not in DB
 
-  collection  CollectionData[] 
+  collection Collection[]
+
 }
 
-model Media{
-  id      String   @id @map("_id") //use TMDB id as primary do not autogen
-  title   String
-  poster_path   String
-  genres  String[]
-  mediaType String
-}
 
-type CollectionData{
-  id                String
+//users
+//media
+//Groups
+//addedMedia - id, group id, movie id, watched, added by? reason?
+//comments - id, addedMedia id, userid, comment 
+
+model Collection {
+  id                String    @id @default(auto()) @map("_id") @db.ObjectId
+  groupId           String    @db.ObjectId
+  groupIdRelation   Group     @relation(fields: [groupId], references: [id])
+  mediaId           String    @db.ObjectId
+  mediaRelation     Media     @relation(fields: [mediaId], references: [id])
   watched           Boolean
   added_reason      String
-  added_by          String @db.ObjectId
+  // added_by_Id       User      @relation(fields: [added_by], references: [id])
+  // added_by          String    @db.ObjectId 
   comments          Comments[]
 }
 

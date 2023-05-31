@@ -25,7 +25,7 @@ const fetchCollection = async (req: NextApiRequest, res: NextApiResponse) => {
     if (foundGroup) {
       for (const each of foundGroup?.collection) {
         let data = await findMedia(each.id);
-        collection.push({ ...data, watched: each.watched });
+        collection.push({ ...data, ...each });
       }
     }
 
