@@ -10,15 +10,15 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Media{
-  id      String   @id @default(auto()) @map("_id") @db.ObjectId
-  TMDBID  String
-  title   String
-  poster_path   String
-  genres  String[]
-  mediaType String
+model Media {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  TMDBID      String
+  title       String
+  poster_path String
+  genres      String[]
+  mediaType   String
 
-  collections Collection[]
+  added_media added_media[]
 }
 
 model User {
@@ -28,73 +28,74 @@ model User {
   emailVerified DateTime?
   image         String?
 
-  accounts      Account[]
-  sessions      Session[]
+  accounts Account[]
+  sessions Session[]
 
-  groupIDs  String[]  @db.ObjectId
-  groups    Group[]   @relation(fields: [groupIDs], references: [id]) //not in DB
+  groupIDs String[] @db.ObjectId
+  groups   Group[]  @relation(fields: [groupIDs], references: [id]) //not in DB
+
+  comments Comment[]
+  added_media added_media[]
 }
 
 model Group {
-  id        String   @id @default(auto()) @map("_id") @db.ObjectId
-  name      String
+  id   String @id @default(auto()) @map("_id") @db.ObjectId
+  name String
 
-  userIDs   String[] @db.ObjectId
-  users     User[]   @relation(fields: [userIDs], references: [id]) //not in DB
+  userIDs String[] @db.ObjectId
+  users   User[]   @relation(fields: [userIDs], references: [id]) //not in DB
 
-  collection Collection[]
-
+  added_media added_media[]
 }
 
+model added_media {
+  id                      String     @id @default(auto()) @map("_id") @db.ObjectId
+  groupId                 String     @db.ObjectId
+  groupIdRelation         Group      @relation(fields: [groupId], references: [id])
+  mediaId                 String     @db.ObjectId
+  mediaRelation           Media      @relation(fields: [mediaId], references: [id])
+  watched                 Boolean
 
-//users
-//media
-//Groups
-//addedMedia - id, group id, movie id, watched, added by? reason?
-//comments - id, addedMedia id, userid, comment 
+  added_by                String @db.ObjectId
+  added_by_relation       User    @relation(fields: [added_by], references: [id])
+  added_reason            String
 
-model Collection {
-  id                String    @id @default(auto()) @map("_id") @db.ObjectId
-  groupId           String    @db.ObjectId
-  groupIdRelation   Group     @relation(fields: [groupId], references: [id])
-  mediaId           String    @db.ObjectId
-  mediaRelation     Media     @relation(fields: [mediaId], references: [id])
-  watched           Boolean
-  added_reason      String
-  // added_by_Id       User      @relation(fields: [added_by], references: [id])
-  // added_by          String    @db.ObjectId 
-  comments          Comments[]
+  comments                Comment[]
 }
 
-type Comments {
-  userID String
+model Comment {
+  id                      String     @id @default(auto()) @map("_id") @db.ObjectId
+  user_id  String  @db.ObjectId
+  user_id_relation  User @relation(fields: [user_id], references: [id])
+  added_media String @db.ObjectId
+  added_media_relation added_media @relation(fields: [user_id], references: [id])
   comment String
 }
 
 model Invitation {
-  id                String  @id @default(auto()) @map("_id") @db.ObjectId
-  groupId           String
-  invitedUserEmail  String
-  invitationToken   String @unique
-  expires           DateTime
+  id               String   @id @default(auto()) @map("_id") @db.ObjectId
+  groupId          String
+  invitedUserEmail String
+  invitationToken  String   @unique
+  expires          DateTime
 }
 
 //NextAuth Requirements:
 model Account {
-  id                 String  @id @default(auto()) @map("_id") @db.ObjectId
-  userId             String  @db.ObjectId
-  type               String
-  provider           String
-  providerAccountId  String
-  refresh_token      String? @db.String 
-  access_token       String? @db.String
-  expires_at         Int?
-  token_type         String?
-  scope              String?
-  id_token           String? @db.String
-  session_state      String?
+  id                String  @id @default(auto()) @map("_id") @db.ObjectId
+  userId            String  @db.ObjectId
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.String
+  access_token      String? @db.String
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.String
+  session_state     String?
 
-  user               User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([provider, providerAccountId])
 }
@@ -108,13 +109,12 @@ model Session {
 }
 
 model VerificationToken {
-  id         String @id @default(auto()) @map("_id") @db.ObjectId
+  id         String   @id @default(auto()) @map("_id") @db.ObjectId
   identifier String
   token      String   @unique
   expires    DateTime
 
   @@unique([identifier, token])
 }
-
 
 //any additional changes, we'll need to manually invoke npx prisma generate 
