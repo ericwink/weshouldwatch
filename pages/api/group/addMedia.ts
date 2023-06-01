@@ -4,17 +4,19 @@ import prisma from "@/prisma/prisma";
 const addMedia = async (req: NextApiRequest, res: NextApiResponse) => {
   const { email, reason, groupID, mediaID, title, poster_path, genres, mediaType } = req.body;
 
+  let mediaToAdd = null
+
   try {
-    const foundMedia = await prisma.media.findUnique({
+    mediaToAdd = await prisma.media.findUnique({
       where: {
-        id: mediaID,
+        tmdb_id: mediaID,
       },
     });
 
-    if (!foundMedia) {
-      await prisma.media.create({
+    if (!mediaToAdd) {
+      mediaToAdd = await prisma.media.create({
         data: {
-          id: mediaID,
+          tmdb_id: mediaID,
           poster_path: poster_path,
           title: title,
           genres: genres,
@@ -29,19 +31,32 @@ const addMedia = async (req: NextApiRequest, res: NextApiResponse) => {
       },
     });
 
-    console.log({ foundUser });
+    const foundGroup = await prisma.group.findUnique({
+      where: {
+        id: groupID
+      }
+    })
+
+    const addedMedia = await prisma.added_media.create({
+      data: {
+        added_reason: reason,
+        watched: false,
+        added_by: foundUser?.id,
+        groupId: foundGroup?.id,
+        mediaId: mediaToAdd.id
+      }
+    })
+
+    //update the group by pushing the added media id
 
     const foundGroup = await prisma.group.update({
       where: {
         id: groupID,
       },
       data: {
-        collection: {
+        added_media: {
           push: {
-            id: mediaID,
-            watched: false,
-            added_reason: reason,
-            added_by: foundUser.id,
+            addedMedia.id
           },
         },
       },

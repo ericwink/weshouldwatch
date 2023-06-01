@@ -24,8 +24,8 @@ const fetchCollection = async (req: NextApiRequest, res: NextApiResponse) => {
     const collection = [];
     if (foundGroup) {
       for (const each of foundGroup?.collection) {
-        let data = await findMedia(each.id);
-        collection.push({ ...data, ...each });
+        let movieData = await findMedia(each.id);
+        collection.push({ ...movieData, ...each });
       }
     }
 

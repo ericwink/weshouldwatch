@@ -12,7 +12,7 @@ datasource db {
 
 model Media {
   id          String   @id @default(auto()) @map("_id") @db.ObjectId
-  TMDBID      String
+  tmdb_id     String    @unique
   title       String
   poster_path String
   genres      String[]
@@ -51,13 +51,13 @@ model Group {
 model added_media {
   id                      String     @id @default(auto()) @map("_id") @db.ObjectId
   groupId                 String     @db.ObjectId
-  groupIdRelation         Group      @relation(fields: [groupId], references: [id])
+  groupIdRelation         Group      @relation(fields: [groupId], references: [id]) //not in db
   mediaId                 String     @db.ObjectId
-  mediaRelation           Media      @relation(fields: [mediaId], references: [id])
+  mediaRelation           Media      @relation(fields: [mediaId], references: [id]) //not in db
   watched                 Boolean
 
   added_by                String @db.ObjectId
-  added_by_relation       User    @relation(fields: [added_by], references: [id])
+  added_by_relation       User    @relation(fields: [added_by], references: [id]) //not in db
   added_reason            String
 
   comments                Comment[]
