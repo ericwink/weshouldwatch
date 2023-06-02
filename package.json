@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@emotion/react": "^11.11.0",
+    "@emotion/server": "^11.11.0",
     "@emotion/styled": "^11.11.0",
     "@mui/icons-material": "^5.11.16",
     "@mui/material": "^5.13.3",
@@ -39,6 +40,7 @@
     "swiper": "^9.1.0",
     "tailwind-merge": "^1.12.0",
     "tailwindcss-animate": "^1.0.5",
+    "tss-react": "^4.8.6",
     "typescript": "4.9.5"
   },
   "devDependencies": {

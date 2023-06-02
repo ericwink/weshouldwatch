@@ -1,24 +1,19 @@
-"use client";
+import TrendingGrid from "@/components/TrendingGrid";
 
-import MediaCardMUI from "@/components/MediaCardMUI";
-import Grid from "@mui/material/Unstable_Grid2"; // Grid version 2
-import { CssBaseline, Container } from "@mui/material";
+const getData = async (mediaType: string) => {
+  const tmdbKey = process.env.MOVIE_DB_API;
+  const url = `https://api.themoviedb.org/3/trending/${mediaType}/day?api_key=${tmdbKey}`;
+  const result = await fetch(url, { next: { revalidate: 86400 } });
+  const media = await result.json();
+  return media.results;
+};
 
-const muiPage = () => {
+const muiPage = async () => {
+  const data = await getData("movie");
+
   return (
     <>
-      <CssBaseline />
-      <Container>
-        <h1>MUI PAGE</h1>
-        <Grid
-          container
-          spacing={1}
-        >
-          <MediaCardMUI />
-          <MediaCardMUI />
-          <MediaCardMUI />
-        </Grid>
-      </Container>
+      <TrendingGrid data={data} />
     </>
   );
 };
