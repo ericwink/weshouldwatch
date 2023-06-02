@@ -6,11 +6,12 @@ import StreamingOptions from "@/components/StreamingOptions/StreamingOptions";
 import GroupContainer from "@/components/GroupContainer/GroupContainer";
 import { FaPlusCircle } from "react-icons/fa";
 import ModalTwo from "@/components/Modal/ModalTwo";
-import YouTubePlayer from "@/components/YouTubePlayer/YouTubePlayer";
-import { TrailerData } from "@/lib/interface";
 import DateTimeRating from "@/components/DateTimeRating/DateTimeRating";
 import Image from "next/image";
 import noBackground from "../../../public/We Should Watch.png";
+import MUIModal from "@/components/MUIModal";
+import FetchVideo from "@/components/FetchVideo";
+import { Suspense } from "react";
 
 interface Props {
   params: { media_id: string };
@@ -24,26 +25,11 @@ const fetchData = async (mediaType: string, id: string) => {
   return result.json();
 };
 
-const fetchVideo = async (mediaType: string, id: string): Promise<TrailerData[]> => {
-  const tmdbKey = process.env.MOVIE_DB_API;
-  const url = `https://api.themoviedb.org/3/${mediaType}/${id}/videos?api_key=${tmdbKey}&language=en-US`;
-  const data = await fetch(url, { next: { revalidate: 28800 } });
-  const result = await data.json();
-  return result.results.reverse();
-};
-
-const findTrailer = async (mediaType: string, id: string): Promise<TrailerData | undefined> => {
-  const trailerArray = await fetchVideo(mediaType, id);
-  const trailer = trailerArray.find(each => each.type === "Trailer");
-  return trailer;
-};
-
 const mediaPage = async ({ params, searchParams }: Props) => {
   const { media_type } = searchParams;
   const { media_id } = params;
 
   const mediaData = await fetchData(media_type, media_id);
-  const trailer = await findTrailer(media_type, media_id);
 
   const poster = getPoster(mediaData.poster_path, "200");
   const title = mediaData.title ? mediaData.title : mediaData.name;
@@ -68,7 +54,6 @@ const mediaPage = async ({ params, searchParams }: Props) => {
           src={backdrop}
           alt={`backdrop image for ${title}`}
           fill={true}
-          objectFit="cover"
         />
       </div>
       <div className="container max-w-4xl">
@@ -80,7 +65,7 @@ const mediaPage = async ({ params, searchParams }: Props) => {
               height={300}
               width={200}
             />
-
+            <MUIModal />
             <ModalTwo
               icon={<FaPlusCircle />}
               text="Add To Group"
@@ -101,7 +86,12 @@ const mediaPage = async ({ params, searchParams }: Props) => {
 
           <p>{mediaData.overview}</p>
 
-          {trailer && <YouTubePlayer youtubeId={trailer?.key} />}
+          <Suspense fallback={<p>Loading.......</p>}>
+            <FetchVideo
+              media_id={media_id}
+              media_type={media_type}
+            />
+          </Suspense>
 
           <section>
             <div>

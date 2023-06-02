@@ -1,8 +1,8 @@
 import "./globals.css";
 import SProvider from "../components/SessionProvider/SProvider";
 import { Toasty } from "../components/Toasty/Toasty";
-import SlidingNav from "@/components/SlidingNav/SlidingNav";
 import SearchBar from "@/components/SearchBar/SearchBar";
+import { MuiSetup } from "./theme/MuiSetup";
 
 export const metadata = {
   title: "We Should Watch...",
@@ -20,7 +20,9 @@ export default function RootLayout({ children }: Props) {
       <body>
         <SearchBar />
         <Toasty />
-        <SProvider>{children}</SProvider>
+        <SProvider>
+          <MuiSetup>{children}</MuiSetup>
+        </SProvider>
       </body>
     </html>
   );
