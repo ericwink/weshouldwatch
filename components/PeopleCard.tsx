@@ -8,22 +8,15 @@ import InfoIcon from "@mui/icons-material/Info";
 import Link from "next/link";
 
 interface Props {
-  media: {
-    poster_path: string;
-    title?: string;
-    name?: string;
-    vote_average: number;
-    release_date?: string;
-    first_air_date?: string;
+  person: {
+    profile_path: string;
+    name: string;
     id: number;
     media_type: string;
   };
 }
 
-const MediaCardMUI = ({ media }: Props) => {
-  const title = media.title ? media.title : media.name;
-  const date = media.release_date ? media.release_date : media.first_air_date;
-
+const PeopleCard = ({ person }: Props) => {
   return (
     <Grid
       xs={4}
@@ -33,28 +26,20 @@ const MediaCardMUI = ({ media }: Props) => {
       <Paper elevation={3}>
         <Box sx={{ height: 200, position: "relative" }}>
           <Image
-            src={getPoster(media.poster_path, "200")}
-            alt={title!}
+            src={getPoster(person.profile_path, "200")}
+            alt={person.name}
             fill={true}
             style={{ borderTopRightRadius: "4px", borderTopLeftRadius: "4px" }}
           />
         </Box>
         <Grid container>
           <Grid
-            xs={4}
+            xs={9}
             display="flex"
             justifyContent="center"
             alignItems="center"
           >
-            <Typography variant="subtitle2">{(media.vote_average * 10).toFixed(0)}%</Typography>
-          </Grid>
-          <Grid
-            xs={5}
-            display="flex"
-            justifyContent="center"
-            alignItems="center"
-          >
-            <Typography variant="subtitle2">{date!.slice(0, 4)}</Typography>
+            <Typography variant="subtitle2">{person.name}</Typography>
           </Grid>
           <Grid
             xs={3}
@@ -65,7 +50,7 @@ const MediaCardMUI = ({ media }: Props) => {
             <IconButton>
               <Link
                 className="flex"
-                href={`/media/${media.id}/?media_type=${media.media_type}`}
+                href={`/media/${person.id}/?media_type=${person.media_type}`}
               >
                 <InfoIcon />
               </Link>
@@ -77,4 +62,4 @@ const MediaCardMUI = ({ media }: Props) => {
   );
 };
 
-export default MediaCardMUI;
+export default PeopleCard;

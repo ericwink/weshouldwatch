@@ -2,12 +2,12 @@
 
 import MediaCardMUI from "@/components/MediaCardMUI";
 import Grid from "@mui/material/Unstable_Grid2"; // Grid version 2
-import { CssBaseline, Container } from "@mui/material";
+import { Container } from "@mui/material";
+import PeopleCard from "./PeopleCard";
 
-const TrendingGrid = ({ data }) => {
+const TrendingGrid = ({ data }: { data: any }) => {
   return (
     <>
-      <CssBaseline />
       <Container>
         <h1>MUI PAGE</h1>
         <Grid
@@ -15,9 +15,15 @@ const TrendingGrid = ({ data }) => {
           spacing={1}
           justifyContent="center"
         >
-          {data.map(each => (
-            <MediaCardMUI media={each} />
-          ))}
+          {data.map(each => {
+            if (!each.adult) {
+              if (each.media_type === "person") {
+                return <PeopleCard person={each} />;
+              } else {
+                return <MediaCardMUI media={each} />;
+              }
+            }
+          })}
         </Grid>
       </Container>
     </>

@@ -1,7 +1,6 @@
 import Trending from "@/components/Trending/Trending";
 import SignIn from "../components/SignIn/SignIn";
 import CreateGroup from "../components/CreateGroup/CreateGroup";
-import MediaCardMUI from "@/components/MediaCardMUI";
 
 const HomePage = () => {
   return (
@@ -14,8 +13,6 @@ const HomePage = () => {
       <Trending mediaType="tv" />
       <p>Trending People</p>
       <Trending mediaType="person" />
-
-      <MediaCardMUI />
 
       <SignIn />
 
