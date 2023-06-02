@@ -17,7 +17,6 @@ const muiPage = () => {
           <MediaCardMUI />
           <MediaCardMUI />
           <MediaCardMUI />
-          <MediaCardMUI />
         </Grid>
       </Container>
     </>

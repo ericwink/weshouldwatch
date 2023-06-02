@@ -1,9 +1,11 @@
 "use client";
 
 import getPoster from "@/lib/getPoster";
-import { Paper, Typography, Box } from "@mui/material";
+import { Paper, Typography, Box, IconButton } from "@mui/material";
 import Grid from "@mui/material/Unstable_Grid2"; // Grid version 2
 import Image from "next/image";
+import InfoIcon from "@mui/icons-material/Info";
+import { useRouter } from "next/navigation";
 
 const media = {
   adult: false,
@@ -25,8 +27,10 @@ const media = {
 };
 
 const MediaCardMUI = () => {
+  const router = useRouter();
+
   return (
-    <Grid xs={3}>
+    <Grid xs={4}>
       <Paper elevation={3}>
         <Box sx={{ height: 200, position: "relative" }}>
           <Image
@@ -45,27 +49,41 @@ const MediaCardMUI = () => {
             display="flex"
             justifyContent="center"
           >
-            <Typography>{media.title}</Typography>
+            <Typography
+              variant="subtitle1"
+              component="h2"
+              textAlign="center"
+            >
+              {media.title}
+            </Typography>
           </Grid>
         </Grid>
-        <Grid
-          container
-          mt={1}
-          pb={1}
-        >
+        <Grid container>
           <Grid
-            xs={6}
+            xs={4}
             display="flex"
             justifyContent="center"
+            alignItems="center"
           >
-            <p>date</p>
+            <Typography variant="subtitle2">{media.vote_average * 10}%</Typography>
           </Grid>
           <Grid
-            xs={6}
+            xs={5}
             display="flex"
             justifyContent="center"
+            alignItems="center"
           >
-            <p>rating</p>
+            <Typography variant="subtitle2">{media.release_date.slice(0, 4)}</Typography>
+          </Grid>
+          <Grid
+            xs={3}
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+          >
+            <IconButton onClick={() => router.push(`/media/${media.id}/?media_type=${media.media_type}`)}>
+              <InfoIcon />
+            </IconButton>
           </Grid>
         </Grid>
       </Paper>
