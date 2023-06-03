@@ -8,6 +8,7 @@ const getData = async (mediaType: string) => {
   const url = `https://api.themoviedb.org/3/trending/${mediaType}/day?include_adult=false&api_key=${tmdbKey}`;
   const result = await fetch(url, { next: { revalidate: 86400 } });
   const media = await result.json();
+  // await new Promise(resolve => setTimeout(resolve, 10000));
   return media.results;
 };
 
@@ -20,7 +21,7 @@ const muiPage = async () => {
     <>
       <TabDisplay tabNames={["Trending Movies", "Trending TV", "Trending People"]}>
         <CardGrid>
-          {movies.map(movie => (
+          {movies.map((movie: any) => (
             <MediaCardMUI
               media={movie}
               key={movie.id}
@@ -28,7 +29,7 @@ const muiPage = async () => {
           ))}
         </CardGrid>
         <CardGrid>
-          {shows.map(show => (
+          {shows.map((show: any) => (
             <MediaCardMUI
               media={show}
               key={show.id}
@@ -36,7 +37,7 @@ const muiPage = async () => {
           ))}
         </CardGrid>
         <CardGrid>
-          {people.map(person => (
+          {people.map((person: any) => (
             <PeopleCard
               person={person}
               key={person.id}

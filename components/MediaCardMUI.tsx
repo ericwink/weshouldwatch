@@ -33,8 +33,6 @@ const MediaCardMUI = ({ media }: Props) => {
   const title = media.title ? media.title : media.name;
   const date = media.release_date ? media.release_date : media.first_air_date;
 
-  console.log(media.title);
-
   return (
     <Grid
       xs={4}

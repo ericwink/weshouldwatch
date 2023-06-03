@@ -17,8 +17,6 @@ const Trending = async ({ mediaType }: Props) => {
 
   if (!media) return <h1>No data found</h1>;
 
-  console.log(media);
-
   return (
     <Slider
       mediaType={mediaType}
