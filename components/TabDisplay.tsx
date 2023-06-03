@@ -38,17 +38,24 @@ function a11yProps(index: number) {
 
 interface Props {
   children: ReactNode[];
-  tabOne: string;
-  tabTwo: string;
-  tabThree: string;
+  tabNames: string[];
 }
 
-export default function TabDisplay({ children, tabOne, tabTwo, tabThree }: Props) {
+export default function TabDisplay({ children, tabNames }: Props) {
   const [value, setValue] = useState(0);
 
   const handleChange = (event: SyntheticEvent, newValue: number) => {
     setValue(newValue);
   };
+
+  const mappedTabNames = tabNames.map((tabName, index) => {
+    return (
+      <Tab
+        label={tabName}
+        {...a11yProps(index)}
+      />
+    );
+  });
 
   const mappedChildren = Children.map(children, (child, index) => {
     return (
@@ -74,7 +81,8 @@ export default function TabDisplay({ children, tabOne, tabTwo, tabThree }: Props
           onChange={handleChange}
           aria-label="basic tabs example"
         >
-          <Tab
+          {mappedTabNames}
+          {/* <Tab
             label={tabOne}
             {...a11yProps(0)}
           />
@@ -85,7 +93,7 @@ export default function TabDisplay({ children, tabOne, tabTwo, tabThree }: Props
           <Tab
             label={tabThree}
             {...a11yProps(2)}
-          />
+          /> */}
         </Tabs>
       </Box>
       {mappedChildren}

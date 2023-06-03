@@ -18,19 +18,7 @@ interface Props {
   mediaData: any;
 }
 
-const fetchData = async (mediaType: string, id: string) => {
-  const tmdbKey = process.env.MOVIE_DB_API;
-  const url = `https://api.themoviedb.org/3/${mediaType}/${id}?api_key=${tmdbKey}&language=en-US`;
-  const result = await fetch(url, { next: { revalidate: 28800 } });
-  return result.json();
-};
-
-const MediaData = async ({ mediaData, media_id, media_type }: Props) => {
-  // const { media_type } = searchParams;
-  // const { media_id } = params;
-
-  // const mediaData = await fetchData(media_type, media_id);
-
+const MediaData = ({ mediaData, media_id, media_type }: Props) => {
   const poster = getPoster(mediaData.poster_path, "200");
   const title = mediaData.title ? mediaData.title : mediaData.name;
   const backdrop = mediaData.backdrop_path ? `https://image.tmdb.org/t/p/w1280/${mediaData.backdrop_path}` : noBackground;
@@ -104,11 +92,6 @@ const MediaData = async ({ mediaData, media_id, media_type }: Props) => {
           </section>
         </div>
       </div>
-
-      <CastCredsRec
-        media_id={media_id}
-        media_type={media_type}
-      />
     </main>
   );
 };
