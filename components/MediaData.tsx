@@ -42,6 +42,7 @@ const MediaData = ({ mediaData, media_id, media_type }: Props) => {
           src={backdrop}
           alt={`backdrop image for ${title}`}
           fill={true}
+          objectFit="cover"
         />
       </div>
       <div className="container max-w-4xl">
