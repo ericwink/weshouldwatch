@@ -1,6 +1,6 @@
 "use client";
 
-import { ReactNode, useState, SyntheticEvent } from "react";
+import { ReactNode, useState, SyntheticEvent, Children } from "react";
 import { Tabs, Tab, Typography, Box } from "@mui/material";
 
 interface TabPanelProps {
@@ -36,12 +36,30 @@ function a11yProps(index: number) {
   };
 }
 
-export default function TrendingTabs({ children }: { children: ReactNode[] }) {
+interface Props {
+  children: ReactNode[];
+  tabOne: string;
+  tabTwo: string;
+  tabThree: string;
+}
+
+export default function TabDisplay({ children, tabOne, tabTwo, tabThree }: Props) {
   const [value, setValue] = useState(0);
 
   const handleChange = (event: SyntheticEvent, newValue: number) => {
     setValue(newValue);
   };
+
+  const mappedChildren = Children.map(children, (child, index) => {
+    return (
+      <TabPanel
+        value={value}
+        index={index}
+      >
+        {child}
+      </TabPanel>
+    );
+  });
 
   return (
     <Box
@@ -57,37 +75,20 @@ export default function TrendingTabs({ children }: { children: ReactNode[] }) {
           aria-label="basic tabs example"
         >
           <Tab
-            label="Trending Movies"
+            label={tabOne}
             {...a11yProps(0)}
           />
           <Tab
-            label="Trending TV"
+            label={tabTwo}
             {...a11yProps(1)}
           />
           <Tab
-            label="Trending People"
+            label={tabThree}
             {...a11yProps(2)}
           />
         </Tabs>
       </Box>
-      <TabPanel
-        value={value}
-        index={0}
-      >
-        {children[0]}
-      </TabPanel>
-      <TabPanel
-        value={value}
-        index={1}
-      >
-        {children[1]}
-      </TabPanel>
-      <TabPanel
-        value={value}
-        index={2}
-      >
-        {children[2]}
-      </TabPanel>
+      {mappedChildren}
     </Box>
   );
 }
