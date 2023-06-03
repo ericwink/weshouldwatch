@@ -25,7 +25,10 @@ const PeopleCard = ({ person }: Props) => {
       sm={3}
       md={2}
     >
-      <Paper elevation={3}>
+      <Paper
+        elevation={3}
+        sx={{ maxWidth: "135px" }}
+      >
         <Box sx={{ height: 200, position: "relative" }}>
           <Image
             src={getPoster(person.profile_path, "200")}

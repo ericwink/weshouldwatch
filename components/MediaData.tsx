@@ -10,7 +10,6 @@ import noBackground from "../public/We Should Watch.png";
 import MUIModal from "@/components/MUIModal";
 import FetchVideo from "@/components/FetchVideo";
 import { Suspense } from "react";
-import CastCredsRec from "@/components/CastCredsRec";
 
 interface Props {
   media_id: string;

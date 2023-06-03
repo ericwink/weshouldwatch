@@ -7,7 +7,8 @@ import { ReactNode } from "react";
 const CardGrid = ({ children }: { children: ReactNode }) => {
   return (
     <>
-      <Container>
+      {/* change this later to be better visually at different breakpoints */}
+      <Container maxWidth="md">
         <Grid
           container
           spacing={1}
