@@ -18,11 +18,7 @@ const muiPage = async () => {
 
   return (
     <>
-      <TabDisplay
-        tabOne="Trending Movies"
-        tabTwo="Trending TV"
-        tabThree="Trending People"
-      >
+      <TabDisplay tabNames={["Trending Movies", "Trending TV", "Trending People"]}>
         <CardGrid>
           {movies.map(movie => (
             <MediaCardMUI

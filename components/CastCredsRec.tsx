@@ -29,11 +29,7 @@ const CastCredsRec = async ({ media_id, media_type }: Props) => {
   const { cast, crew } = await fetchCredits(media_type, media_id);
 
   return (
-    <TabDisplay
-      tabOne="Cast"
-      tabTwo="Crew"
-      tabThree="Recommended"
-    >
+    <TabDisplay tabNames={["Cast", "Crew", "Recommended"]}>
       <CardGrid>
         {cast.map(person => (
           <PeopleCard
