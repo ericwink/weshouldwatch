@@ -20,9 +20,20 @@ interface Props {
   };
 }
 
+// {
+//   id: 240,
+//   title: 'The Godfather Part II',
+//   poster_path: '/bMadFzhjy9T7R8J48QGq1ngWNAK.jpg',
+//   media_type: 'movie',
+//   vote_average: 8.595,
+//   vote_count: 10881
+// },
+
 const MediaCardMUI = ({ media }: Props) => {
   const title = media.title ? media.title : media.name;
   const date = media.release_date ? media.release_date : media.first_air_date;
+
+  console.log(media.title);
 
   return (
     <Grid

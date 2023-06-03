@@ -16,6 +16,8 @@ interface Props {
   };
 }
 
+// need to add character: string, department: string
+
 const PeopleCard = ({ person }: Props) => {
   return (
     <Grid

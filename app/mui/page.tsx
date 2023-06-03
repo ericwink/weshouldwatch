@@ -1,5 +1,7 @@
-import TrendingTabs from "@/components/TrendingTabs";
-import TrendingGrid from "@/components/TrendingGrid";
+import TabDisplay from "@/components/TabDisplay";
+import CardGrid from "@/components/CardGrid";
+import MediaCardMUI from "@/components/MediaCardMUI";
+import PeopleCard from "@/components/PeopleCard";
 
 const getData = async (mediaType: string) => {
   const tmdbKey = process.env.MOVIE_DB_API;
@@ -10,15 +12,42 @@ const getData = async (mediaType: string) => {
 };
 
 const muiPage = async () => {
-  const data = await getData("person");
+  const movies = await getData("movie");
+  const people = await getData("person");
+  const shows = await getData("tv");
 
   return (
     <>
-      <TrendingTabs>
-        <TrendingGrid data={await getData("movie")} />
-        <TrendingGrid data={await getData("tv")} />
-        <TrendingGrid data={await getData("person")} />
-      </TrendingTabs>
+      <TabDisplay
+        tabOne="Trending Movies"
+        tabTwo="Trending TV"
+        tabThree="Trending People"
+      >
+        <CardGrid>
+          {movies.map(movie => (
+            <MediaCardMUI
+              media={movie}
+              key={movie.id}
+            />
+          ))}
+        </CardGrid>
+        <CardGrid>
+          {shows.map(show => (
+            <MediaCardMUI
+              media={show}
+              key={show.id}
+            />
+          ))}
+        </CardGrid>
+        <CardGrid>
+          {people.map(person => (
+            <PeopleCard
+              person={person}
+              key={person.id}
+            />
+          ))}
+        </CardGrid>
+      </TabDisplay>
     </>
   );
 };
