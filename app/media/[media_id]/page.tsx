@@ -48,7 +48,7 @@ const mediaPage = async ({ params, searchParams }: Props) => {
         mediaData={mediaData}
       />
       <CardGrid>
-        {cast.map(person => (
+        {cast.map((person: any) => (
           <PeopleCard
             person={person}
             key={person.id}
@@ -56,7 +56,7 @@ const mediaPage = async ({ params, searchParams }: Props) => {
         ))}
       </CardGrid>
       <CardGrid>
-        {crew.map(person => (
+        {crew.map((person: any) => (
           <PeopleCard
             person={person}
             key={person.id}
@@ -64,7 +64,7 @@ const mediaPage = async ({ params, searchParams }: Props) => {
         ))}
       </CardGrid>
       <CardGrid>
-        {recommended.map(media => (
+        {recommended.map((media: any) => (
           <MediaCardMUI
             media={media}
             key={media.id}
