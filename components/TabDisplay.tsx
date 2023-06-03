@@ -53,6 +53,7 @@ export default function TabDisplay({ children, tabNames }: Props) {
       <Tab
         label={tabName}
         {...a11yProps(index)}
+        key={`${tabName}-${index}`}
       />
     );
   });

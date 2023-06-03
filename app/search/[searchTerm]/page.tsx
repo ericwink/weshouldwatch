@@ -38,13 +38,19 @@ const SearchTermPage = async ({ params }: Props) => {
       if (mediaType === "person") {
         return (
           <li>
-            <ActorLink {...each} />
+            <ActorLink
+              {...each}
+              key={each.id}
+            />
           </li>
         );
       } else {
         return (
           <li>
-            <PosterLink media={each} />
+            <PosterLink
+              media={each}
+              key={each.id}
+            />
           </li>
         );
       }
