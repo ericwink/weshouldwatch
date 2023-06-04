@@ -1,4 +1,4 @@
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/app/components/ui/card";
 import { RxPerson } from "react-icons/rx";
 import { GrMultimedia, GrCircleInformation } from "react-icons/gr";
 import { FcInvite } from "react-icons/fc";

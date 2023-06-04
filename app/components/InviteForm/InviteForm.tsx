@@ -1,8 +1,8 @@
 "use client";
 import { useState, FormEvent } from "react";
 import axios from "axios";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+import { Button } from "@/app/components/ui/button";
+import { Input } from "@/app/components/ui/input";
 
 const InviteForm = ({ groupID }: { groupID: string }) => {
   const [success, setSuccess] = useState(false);

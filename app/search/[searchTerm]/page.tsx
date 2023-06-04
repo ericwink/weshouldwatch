@@ -1,8 +1,8 @@
 import { Movie, TV, Person } from "@/lib/interface";
-import TabDisplay from "@/components/TabDisplay";
-import MediaCardMUI from "@/components/MediaCardMUI";
-import PeopleCard from "@/components/PeopleCard";
-import CardGrid from "@/components/CardGrid";
+import TabDisplay from "@/app/components/TabDisplay";
+import MediaCardMUI from "@/app/components/MediaCardMUI";
+import PeopleCard from "@/app/components/PeopleCard";
+import CardGrid from "@/app/components/CardGrid";
 
 interface Props {
   params: { searchTerm: string };
@@ -61,6 +61,8 @@ const SearchTermPage = async ({ params }: Props) => {
       key={person.id}
     />
   ));
+
+  console.log(searchResults.movie);
 
   return (
     <TabDisplay tabNames={createTabTitles(searchResults)}>

@@ -62,7 +62,7 @@ const MediaCardMUI = ({ media }: Props) => {
             justifyContent="center"
             alignItems="center"
           >
-            <Typography variant="subtitle2">{date!.slice(0, 4)}</Typography>
+            <Typography variant="subtitle2">{date ? date.slice(0, 4) : "No Date"}</Typography>
           </Grid>
           <Grid
             xs={3}

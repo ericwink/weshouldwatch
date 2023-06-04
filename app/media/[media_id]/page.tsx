@@ -1,8 +1,8 @@
-import MediaData from "@/components/MediaData";
-import TabDisplay from "@/components/TabDisplay";
-import CardGrid from "@/components/CardGrid";
-import PeopleCard from "@/components/PeopleCard";
-import MediaCardMUI from "@/components/MediaCardMUI";
+import MediaData from "@/app/components/MediaData";
+import TabDisplay from "@/app/components/TabDisplay";
+import CardGrid from "@/app/components/CardGrid";
+import PeopleCard from "@/app/components/PeopleCard";
+import MediaCardMUI from "@/app/components/MediaCardMUI";
 
 interface Props {
   params: { media_id: string };

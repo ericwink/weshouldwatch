@@ -1,9 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import { Input } from "@/components/ui/input";
-import { addMediaToGroup } from "../../lib/server-actions";
-import GroupEntry from "@/components/GroupEntry/GroupEntry";
+import { Input } from "@/app/components/ui/input";
+import { addMediaToGroup } from "../../../lib/server-actions";
+import GroupEntry from "@/app/components/GroupEntry/GroupEntry";
 
 interface Collection {
   id: string;

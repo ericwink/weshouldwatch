@@ -1,7 +1,7 @@
-import TabDisplay from "@/components/TabDisplay";
-import CardGrid from "@/components/CardGrid";
-import MediaCardMUI from "@/components/MediaCardMUI";
-import PeopleCard from "@/components/PeopleCard";
+import TabDisplay from "@/app/components/TabDisplay";
+import CardGrid from "@/app/components/CardGrid";
+import MediaCardMUI from "@/app/components/MediaCardMUI";
+import PeopleCard from "@/app/components/PeopleCard";
 import { supabase } from "@/lib/supabase";
 
 const getData = async (mediaType: string) => {

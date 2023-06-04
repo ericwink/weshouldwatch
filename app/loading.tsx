@@ -1,8 +1,8 @@
 "use client";
 
-import TabDisplay from "@/components/TabDisplay";
-import CardGrid from "@/components/CardGrid";
-import CardSkeleton from "@/components/CardSkeleton";
+import TabDisplay from "@/app/components/TabDisplay";
+import CardGrid from "@/app/components/CardGrid";
+import CardSkeleton from "@/app/components/CardSkeleton";
 
 const mainPageLoading = () => {
   const cardSkeleton = Array.from({ length: 12 }, (_, i) => <CardSkeleton key={i} />);

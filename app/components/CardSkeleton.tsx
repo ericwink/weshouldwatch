@@ -3,15 +3,8 @@ import Grid from "@mui/material/Unstable_Grid2"; // Grid version 2
 
 const CardSkeleton = () => {
   return (
-    <Grid
-      xs={4}
-      sm={3}
-      md={2}
-    >
-      <Stack
-        spacing={0.5}
-        m={0.5}
-      >
+    <Grid>
+      <Stack spacing={0.5}>
         <Skeleton
           variant="rectangular"
           animation="wave"

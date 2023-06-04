@@ -1,5 +1,5 @@
 import "./globals.css";
-import SearchBar from "@/components/SearchBar/SearchBar";
+import SearchBar from "@/app/components/SearchBar/SearchBar";
 import { MuiSetup } from "./theme/MuiSetup";
 
 export const metadata = {
