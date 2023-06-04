@@ -18,16 +18,16 @@ const getData = async (mediaType: string) => {
 //   return movie;
 // };
 
-const getUser = async () => {
-  const { data } = await supabase.auth.getUser();
-  return data;
-};
+// const getUser = async () => {
+//   const { data } = await supabase.auth.getUser();
+//   return data;
+// };
 
 const muiPage = async () => {
   // const movie = await fetchSupabase();
   // console.log(movie);
-  const user = await getUser();
-  console.log({ user });
+  // const user = await getUser();
+  // console.log({ user });
   const movies = await getData("movie");
   const people = await getData("person");
   const shows = await getData("tv");

@@ -34,11 +34,7 @@ const MediaCardMUI = ({ media }: Props) => {
   const date = media.release_date ? media.release_date : media.first_air_date;
 
   return (
-    <Grid
-      xs={4}
-      sm={3}
-      md={2}
-    >
+    <Grid>
       <Paper
         elevation={3}
         sx={{ width: "135px" }}

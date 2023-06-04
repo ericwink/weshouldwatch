@@ -20,11 +20,7 @@ interface Props {
 
 const PeopleCard = ({ person }: Props) => {
   return (
-    <Grid
-      xs={4}
-      sm={3}
-      md={2}
-    >
+    <Grid>
       <Paper
         elevation={3}
         sx={{ width: "135px" }}
