@@ -27,7 +27,7 @@ const PeopleCard = ({ person }: Props) => {
     >
       <Paper
         elevation={3}
-        sx={{ maxWidth: "135px" }}
+        sx={{ width: "135px" }}
       >
         <Box sx={{ height: 200, position: "relative" }}>
           <Image
