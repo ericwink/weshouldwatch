@@ -1,6 +1,4 @@
 import "./globals.css";
-import SProvider from "../components/SessionProvider/SProvider";
-import { Toasty } from "../components/Toasty/Toasty";
 import SearchBar from "@/components/SearchBar/SearchBar";
 import { MuiSetup } from "./theme/MuiSetup";
 
@@ -19,10 +17,7 @@ export default function RootLayout({ children }: Props) {
     <html lang="en">
       <body>
         <SearchBar />
-        <Toasty />
-        <SProvider>
-          <MuiSetup>{children}</MuiSetup>
-        </SProvider>
+        <MuiSetup>{children}</MuiSetup>
       </body>
     </html>
   );

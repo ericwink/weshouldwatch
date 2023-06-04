@@ -20,12 +20,11 @@ interface Props {
 
 const PeopleCard = ({ person }: Props) => {
   return (
-    <Grid
-      xs={4}
-      sm={3}
-      md={2}
-    >
-      <Paper elevation={3}>
+    <Grid>
+      <Paper
+        elevation={3}
+        sx={{ width: "135px" }}
+      >
         <Box sx={{ height: 200, position: "relative" }}>
           <Image
             src={getPoster(person.profile_path, "200")}

@@ -83,18 +83,6 @@ export default function TabDisplay({ children, tabNames }: Props) {
           aria-label="basic tabs example"
         >
           {mappedTabNames}
-          {/* <Tab
-            label={tabOne}
-            {...a11yProps(0)}
-          />
-          <Tab
-            label={tabTwo}
-            {...a11yProps(1)}
-          />
-          <Tab
-            label={tabThree}
-            {...a11yProps(2)}
-          /> */}
         </Tabs>
       </Box>
       {mappedChildren}

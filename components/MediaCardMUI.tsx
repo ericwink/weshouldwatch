@@ -33,15 +33,12 @@ const MediaCardMUI = ({ media }: Props) => {
   const title = media.title ? media.title : media.name;
   const date = media.release_date ? media.release_date : media.first_air_date;
 
-  console.log(media.title);
-
   return (
-    <Grid
-      xs={4}
-      sm={3}
-      md={2}
-    >
-      <Paper elevation={3}>
+    <Grid>
+      <Paper
+        elevation={3}
+        sx={{ width: "135px" }}
+      >
         <Box sx={{ height: 200, position: "relative" }}>
           <Image
             src={getPoster(media.poster_path, "200")}

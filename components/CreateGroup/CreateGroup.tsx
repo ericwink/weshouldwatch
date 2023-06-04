@@ -1,4 +1,5 @@
 "use client";
+import { SyntheticEvent } from "react";
 
 import { useState } from "react";
 import { useSession } from "next-auth/react";
@@ -10,7 +11,7 @@ const CreateGroup = () => {
   const [message, setMessage] = useState<string | null>(null);
   const { data: session } = useSession();
 
-  const handleSubmit = e => {
+  const handleSubmit = (e: SyntheticEvent) => {
     e.preventDefault();
     sendData();
     setInput("");

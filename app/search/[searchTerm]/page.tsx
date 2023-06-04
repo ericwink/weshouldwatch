@@ -1,6 +1,8 @@
 import { Movie, TV, Person } from "@/lib/interface";
-import ActorLink from "@/components/ActorLink/ActorLink";
-import PosterLink from "@/components/PosterLink/PosterLink";
+import TabDisplay from "@/components/TabDisplay";
+import MediaCardMUI from "@/components/MediaCardMUI";
+import PeopleCard from "@/components/PeopleCard";
+import CardGrid from "@/components/CardGrid";
 
 interface Props {
   params: { searchTerm: string };
@@ -22,7 +24,7 @@ const fetchData = async (searchTerm: string): Promise<SortedResults> => {
 };
 
 const separateData = (data: [Movie | TV | Person]): SortedResults => {
-  const tempData = { movie: [], tv: [], person: [] };
+  const tempData: any = { movie: [], tv: [], person: [] };
   data.forEach(entry => {
     tempData[entry.media_type].push(entry);
   });
@@ -33,51 +35,39 @@ const SearchTermPage = async ({ params }: Props) => {
   const { searchTerm } = params;
   const searchResults = await fetchData(searchTerm);
 
-  const mapResults = (mediaType: "movie" | "tv" | "person") => {
-    return searchResults[mediaType].map(each => {
-      if (mediaType === "person") {
-        return (
-          <li key={each.id}>
-            <ActorLink {...each} />
-          </li>
-        );
-      } else {
-        return (
-          <li key={each.id}>
-            <PosterLink media={each} />
-          </li>
-        );
-      }
-    });
+  const createTabTitles = (results: SortedResults) => {
+    const tabTitles = [];
+    if (results.movie.length > 0) tabTitles.push("Movies");
+    if (results.tv.length > 0) tabTitles.push("TV Shows");
+    if (results.person.length > 0) tabTitles.push("People");
+    return tabTitles;
   };
 
-  const movies = mapResults("movie");
-  const tv = mapResults("tv");
-  const people = mapResults("person");
+  const movies = searchResults.movie.map(movie => (
+    <MediaCardMUI
+      media={movie}
+      key={movie.id}
+    />
+  ));
+  const tvShows = searchResults.tv.map(show => (
+    <MediaCardMUI
+      media={show}
+      key={show.id}
+    />
+  ));
+  const people = searchResults.person.map(person => (
+    <PeopleCard
+      person={person}
+      key={person.id}
+    />
+  ));
 
   return (
-    <main className="container">
-      <h1>Search Results</h1>
-
-      {movies.length > 1 && (
-        <section>
-          <p>Movies:</p>
-          <ul className="grid grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-1 md:gap-2">{movies}</ul>
-        </section>
-      )}
-      {tv.length > 1 && (
-        <section>
-          <p>TV:</p>
-          <ul className="grid grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-1 md:gap-2">{tv}</ul>
-        </section>
-      )}
-      {people.length > 1 && (
-        <section>
-          <p>TV:</p>
-          <ul className="grid grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-1 md:gap-2">{people}</ul>
-        </section>
-      )}
-    </main>
+    <TabDisplay tabNames={createTabTitles(searchResults)}>
+      {movies && <CardGrid>{movies}</CardGrid>}
+      {tvShows && <CardGrid>{tvShows}</CardGrid>}
+      {people && <CardGrid>{people}</CardGrid>}
+    </TabDisplay>
   );
 };
 export default SearchTermPage;

@@ -13,6 +13,8 @@ const fetchData = async (mediaType: string, id: string) => {
   const tmdbKey = process.env.MOVIE_DB_API;
   const url = `https://api.themoviedb.org/3/${mediaType}/${id}?api_key=${tmdbKey}&language=en-US`;
   const result = await fetch(url, { next: { revalidate: 28800 } });
+  // await new Promise(resolve => setTimeout(resolve, 80000));
+
   return result.json();
 };
 
