@@ -1,6 +1,7 @@
 import "./globals.css";
 import SearchBar from "@/app/components/SearchBar/SearchBar";
 import { MuiSetup } from "./theme/MuiSetup";
+import LogOut from "./components/LogOut";
 
 export const metadata = {
   title: "We Should Watch...",
@@ -17,6 +18,7 @@ export default function RootLayout({ children }: Props) {
     <html lang="en">
       <body>
         <SearchBar />
+        <LogOut />
         <MuiSetup>{children}</MuiSetup>
       </body>
     </html>
