@@ -13,7 +13,7 @@ interface Props {
   id: string;
   name: string;
   mediaId: string;
-  serverAction: (id: string, name: string) => Promise<void>;
+  serverAction: (id: string, name: string) => void;
 }
 
 const GroupEntry = ({ collection, id, name, mediaId, serverAction }: Props) => {
@@ -35,7 +35,7 @@ const GroupEntry = ({ collection, id, name, mediaId, serverAction }: Props) => {
       <h1>{name}</h1>
 
       <button
-        onClick={() => startTransition(() => serverAction(id))}
+        onClick={() => startTransition(() => serverAction(id, name))}
         disabled={checkResult}
       >
         {isPending ? "loading" : buttonText}

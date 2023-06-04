@@ -17,7 +17,9 @@ const reorderData = (obj: AvailabilityData) => {
   const data: StreamOptions = {};
   for (let watchOption in obj) {
     if (watchOption === "link") continue;
-    for (let provider of obj[watchOption]) {
+    for (let provider of obj[watchOption as keyof AvailabilityData]) {
+      if (typeof provider === "string") continue; // Skip if it's a string
+
       let host = provider.provider_name;
       let logo = provider.logo_path;
       if (!data[host]) data[host] = { logo_path: logo, watchOption: [] };
@@ -56,8 +58,8 @@ const StreamingOptions = async ({ media_type, id, title }: Props) => {
     );
   };
 
-  const buyPurchaseRent = (option: "buy" | "rent" | "flatrate") => {
-    const map = { buy: "Buy", rent: "Rent", flatrate: "Streaming" };
+  const buyPurchaseRent = (option: string) => {
+    const map: { [key: string]: string } = { buy: "Buy", rent: "Rent", flatrate: "Streaming" };
     if (map[option]) return <p>{map[option]}</p>;
     return <p>{option}</p>;
   };

@@ -24,7 +24,7 @@ const fetchData = async (searchTerm: string): Promise<SortedResults> => {
 };
 
 const separateData = (data: [Movie | TV | Person]): SortedResults => {
-  const tempData = { movie: [], tv: [], person: [] };
+  const tempData: any = { movie: [], tv: [], person: [] };
   data.forEach(entry => {
     tempData[entry.media_type].push(entry);
   });
@@ -35,7 +35,7 @@ const SearchTermPage = async ({ params }: Props) => {
   const { searchTerm } = params;
   const searchResults = await fetchData(searchTerm);
 
-  const createTabTitles = results => {
+  const createTabTitles = (results: SortedResults) => {
     const tabTitles = [];
     if (results.movie.length > 0) tabTitles.push("Movies");
     if (results.tv.length > 0) tabTitles.push("TV Shows");
@@ -43,9 +43,24 @@ const SearchTermPage = async ({ params }: Props) => {
     return tabTitles;
   };
 
-  const movies = searchResults.movie.map(movie => <MediaCardMUI media={movie} />);
-  const tvShows = searchResults.tv.map(show => <MediaCardMUI media={show} />);
-  const people = searchResults.person.map(person => <PeopleCard person={person} />);
+  const movies = searchResults.movie.map(movie => (
+    <MediaCardMUI
+      media={movie}
+      key={movie.id}
+    />
+  ));
+  const tvShows = searchResults.tv.map(show => (
+    <MediaCardMUI
+      media={show}
+      key={show.id}
+    />
+  ));
+  const people = searchResults.person.map(person => (
+    <PeopleCard
+      person={person}
+      key={person.id}
+    />
+  ));
 
   return (
     <TabDisplay tabNames={createTabTitles(searchResults)}>

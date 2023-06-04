@@ -3,7 +3,6 @@
 import { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { addMediaToGroup } from "../../lib/server-actions";
-import { toast } from "../Toasty/Toasty";
 import GroupEntry from "@/components/GroupEntry/GroupEntry";
 
 interface Collection {
@@ -37,7 +36,7 @@ const GroupSendContainer = ({ mediaInfo, groupData, email }: Props) => {
     if (success) {
       setReason("");
     } else {
-      toast.error("Something went wrong. Please try again", { toastId: `${id}-${mediaInfo.mediaId}-fail` });
+      alert("Something went wrong. Please try again");
     }
   };
 

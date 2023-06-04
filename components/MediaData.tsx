@@ -9,7 +9,6 @@ import Image from "next/image";
 import noBackground from "../public/We Should Watch.png";
 import MUIModal from "@/components/MUIModal";
 import FetchVideo from "@/components/FetchVideo";
-import { Suspense } from "react";
 
 interface Props {
   media_id: string;
@@ -74,15 +73,15 @@ const MediaData = ({ mediaData, media_id, media_type }: Props) => {
 
           <p>{mediaData.overview}</p>
 
-          <Suspense fallback={<p>Loading.......</p>}>
-            <FetchVideo
-              media_id={media_id}
-              media_type={media_type}
-            />
-          </Suspense>
+          {/* @ts-expect-error Server Component */}
+          <FetchVideo
+            media_id={media_id}
+            media_type={media_type}
+          />
 
           <section>
             <div>
+              {/* @ts-expect-error Server Component */}
               <StreamingOptions
                 media_type={media_type}
                 id={media_id}

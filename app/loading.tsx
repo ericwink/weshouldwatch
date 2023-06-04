@@ -5,7 +5,7 @@ import CardGrid from "@/components/CardGrid";
 import CardSkeleton from "@/components/CardSkeleton";
 
 const mainPageLoading = () => {
-  const cardSkeleton = Array.from({ length: 12 }, (_, i) => <CardSkeleton />);
+  const cardSkeleton = Array.from({ length: 12 }, (_, i) => <CardSkeleton key={i} />);
 
   return (
     <>

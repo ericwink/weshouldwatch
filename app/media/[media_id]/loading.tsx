@@ -6,7 +6,7 @@ import CardSkeleton from "@/components/CardSkeleton";
 import MediaSkeleton from "@/components/MediaSkeleton";
 
 const mainPageLoading = () => {
-  const cardSkeleton = Array.from({ length: 12 }, (_, i) => <CardSkeleton />);
+  const cardSkeleton = Array.from({ length: 12 }, (_, i) => <CardSkeleton key={i} />);
   const mediaSkeleton = <MediaSkeleton />;
 
   return (
