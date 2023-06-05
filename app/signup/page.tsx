@@ -5,9 +5,10 @@ import { TextField, Button, Box, Container } from "@mui/material";
 import { useState } from "react";
 
 const gmailSignUp = async () => {
-  supabase.auth.signInWithOAuth({
+  let { data, error } = await supabase.auth.signInWithOAuth({
     provider: "google",
   });
+  if (error) throw new Error(error.message);
 };
 
 const passwordSignUp = async (email: string, password: string) => {
