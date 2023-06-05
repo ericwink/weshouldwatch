@@ -30,7 +30,7 @@ const signUpPage = async () => {
         flexDirection="column"
         gap={1}
       >
-        <h1>Login Page</h1>
+        <h1>Signup Page</h1>
         <TextField
           label="email"
           variant="outlined"
@@ -44,12 +44,12 @@ const signUpPage = async () => {
         <Button
           variant="contained"
           onClick={() => {
-            passwordLogin(email, password);
+            passwordSignUp(email, password);
           }}
         >
-          Login
+          Sign Up With Email
         </Button>
-        <button onClick={gmailLogin}>Login With Google</button>
+        <button onClick={gmailSignUp}>Sign Up With Google</button>
       </Box>
     </Container>
   );

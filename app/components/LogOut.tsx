@@ -4,8 +4,8 @@ import { supabase } from "@/lib/supabase";
 import { Button } from "@mui/material";
 import { useEffect, useState } from "react";
 
-const LogOut = async () => {
-  const [session, setSession] = useState(null);
+const LogOut = () => {
+  const [session, setSession] = useState<any>(null);
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
