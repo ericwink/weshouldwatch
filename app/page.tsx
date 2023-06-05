@@ -2,7 +2,6 @@ import TabDisplay from "@/app/components/TabDisplay";
 import CardGrid from "@/app/components/CardGrid";
 import MediaCardMUI from "@/app/components/MediaCardMUI";
 import PeopleCard from "@/app/components/PeopleCard";
-import { supabase } from "@/lib/supabase";
 
 const getData = async (mediaType: string) => {
   const tmdbKey = process.env.MOVIE_DB_API;
@@ -13,21 +12,7 @@ const getData = async (mediaType: string) => {
   return media.results;
 };
 
-// const fetchSupabase = async () => {
-//   const { data: movie } = await supabase.from("media").select("*");
-//   return movie;
-// };
-
-// const getUser = async () => {
-//   const { data } = await supabase.auth.getUser();
-//   return data;
-// };
-
 const muiPage = async () => {
-  // const movie = await fetchSupabase();
-  // console.log(movie);
-  // const user = await getUser();
-  // console.log({ user });
   const movies = await getData("movie");
   const people = await getData("person");
   const shows = await getData("tv");

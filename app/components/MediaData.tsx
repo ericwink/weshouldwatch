@@ -30,7 +30,7 @@ const MediaData = ({ mediaData, media_id, media_type }: Props) => {
   // };
 
   return (
-    <main>
+    <div>
       <div className="min-w-full h-80 relative -z-10">
         <Image
           src={backdrop}
@@ -79,7 +79,7 @@ const MediaData = ({ mediaData, media_id, media_type }: Props) => {
           </section>
         </div>
       </div>
-    </main>
+    </div>
   );
 };
 

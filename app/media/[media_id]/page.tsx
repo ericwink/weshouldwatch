@@ -43,37 +43,39 @@ const mediaPage = async ({ params, searchParams }: Props) => {
   const { cast, crew } = await fetchCredits(media_type, media_id);
 
   return (
-    <TabDisplay tabNames={["Media Data", "Cast", "Crew", "Recommended"]}>
-      <MediaData
-        media_type={media_type}
-        media_id={media_id}
-        mediaData={mediaData}
-      />
-      <CardGrid>
-        {cast.map((person: any) => (
-          <PeopleCard
-            person={person}
-            key={person.id}
-          />
-        ))}
-      </CardGrid>
-      <CardGrid>
-        {crew.map((person: any) => (
-          <PeopleCard
-            person={person}
-            key={person.id}
-          />
-        ))}
-      </CardGrid>
-      <CardGrid>
-        {recommended.map((media: any) => (
-          <MediaCardMUI
-            media={media}
-            key={media.id}
-          />
-        ))}
-      </CardGrid>
-    </TabDisplay>
+    <main>
+      <TabDisplay tabNames={["Media Data", "Cast", "Crew", "Recommended"]}>
+        <MediaData
+          media_type={media_type}
+          media_id={media_id}
+          mediaData={mediaData}
+        />
+        <CardGrid>
+          {cast.map((person: any) => (
+            <PeopleCard
+              person={person}
+              key={person.id}
+            />
+          ))}
+        </CardGrid>
+        <CardGrid>
+          {crew.map((person: any) => (
+            <PeopleCard
+              person={person}
+              key={person.id}
+            />
+          ))}
+        </CardGrid>
+        <CardGrid>
+          {recommended.map((media: any) => (
+            <MediaCardMUI
+              media={media}
+              key={media.id}
+            />
+          ))}
+        </CardGrid>
+      </TabDisplay>
+    </main>
   );
 };
 

@@ -54,7 +54,12 @@ const MediaCardMUI = ({ media }: Props) => {
             justifyContent="center"
             alignItems="center"
           >
-            <Typography variant="subtitle2">{(media.vote_average * 10).toFixed(0)}%</Typography>
+            <Typography
+              variant="subtitle2"
+              component="p"
+            >
+              {`${(media.vote_average * 10).toFixed(0)}%`}
+            </Typography>
           </Grid>
           <Grid
             xs={5}
@@ -62,7 +67,12 @@ const MediaCardMUI = ({ media }: Props) => {
             justifyContent="center"
             alignItems="center"
           >
-            <Typography variant="subtitle2">{date ? date.slice(0, 4) : "No Date"}</Typography>
+            <Typography
+              variant="subtitle2"
+              component="p"
+            >
+              {date ? date.slice(0, 4) : "No Date"}
+            </Typography>
           </Grid>
           <Grid
             xs={3}

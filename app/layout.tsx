@@ -18,7 +18,7 @@ export default function RootLayout({ children }: Props) {
     <html lang="en">
       <body>
         <SearchBar />
-        <LogOut />
+        {/* <LogOut /> */}
         <MuiSetup>{children}</MuiSetup>
       </body>
     </html>

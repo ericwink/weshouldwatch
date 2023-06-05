@@ -62,8 +62,6 @@ const SearchTermPage = async ({ params }: Props) => {
     />
   ));
 
-  console.log(searchResults.movie);
-
   return (
     <TabDisplay tabNames={createTabTitles(searchResults)}>
       {movies && <CardGrid>{movies}</CardGrid>}
