@@ -1,14 +1,17 @@
 "use client";
 
 import { useState, KeyboardEvent, MouseEvent } from "react";
-import { Box, Drawer, Button, List, Divider, ListItem, ListItemButton, ListItemIcon, ListItemText, IconButton } from "@mui/material";
-import InboxIcon from "@mui/icons-material/MoveToInbox";
-import MailIcon from "@mui/icons-material/Mail";
+import { Box, Drawer, List, Divider, ListItem, ListItemButton, ListItemIcon, ListItemText, IconButton } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
+import HomeIcon from "@mui/icons-material/Home";
+import WorkspacesIcon from "@mui/icons-material/Workspaces";
+import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import LogOut from "./LogOut";
+import { useRouter } from "next/navigation";
 
 const NavDrawer = () => {
   const [state, setState] = useState(false);
+  const router = useRouter();
 
   const toggleDrawer = (open: boolean) => (event: KeyboardEvent | MouseEvent) => {
     if (event.type === "keydown" && ((event as KeyboardEvent).key === "Tab" || (event as KeyboardEvent).key === "Shift")) {
@@ -18,6 +21,19 @@ const NavDrawer = () => {
     setState(open);
   };
 
+  const listItem = (route: string, icon: any, text: string) => (
+    <ListItem disablePadding>
+      <ListItemButton
+        onClick={() => {
+          router.push(`${route}`);
+        }}
+      >
+        <ListItemIcon>{icon}</ListItemIcon>
+        <ListItemText primary={text} />
+      </ListItemButton>
+    </ListItem>
+  );
+
   const list = (
     <Box
       sx={{ width: 250 }}
@@ -26,31 +42,12 @@ const NavDrawer = () => {
       onKeyDown={toggleDrawer(false)}
     >
       <List>
-        {["Inbox", "Starred", "Send email", "Drafts"].map((text, index) => (
-          <ListItem
-            key={text}
-            disablePadding
-          >
-            <ListItemButton>
-              <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
-              <ListItemText primary={text} />
-            </ListItemButton>
-          </ListItem>
-        ))}
+        {listItem("/", <HomeIcon />, "Home")}
+        {listItem("/mygroups", <WorkspacesIcon />, "My Groups")}
+        {listItem("/account", <AccountCircleIcon />, "My Account")}
       </List>
       <Divider />
       <List>
-        {["All mail", "Trash", "Spam"].map((text, index) => (
-          <ListItem
-            key={text}
-            disablePadding
-          >
-            <ListItemButton>
-              <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
-              <ListItemText primary={text} />
-            </ListItemButton>
-          </ListItem>
-        ))}
         <ListItem>
           <LogOut />
         </ListItem>

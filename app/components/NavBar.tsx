@@ -1,9 +1,9 @@
 "use client";
 
-import * as React from "react";
-import { AppBar, Box, Toolbar, Typography } from "@mui/material/";
+import { AppBar, Box, Toolbar } from "@mui/material/";
 import NavDrawer from "./NavDrawer";
-import SearchBar from "./SearchBar/SearchBar";
+import SearchBar from "./SearchBar";
+import UserAvatar from "./UserAvatar";
 
 const NavBar = () => {
   return (
@@ -11,15 +11,8 @@ const NavBar = () => {
       <AppBar position="static">
         <Toolbar>
           <NavDrawer />
-          <Typography
-            variant="h6"
-            noWrap
-            component="div"
-            sx={{ flexGrow: 1, display: { xs: "none", sm: "block" } }}
-          >
-            WSW...
-          </Typography>
           <SearchBar />
+          <UserAvatar />
         </Toolbar>
       </AppBar>
     </Box>

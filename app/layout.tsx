@@ -1,5 +1,5 @@
 import "./globals.css";
-import SearchBar from "@/app/components/SearchBar/SearchBar";
+import SearchBar from "@/app/components/SearchBar";
 import { MuiSetup } from "./theme/MuiSetup";
 import NavBar from "./components/NavBar";
 
