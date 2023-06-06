@@ -3,13 +3,7 @@
 import { supabase } from "@/lib/supabase";
 import { TextField, Button, Box, Container } from "@mui/material";
 import { useState } from "react";
-
-const gmailSignUp = async () => {
-  let { data, error } = await supabase.auth.signInWithOAuth({
-    provider: "google",
-  });
-  if (error) throw new Error(error.message);
-};
+import { useUser } from "../context/user";
 
 const passwordSignUp = async (email: string, password: string) => {
   let { data, error } = await supabase.auth.signUp({
@@ -23,6 +17,7 @@ const passwordSignUp = async (email: string, password: string) => {
 const SignUp = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const { gmail } = useUser();
 
   return (
     <Container>
@@ -50,7 +45,7 @@ const SignUp = () => {
         >
           Sign Up With Email
         </Button>
-        <button onClick={gmailSignUp}>Sign Up With Google</button>
+        <button onClick={gmail}>Sign Up With Google</button>
       </Box>
     </Container>
   );

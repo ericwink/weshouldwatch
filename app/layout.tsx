@@ -2,6 +2,7 @@ import "./globals.css";
 import SearchBar from "@/app/components/SearchBar";
 import { MuiSetup } from "./theme/MuiSetup";
 import NavBar from "./components/NavBar";
+import UserProvider from "./context/user";
 
 export const metadata = {
   title: "We Should Watch...",
@@ -17,9 +18,10 @@ export default function RootLayout({ children }: Props) {
   return (
     <html lang="en">
       <body>
-        {/* <SearchBar /> */}
-        <NavBar />
-        <MuiSetup>{children}</MuiSetup>
+        <UserProvider>
+          <NavBar />
+          <MuiSetup>{children}</MuiSetup>
+        </UserProvider>
       </body>
     </html>
   );
