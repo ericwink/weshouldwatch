@@ -1,32 +1,10 @@
 "use client";
 
-import { supabase } from "@/lib/supabase";
 import { Button } from "@mui/material";
-import { useEffect, useState } from "react";
+import { useUser } from "../context/user";
 
 const LogOut = () => {
-  const [session, setSession] = useState<any>(null);
-
-  useEffect(() => {
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      setSession(session);
-    });
-
-    const {
-      data: { subscription },
-    } = supabase.auth.onAuthStateChange((_event, session) => {
-      setSession(session);
-    });
-
-    return () => subscription.unsubscribe();
-  }, []);
-
-  const logout = async () => {
-    console.log("click!");
-    let { error } = await supabase.auth.signOut();
-
-    if (error) throw new Error(error.message);
-  };
+  const { logout, user } = useUser();
 
   return (
     <>
@@ -38,9 +16,9 @@ const LogOut = () => {
       </Button>
       <Button
         variant="contained"
-        onClick={() => console.log(session)}
+        onClick={() => console.log(user)}
       >
-        View Session Data
+        View Session Data From Context
       </Button>
     </>
   );
