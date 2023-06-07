@@ -42,10 +42,31 @@ const UserProvider = ({ children }: { children: ReactNode }) => {
     if (error) throw new Error(error.message);
   };
 
+  const noPasswordLogin = async (email: string) => {
+    try {
+      let { data, error } = await supabase.auth.signInWithOtp({
+        email: email,
+      });
+    } catch (error: any) {
+      console.log(error);
+      throw new Error(error.message);
+    }
+  };
+
+  const passwordSignUp = async (email: string, password: string) => {
+    let { data, error } = await supabase.auth.signUp({
+      email: email,
+      password: password,
+    });
+
+    if (error) throw new Error(error.message);
+  };
+
   const values = {
     user,
     logout,
     gmail,
+    noPasswordLogin,
   };
 
   return <UserContext.Provider value={values}>{children}</UserContext.Provider>;

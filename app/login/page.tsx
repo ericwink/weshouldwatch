@@ -1,7 +1,7 @@
-import LogIn from "../components/LogIn";
+import LogInSignUp from "../components/LogInSignUp";
 
 const loginPage = async () => {
-  return <LogIn />;
+  return <LogInSignUp type="login" />;
 };
 
 export default loginPage;

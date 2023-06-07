@@ -1,18 +1,30 @@
 "use client";
 
-import { AppBar, Box, Toolbar } from "@mui/material/";
+import { AppBar, Box, Toolbar, Button, Typography } from "@mui/material/";
 import NavDrawer from "./NavDrawer";
 import SearchBar from "./SearchBar";
 import UserAvatar from "./UserAvatar";
+import Link from "next/link";
+import { useUser } from "../context/user";
 
 const NavBar = () => {
+  const { user } = useUser();
+
   return (
-    <Box sx={{ flexGrow: 1 }}>
+    <Box>
       <AppBar position="static">
         <Toolbar>
           <NavDrawer />
           <SearchBar />
-          <UserAvatar />
+          {user && <UserAvatar />}
+          {!user && (
+            <Button
+              color="inherit"
+              size="small"
+            >
+              <Link href="/login">Log In</Link>
+            </Button>
+          )}
         </Toolbar>
       </AppBar>
     </Box>
