@@ -4,6 +4,7 @@ import { TextField, Button, Box, Container, Typography } from "@mui/material";
 import { useState, ChangeEvent } from "react";
 import { useUser } from "../context/user";
 import Link from "next/link";
+import { red } from "@mui/material/colors";
 
 const LogInSignUp = ({ type }: { type: "login" | "signup" }) => {
   const { gmail, noPasswordLogin } = useUser();
@@ -70,6 +71,7 @@ const LogInSignUp = ({ type }: { type: "login" | "signup" }) => {
         variant="contained"
         onClick={gmail}
         fullWidth
+        color="error"
       >
         {`${type} with Google`}
       </Button>

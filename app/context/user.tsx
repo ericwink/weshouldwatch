@@ -13,17 +13,24 @@ const UserProvider = ({ children }: { children: ReactNode }) => {
   const router = useRouter();
 
   useEffect(() => {
-    supabase.auth.getSession().then(({ data: { session } }) => {
+    const getUserProfile = async () => {
+      const {
+        data: { session },
+        error,
+      } = await supabase.auth.getSession();
       const user = session?.user || null;
-      setUser(user);
-    });
+
+      if (user) {
+        let { data: users, error } = await supabase.from("users").select("*").eq("id", user.id).single();
+        setUser({ ...user, ...users });
+      }
+    };
+
+    getUserProfile();
 
     const {
       data: { subscription },
-    } = supabase.auth.onAuthStateChange((_event, session) => {
-      const user = session?.user || null;
-      setUser(user);
-    });
+    } = supabase.auth.onAuthStateChange(() => getUserProfile());
 
     return () => subscription.unsubscribe();
   }, []);

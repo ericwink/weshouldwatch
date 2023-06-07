@@ -35,6 +35,7 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-icons": "^4.8.0",
+    "stripe": "^12.8.0",
     "tailwind-merge": "^1.12.0",
     "tailwindcss-animate": "^1.0.5",
     "tss-react": "^4.8.6",
