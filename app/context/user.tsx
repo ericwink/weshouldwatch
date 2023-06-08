@@ -32,12 +32,12 @@ const UserProvider = ({ children }: { children: ReactNode }) => {
       data: { subscription },
     } = supabase.auth.onAuthStateChange(() => getUserProfile());
 
-    return () => subscription.unsubscribe();
+    // return () => subscription.unsubscribe();
   }, []);
 
   const logout = async () => {
-    console.log("click!");
     let { error } = await supabase.auth.signOut();
+    setUser(null);
     router.push("/");
     if (error) throw new Error(error.message);
   };
