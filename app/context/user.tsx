@@ -1,10 +1,11 @@
 "use client";
 
 import { createContext, useContext, ReactNode, useEffect, useState } from "react";
-import { supabase } from "@/lib/supabase";
 import { useRouter } from "next/navigation";
+import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 
 const UserContext = createContext<any>(null);
+const supabase = createClientComponentClient();
 
 import type { User } from "@supabase/supabase-js";
 
@@ -45,6 +46,9 @@ const UserProvider = ({ children }: { children: ReactNode }) => {
   const gmail = async () => {
     let { data, error } = await supabase.auth.signInWithOAuth({
       provider: "google",
+      options: {
+        redirectTo: `${location.origin}/auth/callback`,
+      },
     });
     if (error) throw new Error(error.message);
   };
@@ -53,6 +57,9 @@ const UserProvider = ({ children }: { children: ReactNode }) => {
     try {
       let { data, error } = await supabase.auth.signInWithOtp({
         email: email,
+        options: {
+          emailRedirectTo: `${location.origin}/auth/callback`,
+        },
       });
     } catch (error: any) {
       console.log(error);
@@ -64,6 +71,9 @@ const UserProvider = ({ children }: { children: ReactNode }) => {
     let { data, error } = await supabase.auth.signUp({
       email: email,
       password: password,
+      options: {
+        emailRedirectTo: `${location.origin}/auth/callback`,
+      },
     });
 
     if (error) throw new Error(error.message);

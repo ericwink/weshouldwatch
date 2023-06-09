@@ -1,11 +1,11 @@
 "use client";
-
+import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { TextField, Button } from "@mui/material";
-import { supabase } from "@/lib/supabase";
 import { useState } from "react";
 
 const MakeGroup = () => {
   const [name, setName] = useState("");
+  const supabase = createClientComponentClient();
 
   const handleClick = async () => {
     const { data, error } = await supabase.from("group").insert([{ group_name: name }]);
