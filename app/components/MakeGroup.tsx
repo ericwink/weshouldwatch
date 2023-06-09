@@ -1,17 +1,18 @@
 "use client";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
-import { TextField, Button } from "@mui/material";
+import { TextField, Button, Typography } from "@mui/material";
 import { useState } from "react";
+import { useTransition } from "react";
 
-const MakeGroup = () => {
+interface Props {
+  addGroup: (name: string) => Promise<void>;
+}
+
+const MakeGroup = ({ addGroup }: Props) => {
   const [name, setName] = useState("");
-  const supabase = createClientComponentClient();
+  const [isPending, startTransition] = useTransition();
 
-  const handleClick = async () => {
-    const { data, error } = await supabase.from("group").insert([{ group_name: name }]);
-    console.log(data);
-    console.log(error);
-  };
+  if (isPending) return <Typography>Loading...</Typography>;
 
   return (
     <form
@@ -23,7 +24,7 @@ const MakeGroup = () => {
         value={name}
         onChange={e => setName(e.target.value)}
       />
-      <Button onClick={handleClick}>Create Group!</Button>
+      <Button onClick={() => startTransition(() => addGroup(name))}>Create Group!</Button>
     </form>
   );
 };

@@ -7,6 +7,7 @@ import Modal from "@mui/material/Modal";
 import Fade from "@mui/material/Fade";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
+import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 
 const style = {
   position: "absolute" as "absolute",
@@ -20,7 +21,8 @@ const style = {
   p: 4,
 };
 
-export default function MUIModal() {
+export default function AddMediaModal() {
+  const supabase = createClientComponentClient();
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);

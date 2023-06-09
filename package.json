@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "test": "jest --watch"
+    "test": "jest --watch",
+    "gen-types": "supabase gen types typescript --linked > lib/database.types.ts"
   },
   "dependencies": {
     "@emotion/react": "^11.11.0",

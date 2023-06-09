@@ -1,24 +1,38 @@
 "use client";
 
-import Card from "@mui/material/Card";
-import CardActions from "@mui/material/CardActions";
-import CardContent from "@mui/material/CardContent";
-import CardMedia from "@mui/material/CardMedia";
-import Button from "@mui/material/Button";
-import Typography from "@mui/material/Typography";
-import { Divider } from "@mui/material";
+import ConfirmDelete from "./ConfirmDelete";
+import { Paper, IconButton, Box, Typography } from "@mui/material";
+import Grid from "@mui/material/Unstable_Grid2"; // Grid version 2
 import GroupIcon from "@mui/icons-material/Group";
 import MovieIcon from "@mui/icons-material/Movie";
+import InfoIcon from "@mui/icons-material/Info";
+import PersonAddIcon from "@mui/icons-material/PersonAdd";
+import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
+import Link from "next/link";
+import { useTransition } from "react";
 
 interface Props {
-  group_name: string;
+  created_at: string | null;
+  group_name: string | null;
   id: number;
+  deleteGroup: (id: number) => Promise<void>;
 }
 
-const GroupCard = ({ group_name, id }: Props) => {
+const GroupCard = ({ group_name, id, deleteGroup }: Props) => {
+  const [isPending, startTransition] = useTransition();
+
+  const deleteButton = (
+    <IconButton>
+      <DeleteForeverIcon />
+    </IconButton>
+  );
+
   return (
-    <Card sx={{ maxWidth: 345 }}>
-      <CardContent>
+    <Grid>
+      <Paper
+        elevation={3}
+        sx={{ p: 1, minWidth: "160px" }}
+      >
         <Typography
           gutterBottom
           variant="h5"
@@ -26,21 +40,31 @@ const GroupCard = ({ group_name, id }: Props) => {
         >
           {group_name}
         </Typography>
-        <Typography
-          variant="body2"
-          color="text.secondary"
-        >
-          Should there be a group description?
-        </Typography>
-        <Divider />
-        <GroupIcon />
-        <MovieIcon />
-      </CardContent>
-      <CardActions>
-        <Button size="small">View Details</Button>
-        <Button size="small">Send Invite</Button>
-      </CardActions>
-    </Card>
+        <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
+          <Box sx={{ display: "flex", gap: 2 }}>
+            <GroupIcon />
+            <Typography># Members</Typography>
+          </Box>
+          <Box sx={{ display: "flex", gap: 2 }}>
+            <MovieIcon />
+            <Typography># Media</Typography>
+          </Box>
+          <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+            <IconButton>
+              <Link
+                className="flex"
+                href={`/mygroups/${id}`}
+              >
+                <InfoIcon />
+              </Link>
+            </IconButton>
+            <IconButton>
+              <PersonAddIcon />
+            </IconButton>
+          </Box>
+        </Box>
+      </Paper>
+    </Grid>
   );
 };
 

@@ -4,7 +4,7 @@ import StreamingOptions from "@/app/components/StreamingOptions/StreamingOptions
 import DateTimeRating from "@/app/components/DateTimeRating/DateTimeRating";
 import Image from "next/image";
 import noBackground from "../../public/We Should Watch.png";
-import MUIModal from "@/app/components/MUIModal";
+import AddMediaModal from "@/app/components/AddMediaModal";
 import FetchVideo from "@/app/components/FetchVideo";
 
 interface Props {
@@ -48,7 +48,7 @@ const MediaData = ({ mediaData, media_id, media_type }: Props) => {
               height={300}
               width={200}
             />
-            <MUIModal />
+            <AddMediaModal />
           </div>
 
           <Genres genre_ids={mediaData.genres} />
