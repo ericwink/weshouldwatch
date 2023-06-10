@@ -10,17 +10,7 @@ interface Props {
 
 const supabase = createServerComponentClient<Database>({ cookies });
 const fetchGroupData = async (id: number) => {
-  let { data: group_media, error } = await supabase
-    .from("group_media")
-    .select(
-      `
-      *,
-      media (
-        *
-      )
-    `
-    )
-    .eq("group_id", id);
+  let { data: group_media, error } = await supabase.from("group_media").select(`*,media ( * )`).eq("group_id", id);
   return group_media;
 };
 

@@ -70,7 +70,7 @@ export interface Database {
             foreignKeyName: "comments_media_id_fkey"
             columns: ["media_id"]
             referencedRelation: "media"
-            referencedColumns: ["id"]
+            referencedColumns: ["tmdb_id"]
           },
           {
             foreignKeyName: "comments_user_id_fkey"
@@ -84,19 +84,19 @@ export interface Database {
         Row: {
           created_at: string | null
           created_by: string | null
-          group_name: string | null
+          group_name: string
           id: number
         }
         Insert: {
           created_at?: string | null
           created_by?: string | null
-          group_name?: string | null
+          group_name: string
           id?: number
         }
         Update: {
           created_at?: string | null
           created_by?: string | null
-          group_name?: string | null
+          group_name?: string
           id?: number
         }
         Relationships: [
@@ -153,7 +153,7 @@ export interface Database {
             foreignKeyName: "group_media_media_id_fkey"
             columns: ["media_id"]
             referencedRelation: "media"
-            referencedColumns: ["id"]
+            referencedColumns: ["tmdb_id"]
           }
         ]
       }
@@ -161,7 +161,6 @@ export interface Database {
         Row: {
           created_at: string | null
           genres: string[] | null
-          id: number
           media_type: string | null
           poster_path: string | null
           title: string
@@ -170,7 +169,6 @@ export interface Database {
         Insert: {
           created_at?: string | null
           genres?: string[] | null
-          id?: number
           media_type?: string | null
           poster_path?: string | null
           title: string
@@ -179,7 +177,6 @@ export interface Database {
         Update: {
           created_at?: string | null
           genres?: string[] | null
-          id?: number
           media_type?: string | null
           poster_path?: string | null
           title?: string
