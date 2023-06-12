@@ -1,8 +1,8 @@
-import MediaData from "@/src/components/MediaData";
 import TabDisplay from "@/src/components/TabDisplay";
 import CardGrid from "@/src/components/CardGrid";
 import PeopleCard from "@/src/components/PeopleCard";
 import MediaCardMUI from "@/src/components/MediaCardMUI";
+import MediaData from "@/src/components/MediaData";
 
 interface Props {
   params: { media_id: string };
@@ -43,7 +43,7 @@ const mediaPage = async ({ params, searchParams }: Props) => {
   const { cast, crew } = await fetchCredits(media_type, media_id);
 
   return (
-    <main>
+    <>
       <TabDisplay tabNames={["Media Data", "Cast", "Crew", "Recommended"]}>
         <MediaData
           media_type={media_type}
@@ -75,7 +75,7 @@ const mediaPage = async ({ params, searchParams }: Props) => {
           ))}
         </CardGrid>
       </TabDisplay>
-    </main>
+    </>
   );
 };
 

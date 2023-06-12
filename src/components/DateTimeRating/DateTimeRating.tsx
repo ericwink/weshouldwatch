@@ -2,7 +2,7 @@ import { BsHandThumbsUp, BsClock, BsCalendar } from "react-icons/bs";
 
 interface Props {
   releaseYear: string;
-  runTime: string;
+  runTime: number;
   rating: string;
 }
 

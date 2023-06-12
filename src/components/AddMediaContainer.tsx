@@ -3,11 +3,13 @@ import { cookies } from "next/headers";
 import { Database } from "@/src/lib/database.types";
 import AddMediaGroupEntry from "./AddMediaGroupEntry";
 import ListWrapper from "./ListWrapper";
+import type { mediaPayload } from "../lib/interface";
 
 const supabase = createServerComponentClient<Database>({ cookies });
 
 interface Props {
   media_id: number;
+  mediaPayload: mediaPayload;
 }
 
 const fetchGroupsAndMovies = async () => {
@@ -16,7 +18,7 @@ const fetchGroupsAndMovies = async () => {
   return group;
 };
 
-const AddMediaContainer = async ({ media_id }: Props) => {
+const AddMediaContainer = async ({ media_id, mediaPayload }: Props) => {
   const groupsAndMovies = await fetchGroupsAndMovies();
 
   return (
@@ -26,6 +28,7 @@ const AddMediaContainer = async ({ media_id }: Props) => {
           key={group.id}
           media_id={media_id}
           {...group}
+          mediaPayload={mediaPayload}
         />
       ))}
     </ListWrapper>

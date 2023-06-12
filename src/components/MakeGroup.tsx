@@ -13,7 +13,7 @@ const MakeGroup = () => {
     setIsLoading(true);
     const result = await addGroup(name);
     if (result.error) {
-      setError({ error: true, message: result.message });
+      setError({ ...result });
     } else {
       setSuccess(true);
     }

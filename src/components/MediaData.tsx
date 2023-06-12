@@ -3,31 +3,34 @@ import Genres from "./Genres";
 import StreamingOptions from "@/src/components/StreamingOptions/StreamingOptions";
 import DateTimeRating from "@/src/components/DateTimeRating/DateTimeRating";
 import Image from "next/image";
-import noBackground from "../../public/We Should Watch.png";
 import ModalChildren from "./ModalChildren";
 import AddMediaContainer from "./AddMediaContainer";
 import FetchVideo from "@/src/components/FetchVideo";
+import noBackground from "../../public/We Should Watch.png";
+import type { mediaData } from "../lib/interface";
 
 interface Props {
   media_id: string;
   media_type: string;
-  mediaData: any;
+  mediaData: mediaData;
 }
 
 const MediaData = ({ mediaData, media_id, media_type }: Props) => {
   const poster = getPoster(mediaData.poster_path, "200");
-  const title = mediaData.title ? mediaData.title : mediaData.name;
+  const title = mediaData.title ?? mediaData.name;
   const backdrop = mediaData.backdrop_path ? `https://image.tmdb.org/t/p/w1280/${mediaData.backdrop_path}` : noBackground;
   const rating = `${Math.floor(mediaData.vote_average * 10)}%`;
-  const releaseYear = mediaData.release_date ? mediaData.release_date.slice(0, 4) : mediaData.first_air_date.slice(0, 4);
-  const runTime = mediaData.runtime ? mediaData.runtime : mediaData.episode_run_time[0];
-  // const mediaInfo = {
-  //   mediaId: mediaData.id.toString(),
-  //   title: title,
-  //   poster_path: mediaData.poster_path,
-  //   genres: genreNames,
-  //   mediaType: media_type,
-  // };
+  const releaseYear = mediaData.release_date!.slice(0, 4) ?? mediaData.first_air_date!.slice(0, 4);
+  const runTime = mediaData.runtime ?? mediaData.episode_run_time![0];
+  const genreNames = mediaData.genres.map(each => each.name);
+
+  const mediaInfoPayload = {
+    tmdb_id: mediaData.id,
+    title: title as string,
+    poster_path: mediaData.poster_path,
+    genres: genreNames,
+    media_type: media_type,
+  };
 
   return (
     <div>
@@ -53,7 +56,10 @@ const MediaData = ({ mediaData, media_id, media_type }: Props) => {
               title={`Add ${media_type} to group`}
             >
               {/* @ts-expect-error Server Component */}
-              <AddMediaContainer media_id={mediaData.id} />
+              <AddMediaContainer
+                media_id={mediaData.id}
+                mediaPayload={mediaInfoPayload}
+              />
             </ModalChildren>
           </div>
 
@@ -79,7 +85,7 @@ const MediaData = ({ mediaData, media_id, media_type }: Props) => {
               <StreamingOptions
                 media_type={media_type}
                 id={media_id}
-                title={title}
+                title={title as string}
               />
             </div>
           </section>
