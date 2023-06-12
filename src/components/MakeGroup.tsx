@@ -1,29 +1,52 @@
 "use client";
-import { TextField, Button, Typography } from "@mui/material";
+import { TextField, Button, Typography, CircularProgress, Box } from "@mui/material";
 import { useState } from "react";
-import { useTransition } from "react";
+import { addGroup } from "../lib/serverActions";
 
-interface Props {
-  addGroup(name: string): Promise<void>;
-}
-
-const MakeGroup = ({ addGroup }: Props) => {
+const MakeGroup = () => {
   const [name, setName] = useState("");
-  const [isPending, startTransition] = useTransition();
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState({ error: false, message: "" });
+  const [success, setSuccess] = useState(false);
 
-  if (isPending) return <Typography>Loading...</Typography>;
+  const handleClick = async () => {
+    setIsLoading(true);
+    const result = await addGroup(name);
+    if (result.error) {
+      setError({ error: true, message: result.message });
+    } else {
+      setSuccess(true);
+    }
+    setIsLoading(false);
+  };
+
+  if (success) return <Typography>Group created!</Typography>;
 
   return (
     <form
       action=""
       onSubmit={e => e.preventDefault()}
     >
-      <TextField
-        label="Group name..."
-        value={name}
-        onChange={e => setName(e.target.value)}
-      />
-      <Button onClick={() => startTransition(() => addGroup(name))}>Create Group!</Button>
+      <Box
+        display="flex"
+        flexDirection="column"
+        gap={1}
+      >
+        <TextField
+          label="Group name..."
+          value={name}
+          error={error.error}
+          helperText={error.error ? error.message : null}
+          onChange={e => setName(e.target.value)}
+        />
+        <Button
+          disabled={isLoading}
+          onClick={handleClick}
+          type="submit"
+        >
+          {isLoading ? <CircularProgress /> : "Create Group!"}
+        </Button>
+      </Box>
     </form>
   );
 };

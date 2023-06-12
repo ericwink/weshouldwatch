@@ -1,6 +1,6 @@
 import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
 import { cookies } from "next/headers";
-import { Database } from "@/lib/database.types";
+import { Database } from "@/src/lib/database.types";
 import AddMediaGroupEntry from "./AddMediaGroupEntry";
 import ListWrapper from "./ListWrapper";
 

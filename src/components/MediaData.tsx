@@ -1,4 +1,4 @@
-import getPoster from "@/lib/getPoster";
+import getPoster from "@/src/lib/getPoster";
 import Genres from "./Genres";
 import StreamingOptions from "@/src/components/StreamingOptions/StreamingOptions";
 import DateTimeRating from "@/src/components/DateTimeRating/DateTimeRating";

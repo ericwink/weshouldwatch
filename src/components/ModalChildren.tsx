@@ -53,6 +53,7 @@ export default function ModalChildren({ button, title, children }: Props) {
               id="transition-modal-title"
               variant="h6"
               component="h2"
+              mb={2}
             >
               {title}
             </Typography>

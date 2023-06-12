@@ -1,5 +1,5 @@
 import YouTubePlayer from "./YouTubePlayer/YouTubePlayer";
-import { TrailerData } from "@/lib/interface";
+import { TrailerData } from "@/src/lib/interface";
 
 interface Props {
   media_type: string;
