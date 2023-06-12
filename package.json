@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "test": "jest --watch"
+    "test": "jest --watch",
+    "gen-types": "supabase gen types typescript --linked > lib/database.types.ts"
   },
   "dependencies": {
     "@emotion/react": "^11.11.0",
@@ -19,6 +20,7 @@
     "@radix-ui/react-alert-dialog": "^1.0.3",
     "@radix-ui/react-dialog": "^1.0.3",
     "@radix-ui/react-slot": "^1.0.1",
+    "@supabase/auth-helpers-nextjs": "^0.7.2",
     "@supabase/supabase-js": "^2.24.0",
     "@types/node": "18.14.1",
     "@types/react": "18.0.28",
@@ -28,9 +30,7 @@
     "clsx": "^1.2.1",
     "eslint": "8.34.0",
     "lucide-react": "^0.216.0",
-    "mongodb": "^4.15.0",
     "next": "^13.4.1",
-    "next-auth": "^4.22.0",
     "nodemailer": "^6.9.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",

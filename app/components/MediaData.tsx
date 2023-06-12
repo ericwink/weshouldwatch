@@ -4,7 +4,8 @@ import StreamingOptions from "@/app/components/StreamingOptions/StreamingOptions
 import DateTimeRating from "@/app/components/DateTimeRating/DateTimeRating";
 import Image from "next/image";
 import noBackground from "../../public/We Should Watch.png";
-import MUIModal from "@/app/components/MUIModal";
+import ModalChildren from "./ModalChildren";
+import AddMediaContainer from "./AddMediaContainer";
 import FetchVideo from "@/app/components/FetchVideo";
 
 interface Props {
@@ -20,7 +21,6 @@ const MediaData = ({ mediaData, media_id, media_type }: Props) => {
   const rating = `${Math.floor(mediaData.vote_average * 10)}%`;
   const releaseYear = mediaData.release_date ? mediaData.release_date.slice(0, 4) : mediaData.first_air_date.slice(0, 4);
   const runTime = mediaData.runtime ? mediaData.runtime : mediaData.episode_run_time[0];
-
   // const mediaInfo = {
   //   mediaId: mediaData.id.toString(),
   //   title: title,
@@ -48,7 +48,13 @@ const MediaData = ({ mediaData, media_id, media_type }: Props) => {
               height={300}
               width={200}
             />
-            <MUIModal />
+            <ModalChildren
+              button="Add To Group"
+              title={`Add ${media_type} to group`}
+            >
+              {/* @ts-expect-error Server Component */}
+              <AddMediaContainer media_id={mediaData.id} />
+            </ModalChildren>
           </div>
 
           <Genres genre_ids={mediaData.genres} />

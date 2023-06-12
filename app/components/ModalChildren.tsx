@@ -20,14 +20,20 @@ const style = {
   p: 4,
 };
 
-export default function MUIModal() {
+interface Props {
+  button: string;
+  children: React.ReactNode;
+  title: string;
+}
+
+export default function ModalChildren({ button, title, children }: Props) {
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
   return (
     <div>
-      <Button onClick={handleOpen}>Open modal</Button>
+      <Button onClick={handleOpen}>{button}</Button>
       <Modal
         aria-labelledby="transition-modal-title"
         aria-describedby="transition-modal-description"
@@ -48,14 +54,9 @@ export default function MUIModal() {
               variant="h6"
               component="h2"
             >
-              Text in a modal
+              {title}
             </Typography>
-            <Typography
-              id="transition-modal-description"
-              sx={{ mt: 2 }}
-            >
-              Duis mollis, est non commodo luctus, nisi erat porttitor ligula.
-            </Typography>
+            {children}
           </Box>
         </Fade>
       </Modal>
