@@ -1,11 +1,10 @@
 "use client";
-import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { TextField, Button, Typography } from "@mui/material";
 import { useState } from "react";
 import { useTransition } from "react";
 
 interface Props {
-  addGroup: (name: string) => Promise<void>;
+  addGroup(name: string): Promise<void>;
 }
 
 const MakeGroup = ({ addGroup }: Props) => {
