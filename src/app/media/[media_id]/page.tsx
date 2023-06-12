@@ -42,6 +42,8 @@ const mediaPage = async ({ params, searchParams }: Props) => {
   const recommended = await fetchRecommended(media_type, media_id);
   const { cast, crew } = await fetchCredits(media_type, media_id);
 
+  console.log(mediaData);
+
   return (
     <>
       <TabDisplay tabNames={["Media Data", "Cast", "Crew", "Recommended"]}>

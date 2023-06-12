@@ -20,7 +20,8 @@ const MediaData = ({ mediaData, media_id, media_type }: Props) => {
   const title = mediaData.title ?? mediaData.name;
   const backdrop = mediaData.backdrop_path ? `https://image.tmdb.org/t/p/w1280/${mediaData.backdrop_path}` : noBackground;
   const rating = `${Math.floor(mediaData.vote_average * 10)}%`;
-  const releaseYear = mediaData.release_date!.slice(0, 4) ?? mediaData.first_air_date!.slice(0, 4);
+  const releaseDate = mediaData.release_date ?? mediaData.first_air_date;
+  const releaseYear = releaseDate!.slice(0, 4);
   const runTime = mediaData.runtime ?? mediaData.episode_run_time![0];
   const genreNames = mediaData.genres.map(each => each.name);
 
