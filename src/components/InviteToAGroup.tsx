@@ -5,7 +5,7 @@ import Select, { SelectChangeEvent } from "@mui/material/Select";
 import { useUser } from "../app/context/user";
 import type { User } from "@supabase/supabase-js";
 import { useState, ChangeEvent } from "react";
-import { inviteToGroup } from "../lib/serverActions";
+import { inviteToGroup } from "../../lib/serverActions";
 
 interface Props {
   groups: { created_at: string | null; created_by: string | null; group_name: string; id: number }[] | null;

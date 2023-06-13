@@ -1,6 +1,6 @@
 "use client";
 
-import getPoster from "@/src/lib/getPoster";
+import getPoster from "@/lib/getPoster";
 import { Paper, Typography, Box, IconButton } from "@mui/material";
 import Grid from "@mui/material/Unstable_Grid2"; // Grid version 2
 import Image from "next/image";

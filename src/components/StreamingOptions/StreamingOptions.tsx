@@ -1,4 +1,4 @@
-import getPoster from "@/src/lib/getPoster";
+import getPoster from "@/lib/getPoster";
 import { Props, AvailabilityData, StreamOptions } from "./interfaces";
 import styles from "./streamingOptions.module.css";
 import Image from "next/image";

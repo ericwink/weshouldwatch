@@ -82,20 +82,20 @@ export interface Database {
       }
       group: {
         Row: {
-          created_at: string | null
-          created_by: string | null
+          created_at: string
+          created_by: string
           group_name: string
           id: number
         }
         Insert: {
-          created_at?: string | null
-          created_by?: string | null
+          created_at?: string
+          created_by?: string
           group_name: string
           id?: number
         }
         Update: {
-          created_at?: string | null
-          created_by?: string | null
+          created_at?: string
+          created_by?: string
           group_name?: string
           id?: number
         }
@@ -110,30 +110,30 @@ export interface Database {
       }
       group_media: {
         Row: {
-          added_by: string | null
-          added_reason: string | null
-          created_at: string | null
-          group_id: number | null
+          added_by: string
+          added_reason: string
+          created_at: string
+          group_id: number
           id: number
-          media_id: number | null
+          media_id: number
           watched: boolean
         }
         Insert: {
-          added_by?: string | null
-          added_reason?: string | null
-          created_at?: string | null
-          group_id?: number | null
+          added_by?: string
+          added_reason: string
+          created_at?: string
+          group_id: number
           id?: number
-          media_id?: number | null
+          media_id: number
           watched?: boolean
         }
         Update: {
-          added_by?: string | null
-          added_reason?: string | null
-          created_at?: string | null
-          group_id?: number | null
+          added_by?: string
+          added_reason?: string
+          created_at?: string
+          group_id?: number
           id?: number
-          media_id?: number | null
+          media_id?: number
           watched?: boolean
         }
         Relationships: [
@@ -157,28 +157,65 @@ export interface Database {
           }
         ]
       }
+      invite_to_group: {
+        Row: {
+          created_at: string
+          created_by: string
+          email: string
+          group_id: number
+          id: string
+        }
+        Insert: {
+          created_at?: string
+          created_by?: string
+          email: string
+          group_id: number
+          id?: string
+        }
+        Update: {
+          created_at?: string
+          created_by?: string
+          email?: string
+          group_id?: number
+          id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "invite_to_group_created_by_fkey"
+            columns: ["created_by"]
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "invite_to_group_group_id_fkey"
+            columns: ["group_id"]
+            referencedRelation: "group"
+            referencedColumns: ["id"]
+          }
+        ]
+      }
       media: {
         Row: {
-          created_at: string | null
-          genres: string[] | null
-          media_type: string | null
-          poster_path: string | null
+          created_at: string
+          genres: string[]
+          media_type: string
+          poster_path: string
           title: string
           tmdb_id: number
         }
         Insert: {
-          created_at?: string | null
-          genres?: string[] | null
-          media_type?: string | null
-          poster_path?: string | null
+          created_at?: string
+          genres: string[]
+          media_type: string
+          poster_path: string
           title: string
           tmdb_id: number
         }
         Update: {
-          created_at?: string | null
-          genres?: string[] | null
-          media_type?: string | null
-          poster_path?: string | null
+          created_at?: string
+          genres?: string[]
+          media_type?: string
+          poster_path?: string
           title?: string
           tmdb_id?: number
         }

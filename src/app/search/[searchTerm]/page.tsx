@@ -1,4 +1,4 @@
-import { Movie, TV, Person } from "@/src/lib/interface";
+import { Movie, TV, Person } from "@/lib/interface";
 import TabDisplay from "@/src/components/TabDisplay";
 import MediaCardMUI from "@/src/components/MediaCardMUI";
 import PeopleCard from "@/src/components/PeopleCard";
