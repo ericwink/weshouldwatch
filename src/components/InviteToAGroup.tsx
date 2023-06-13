@@ -8,7 +8,7 @@ import { useState, ChangeEvent } from "react";
 import { inviteToGroup } from "../lib/serverActions";
 
 interface Props {
-  groups: { created_at: string | null; created_by: string | null; group_name: string; id: number }[];
+  groups: { created_at: string | null; created_by: string | null; group_name: string; id: number }[] | null;
 }
 
 export default function InviteToAGroup({ groups }: Props) {
@@ -25,7 +25,7 @@ export default function InviteToAGroup({ groups }: Props) {
   const isDisabled = group === null || email === "";
   const button = isPending ? <CircularProgress /> : "Send Email";
 
-  const menuItems = groups.map(group => {
+  const menuItems = groups!.map(group => {
     if (group.created_by === user.id) return <MenuItem value={group.id}>{group.group_name}</MenuItem>;
   });
 
@@ -65,11 +65,18 @@ export default function InviteToAGroup({ groups }: Props) {
     setSuccess(false);
   };
 
+  if (!groups)
+    return (
+      <Box sx={{ minWidth: 120, display: "flex", flexDirection: "column", gap: 2 }}>
+        <Typography textAlign="center">You haven&apos;t created any groups yet!</Typography>
+      </Box>
+    );
+
   if (success)
     return (
       <Box sx={{ minWidth: 120, display: "flex", flexDirection: "column", gap: 2 }}>
         <Typography textAlign="center">Invitation sent!</Typography>
-        <Button onClick={() => setSuccess(false)}>Send Another?</Button>
+        <Button onClick={reset}>Send Another?</Button>
       </Box>
     );
 

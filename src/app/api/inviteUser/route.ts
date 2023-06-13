@@ -18,6 +18,7 @@ export async function POST(req: Request) {
 
   //pull contents of body from req, which comes from supabase webhook
   const body: Invitation = await req.json();
+  console.log({ body });
 
   // setup for SendGrid
   sgMail.setApiKey(process.env.SENDGRID_API_KEY!);
