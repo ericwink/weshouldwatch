@@ -18,6 +18,8 @@ export default function InviteToAGroup({ groups }: Props) {
   const [email, setEmail] = useState("");
   const [isPending, setIsPending] = useState(false);
   const [success, setSuccess] = useState(false);
+  //   change this failure state later to a global alert notification
+  const [failure, setFailure] = useState({ error: false, message: "" });
 
   const emailRegex = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
   const isDisabled = group === null || email === "";
@@ -47,13 +49,20 @@ export default function InviteToAGroup({ groups }: Props) {
 
   const sendInvite = async () => {
     setIsPending(true);
+    setFailure({ error: false, message: "" });
     const result = await inviteToGroup(parseInt(group), email);
     if (result.error) {
-      setError({ error: true, message: result.message });
+      setFailure({ error: true, message: result.message });
     } else {
       setSuccess(true);
     }
     setIsPending(false);
+  };
+
+  const reset = () => {
+    setEmail("");
+    setGroup("");
+    setSuccess(false);
   };
 
   if (success)
@@ -100,6 +109,8 @@ export default function InviteToAGroup({ groups }: Props) {
         >
           {button}
         </Button>
+
+        {failure.error && <Typography textAlign="center">{`${failure.message}`}</Typography>}
       </Box>
     </form>
   );
