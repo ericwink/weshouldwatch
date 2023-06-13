@@ -66,7 +66,7 @@ export interface TrailerData {
   id: string;
 }
 
-export interface mediaData {
+export interface MediaData {
   adult: boolean;
   backdrop_path: string;
   // belongs_to_collection: {
@@ -144,7 +144,7 @@ export interface mediaData {
   vote_count: number;
 }
 
-export interface mediaPayload {
+export interface MediaPayload {
   tmdb_id: number;
   title: string;
   poster_path: string;

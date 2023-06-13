@@ -7,12 +7,12 @@ import ModalChildren from "./ModalChildren";
 import AddMediaContainer from "./AddMediaContainer";
 import FetchVideo from "@/src/components/FetchVideo";
 import noBackground from "../../public/We Should Watch.png";
-import type { mediaData } from "../lib/interface";
+import type { MediaData } from "../lib/interface";
 
 interface Props {
   media_id: string;
   media_type: string;
-  mediaData: mediaData;
+  mediaData: MediaData;
 }
 
 const MediaData = ({ mediaData, media_id, media_type }: Props) => {
@@ -20,8 +20,7 @@ const MediaData = ({ mediaData, media_id, media_type }: Props) => {
   const title = mediaData.title ?? mediaData.name;
   const backdrop = mediaData.backdrop_path ? `https://image.tmdb.org/t/p/w1280/${mediaData.backdrop_path}` : noBackground;
   const rating = `${Math.floor(mediaData.vote_average * 10)}%`;
-  const releaseDate = mediaData.release_date ?? mediaData.first_air_date;
-  const releaseYear = releaseDate!.slice(0, 4);
+  const releaseYear = (mediaData: MediaData): string | undefined => (mediaData.release_date ?? mediaData.first_air_date)?.slice(0, 4);
   const runTime = mediaData.runtime ?? mediaData.episode_run_time![0];
   const genreNames = mediaData.genres.map(each => each.name);
 
@@ -68,7 +67,7 @@ const MediaData = ({ mediaData, media_id, media_type }: Props) => {
 
           <DateTimeRating
             rating={rating}
-            releaseYear={releaseYear}
+            releaseYear={releaseYear(mediaData)}
             runTime={runTime}
           />
 

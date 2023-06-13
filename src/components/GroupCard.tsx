@@ -1,11 +1,9 @@
 "use client";
 
-import { Paper, IconButton, Box, Typography } from "@mui/material";
+import { Paper, Box, Typography, Button } from "@mui/material";
 import Grid from "@mui/material/Unstable_Grid2"; // Grid version 2
 import GroupIcon from "@mui/icons-material/Group";
 import MovieIcon from "@mui/icons-material/Movie";
-import InfoIcon from "@mui/icons-material/Info";
-import PersonAddIcon from "@mui/icons-material/PersonAdd";
 import Link from "next/link";
 
 interface Props {
@@ -38,17 +36,12 @@ const GroupCard = ({ group_name, id }: Props) => {
             <Typography># Media</Typography>
           </Box>
           <Box sx={{ display: "flex", justifyContent: "space-between" }}>
-            <IconButton>
-              <Link
-                className="flex"
-                href={`/mygroups/${id}`}
-              >
-                <InfoIcon />
-              </Link>
-            </IconButton>
-            <IconButton>
-              <PersonAddIcon />
-            </IconButton>
+            <Link
+              className="flex"
+              href={`/mygroups/${id}`}
+            >
+              <Button>View Details</Button>
+            </Link>
           </Box>
         </Box>
       </Paper>

@@ -7,8 +7,9 @@ import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
 import MakeGroup from "../../components/MakeGroup";
 import GroupCard from "../../components/GroupCard";
 import CardGrid from "../../components/CardGrid";
-import ModalChildren from "../../components/ModalChildren";
 import { Database } from "@/src/lib/database.types";
+import TabDisplay from "@/src/components/TabDisplay";
+import InviteToAGroup from "@/src/components/InviteToAGroup";
 
 const supabase = createServerComponentClient<Database>({ cookies });
 
@@ -28,22 +29,20 @@ const groupsPage = async () => {
   if (groups?.length! < 1) return <h2>No Groups Yet!</h2>;
 
   return (
-    <>
-      <ModalChildren
-        button="Create Group"
-        title="Create A New Group"
-      >
+    <main>
+      <TabDisplay tabNames={["My Groups", "Create A Group", "Invite To A Group"]}>
+        <CardGrid>
+          {groups?.map(group => (
+            <GroupCard
+              key={group.id}
+              {...group}
+            />
+          ))}
+        </CardGrid>
         <MakeGroup />
-      </ModalChildren>
-      <CardGrid>
-        {groups?.map(group => (
-          <GroupCard
-            key={group.id}
-            {...group}
-          />
-        ))}
-      </CardGrid>
-    </>
+        <InviteToAGroup groups={groups} />
+      </TabDisplay>
+    </main>
   );
 };
 
