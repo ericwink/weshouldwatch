@@ -3,8 +3,8 @@
 import { ListItem, ListItemText, IconButton, CircularProgress } from "@mui/material";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
-import { addMediaToGroup } from "../../lib/serverActions";
-import type { MediaPayload } from "../../lib/interface";
+import { addMediaToGroup } from "../lib/serverActions";
+import type { MediaPayload } from "../lib/interface";
 import { useState } from "react";
 import ReasonModal from "./ReasonModal";
 

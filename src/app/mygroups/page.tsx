@@ -7,7 +7,7 @@ import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
 import MakeGroup from "../../components/MakeGroup";
 import GroupCard from "../../components/GroupCard";
 import CardGrid from "../../components/CardGrid";
-import { Database } from "@/lib/database.types";
+import { Database } from "@/src/lib/database.types";
 import TabDisplay from "@/src/components/TabDisplay";
 import InviteToAGroup from "@/src/components/InviteToAGroup";
 

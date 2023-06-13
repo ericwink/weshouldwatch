@@ -1,4 +1,4 @@
-import getPoster from "@/lib/getPoster";
+import getPoster from "@/src/lib/getPoster";
 import Genres from "./Genres";
 import StreamingOptions from "@/src/components/StreamingOptions/StreamingOptions";
 import DateTimeRating from "@/src/components/DateTimeRating/DateTimeRating";
@@ -7,7 +7,7 @@ import ModalChildren from "./ModalChildren";
 import AddMediaContainer from "./AddMediaContainer";
 import FetchVideo from "@/src/components/FetchVideo";
 import noBackground from "../../public/We Should Watch.png";
-import type { MediaData } from "../../lib/interface";
+import type { MediaData } from "../lib/interface";
 
 interface Props {
   media_id: string;

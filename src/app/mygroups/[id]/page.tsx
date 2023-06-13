@@ -1,5 +1,5 @@
 import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
-import { Database } from "@/lib/database.types";
+import { Database } from "@/src/lib/database.types";
 import { cookies } from "next/headers";
 
 import TabDisplay from "@/src/components/TabDisplay";

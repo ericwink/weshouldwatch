@@ -1,5 +1,5 @@
 import Stripe from "stripe";
-import { supabase } from "@/lib/supabase";
+import { supabase } from "@/src/lib/supabase";
 import { NextResponse } from "next/server";
 
 interface StripeRequest {

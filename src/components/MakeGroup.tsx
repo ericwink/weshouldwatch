@@ -1,7 +1,7 @@
 "use client";
 import { TextField, Button, Typography, CircularProgress, Box } from "@mui/material";
 import { useState } from "react";
-import { addGroup } from "../../lib/serverActions";
+import { addGroup } from "../lib/serverActions";
 
 const MakeGroup = () => {
   const [name, setName] = useState("");
