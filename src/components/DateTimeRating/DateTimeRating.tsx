@@ -1,12 +1,12 @@
 import { BsHandThumbsUp, BsClock, BsCalendar } from "react-icons/bs";
 
 interface Props {
-  releaseYear: string;
-  runTime: number;
+  releaseYear: string | undefined;
+  runTime: number | undefined;
   rating: string;
 }
 
-const DateTimeRating = ({ releaseYear, runTime, rating }: Props) => {
+const DateTimeRating = ({ releaseYear = "????", runTime = 0, rating = "N/A" }: Props) => {
   return (
     <div className="container flex justify-between">
       <div className="flex gap-1 items-center">

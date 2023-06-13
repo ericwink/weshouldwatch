@@ -4,7 +4,7 @@ import { ListItem, ListItemText, IconButton, CircularProgress } from "@mui/mater
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import { addMediaToGroup } from "../lib/serverActions";
-import type { mediaPayload } from "../lib/interface";
+import type { MediaPayload } from "../lib/interface";
 import { useState } from "react";
 import ReasonModal from "./ReasonModal";
 
@@ -13,7 +13,7 @@ interface Props {
   id: number;
   group_name: string;
   group_media: { media_id: number | null }[];
-  mediaPayload: mediaPayload;
+  mediaPayload: MediaPayload;
 }
 
 export default function AddMediaGroupEntry({ id, media_id, group_name, group_media, mediaPayload }: Props) {
