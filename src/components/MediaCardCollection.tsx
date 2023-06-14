@@ -10,20 +10,16 @@ import Link from "next/link";
 interface Props {
   media: {
     poster_path: string;
-    title?: string;
-    name?: string;
-    vote_average: number;
-    release_date?: string;
-    first_air_date?: string;
-    id: number;
+    title: string;
+    media_id: number;
     media_type: string;
+    watched: boolean;
+    added_reason: string;
+    added_by: string;
   };
 }
 
-const MediaCardMUI = ({ media }: Props) => {
-  const title = media.title ? media.title : media.name;
-  const date = media.release_date ? media.release_date : media.first_air_date;
-
+const MediaCardCollection = ({ media }: Props) => {
   return (
     <Grid>
       <Paper
@@ -33,7 +29,7 @@ const MediaCardMUI = ({ media }: Props) => {
         <Box sx={{ height: 200, position: "relative" }}>
           <Image
             src={getPoster(media.poster_path, "200")}
-            alt={title!}
+            alt={media.title}
             fill={true}
             style={{ borderTopRightRadius: "4px", borderTopLeftRadius: "4px" }}
           />
@@ -49,7 +45,7 @@ const MediaCardMUI = ({ media }: Props) => {
               variant="subtitle2"
               component="p"
             >
-              {`${(media.vote_average * 10).toFixed(0)}%`}
+              % was here
             </Typography>
           </Grid>
           <Grid
@@ -62,7 +58,7 @@ const MediaCardMUI = ({ media }: Props) => {
               variant="subtitle2"
               component="p"
             >
-              {date ? date.slice(0, 4) : "No Date"}
+              date was here
             </Typography>
           </Grid>
           <Grid
@@ -74,7 +70,7 @@ const MediaCardMUI = ({ media }: Props) => {
             <IconButton>
               <Link
                 className="flex"
-                href={`/media/${media.id}/?media_type=${media.media_type}`}
+                href={`/media/${media.media_id}/?media_type=${media.media_type}`}
               >
                 <InfoIcon />
               </Link>
@@ -86,4 +82,4 @@ const MediaCardMUI = ({ media }: Props) => {
   );
 };
 
-export default MediaCardMUI;
+export default MediaCardCollection;

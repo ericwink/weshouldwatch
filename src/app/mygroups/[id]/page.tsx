@@ -3,8 +3,7 @@ import { Database } from "@/src/lib/database.types";
 import { cookies } from "next/headers";
 
 import TabDisplay from "@/src/components/TabDisplay";
-import CardGrid from "@/src/components/CardGrid";
-import MediaCardMUI from "@/src/components/MediaCardMUI";
+import CardGridFilter from "@/src/components/CardGridFilter";
 
 interface Props {
   params: {
@@ -89,13 +88,13 @@ const manipulateData = (data: GroupMedia[] | null) => {
 const groupPageById = async ({ params: { id } }: Props) => {
   const data = await fetchMediaCollection(parseInt(id));
   const sortedData = manipulateData(data);
-  console.log(JSON.stringify(sortedData, null, 2));
+  // console.log(JSON.stringify(sortedData, null, 2));
 
   return (
     <main>
       <TabDisplay tabNames={["Group Info", "Movies", "TV Shows"]}>
         <h1>This is where the group info will be</h1>
-        <CardGrid></CardGrid>
+        <CardGridFilter />
       </TabDisplay>
     </main>
   );
@@ -108,6 +107,12 @@ export default groupPageById;
 //make new obj {requirements}
 //if new obj.media_type === movie push to movie
 //else push to tv
+
+//during split,store the genres in a set?
+//pass genres and media set to the card grid??
+//embed the cards in the card grid, and card grid has a state for the media set and genre listing
+//user clicks on genre badges to add/remove them from filter set
+//runs a function that updates the filter and gives the new result
 
 [
   {
