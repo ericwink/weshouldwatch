@@ -27,6 +27,9 @@ interface GroupMedia {
     genres: string[];
     media_type: string;
   };
+  users: {
+    email: string;
+  };
 }
 
 interface Condensed {
@@ -38,6 +41,7 @@ interface Condensed {
   media_type: string;
   poster_path: string;
   title: string;
+  enabled: boolean;
 }
 
 interface Sorted {
@@ -54,7 +58,7 @@ const fetchMediaCollection = async (id: number) => {
     *,
     media (
       *
-    )
+    ), users ( * )
   `
     )
     .eq("group_id", id);
@@ -70,11 +74,12 @@ const manipulateData = (data: GroupMedia[] | null) => {
       media_id: entry.media_id,
       watched: entry.watched,
       added_reason: entry.added_reason,
-      added_by: entry.added_by,
+      added_by: entry.users ? entry.users.email : "not provided",
       genres: entry.media.genres,
       media_type: entry.media.media_type,
       poster_path: entry.media.poster_path,
       title: entry.media.title,
+      enabled: true,
     };
     if (newEntry.media_type === "movie") {
       sorted.movies.push(newEntry);
@@ -94,25 +99,14 @@ const groupPageById = async ({ params: { id } }: Props) => {
     <main>
       <TabDisplay tabNames={["Group Info", "Movies", "TV Shows"]}>
         <h1>This is where the group info will be</h1>
-        <CardGridFilter />
+        <CardGridFilter mediaData={sortedData.movies} />
+        <CardGridFilter mediaData={sortedData.tv} />
       </TabDisplay>
     </main>
   );
 };
 
 export default groupPageById;
-
-//make an object with movies and tv arrays
-//for each object in the array
-//make new obj {requirements}
-//if new obj.media_type === movie push to movie
-//else push to tv
-
-//during split,store the genres in a set?
-//pass genres and media set to the card grid??
-//embed the cards in the card grid, and card grid has a state for the media set and genre listing
-//user clicks on genre badges to add/remove them from filter set
-//runs a function that updates the filter and gives the new result
 
 [
   {

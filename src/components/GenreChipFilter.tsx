@@ -1,6 +1,6 @@
 "use client";
 
-import { ReactNode, SyntheticEvent, useState } from "react";
+import { SyntheticEvent } from "react";
 import { Chip } from "@mui/material";
 import Grid from "@mui/material/Unstable_Grid2"; // Grid version 2
 
