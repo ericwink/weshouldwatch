@@ -75,8 +75,8 @@ export interface Database {
           {
             foreignKeyName: "comments_user_id_fkey"
             columns: ["user_id"]
-            referencedRelation: "users"
-            referencedColumns: ["id"]
+            referencedRelation: "user_public_profile"
+            referencedColumns: ["user_id"]
           }
         ]
       }
@@ -89,7 +89,7 @@ export interface Database {
         }
         Insert: {
           created_at?: string
-          created_by?: string
+          created_by: string
           group_name: string
           id?: number
         }
@@ -103,8 +103,8 @@ export interface Database {
           {
             foreignKeyName: "group_created_by_fkey"
             columns: ["created_by"]
-            referencedRelation: "users"
-            referencedColumns: ["id"]
+            referencedRelation: "user_public_profile"
+            referencedColumns: ["user_id"]
           }
         ]
       }
@@ -119,7 +119,7 @@ export interface Database {
           watched: boolean
         }
         Insert: {
-          added_by?: string
+          added_by: string
           added_reason: string
           created_at?: string
           group_id: number
@@ -140,8 +140,8 @@ export interface Database {
           {
             foreignKeyName: "group_media_added_by_fkey"
             columns: ["added_by"]
-            referencedRelation: "users"
-            referencedColumns: ["id"]
+            referencedRelation: "user_public_profile"
+            referencedColumns: ["user_id"]
           },
           {
             foreignKeyName: "group_media_group_id_fkey"
@@ -167,7 +167,7 @@ export interface Database {
         }
         Insert: {
           created_at?: string
-          created_by?: string
+          created_by: string
           email: string
           group_id: number
           id?: string
@@ -183,8 +183,8 @@ export interface Database {
           {
             foreignKeyName: "invite_to_group_created_by_fkey"
             columns: ["created_by"]
-            referencedRelation: "users"
-            referencedColumns: ["id"]
+            referencedRelation: "user_public_profile"
+            referencedColumns: ["user_id"]
           },
           {
             foreignKeyName: "invite_to_group_group_id_fkey"
@@ -249,6 +249,34 @@ export interface Database {
           },
           {
             foreignKeyName: "user_group_join_user_id_fkey"
+            columns: ["user_id"]
+            referencedRelation: "user_public_profile"
+            referencedColumns: ["user_id"]
+          }
+        ]
+      }
+      user_public_profile: {
+        Row: {
+          created_at: string | null
+          profile_pic: string
+          user_id: string
+          user_name: string
+        }
+        Insert: {
+          created_at?: string | null
+          profile_pic: string
+          user_id: string
+          user_name: string
+        }
+        Update: {
+          created_at?: string | null
+          profile_pic?: string
+          user_id?: string
+          user_name?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_public_profile_user_id_fkey"
             columns: ["user_id"]
             referencedRelation: "users"
             referencedColumns: ["id"]

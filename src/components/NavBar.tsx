@@ -5,7 +5,7 @@ import NavDrawer from "./NavDrawer";
 import SearchBar from "./SearchBar";
 import UserAvatar from "./UserAvatar";
 import Link from "next/link";
-import { useUser } from "../app/context/user";
+import { useUser } from "../context/user";
 
 const NavBar = () => {
   const { user } = useUser();

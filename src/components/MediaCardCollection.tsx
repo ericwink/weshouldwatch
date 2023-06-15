@@ -11,12 +11,12 @@ interface Props {
     media_id: number;
     watched: boolean;
     added_reason: string;
-    added_by: string;
+    added_by: { user_name: string; profile_pic: string };
     genres: string[];
     media_type: string;
     poster_path: string;
-    enabled: boolean;
     title: string;
+    enabled: boolean;
   };
 }
 
@@ -34,7 +34,12 @@ const MediaCardCollection = ({ media }: Props) => {
             fill={true}
             style={{ borderTopRightRadius: "4px", borderTopLeftRadius: "4px" }}
           />
-          <Avatar sx={{ height: 40, width: 40, position: "absolute", left: "5px", top: "5px" }}>{media.added_by.slice(0, 1)}</Avatar>
+          <Avatar
+            src={media.added_by.profile_pic}
+            sx={{ height: 40, width: 40, position: "absolute", left: "5px", top: "5px" }}
+          >
+            EW
+          </Avatar>
         </Box>
         <Grid
           container
@@ -42,20 +47,27 @@ const MediaCardCollection = ({ media }: Props) => {
         >
           <Grid xs={12}>
             <Typography
-              variant="subtitle2"
+              variant="body2"
               component="p"
-              textAlign="center"
             >
-              {media.added_reason}
+              "{media.added_reason}"
             </Typography>
-          </Grid>
-          <Grid xs={12}>
-            <Link
-              className="flex"
-              href={`/media/${media.media_id}/?media_type=${media.media_type}`}
-            >
-              <Button>View Details</Button>
-            </Link>
+            <Grid xs={12}>
+              <Typography
+                variant="subtitle2"
+                component="p"
+              >
+                - {media.added_by.user_name}
+              </Typography>
+            </Grid>
+            <Grid xs={12}>
+              <Link
+                className="flex"
+                href={`/media/${media.media_id}/?media_type=${media.media_type}`}
+              >
+                <Button>View Details</Button>
+              </Link>
+            </Grid>
           </Grid>
         </Grid>
       </Paper>

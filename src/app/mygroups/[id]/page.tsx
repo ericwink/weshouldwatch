@@ -27,8 +27,9 @@ interface GroupMedia {
     genres: string[];
     media_type: string;
   };
-  users: {
-    email: string;
+  user_public_profile: {
+    user_name: string;
+    profile_pic: string;
   };
 }
 
@@ -36,7 +37,7 @@ interface Condensed {
   media_id: number;
   watched: boolean;
   added_reason: string;
-  added_by: string;
+  added_by: { user_name: string; profile_pic: string };
   genres: string[];
   media_type: string;
   poster_path: string;
@@ -58,7 +59,7 @@ const fetchMediaCollection = async (id: number) => {
     *,
     media (
       *
-    ), users ( * )
+    ) , user_public_profile ( user_name, profile_pic )
   `
     )
     .eq("group_id", id);
@@ -74,7 +75,7 @@ const manipulateData = (data: GroupMedia[] | null) => {
       media_id: entry.media_id,
       watched: entry.watched,
       added_reason: entry.added_reason,
-      added_by: entry.users ? entry.users.email : "not provided",
+      added_by: entry.user_public_profile ? entry.user_public_profile : { user_name: "not provided", profile_pic: "not provided" },
       genres: entry.media.genres,
       media_type: entry.media.media_type,
       poster_path: entry.media.poster_path,
@@ -93,7 +94,7 @@ const manipulateData = (data: GroupMedia[] | null) => {
 const groupPageById = async ({ params: { id } }: Props) => {
   const data = await fetchMediaCollection(parseInt(id));
   const sortedData = manipulateData(data);
-  // console.log(JSON.stringify(sortedData, null, 2));
+  console.log(JSON.stringify(data, null, 2));
 
   return (
     <main>
@@ -161,3 +162,5 @@ export default groupPageById;
     },
   },
 ];
+
+//(auth.uid() = id)
