@@ -22,7 +22,7 @@ const UserProvider = ({ children }: { children: ReactNode }) => {
       const user = session?.user || null;
 
       if (user) {
-        let { data: users, error } = await supabase.from("users").select("*").eq("id", user.id).single();
+        let { data: users, error } = await supabase.from("users").select("*, user_public_profile (profile_pic, user_name)").eq("id", user.id).single();
         setUser({ ...user, ...users });
       }
     };
@@ -50,21 +50,17 @@ const UserProvider = ({ children }: { children: ReactNode }) => {
         redirectTo: `${location.origin}/auth/callback`,
       },
     });
-    if (error) throw new Error(error.message);
+    if (error) console.log(error);
   };
 
   const noPasswordLogin = async (email: string) => {
-    try {
-      let { data, error } = await supabase.auth.signInWithOtp({
-        email: email,
-        options: {
-          emailRedirectTo: `${location.origin}/auth/callback`,
-        },
-      });
-    } catch (error: any) {
-      console.log(error);
-      throw new Error(error.message);
-    }
+    let { data, error } = await supabase.auth.signInWithOtp({
+      email: email,
+      options: {
+        emailRedirectTo: `${location.origin}/auth/callback`,
+      },
+    });
+    if (error) console.log(error);
   };
 
   const passwordSignUp = async (email: string, password: string) => {
@@ -76,7 +72,7 @@ const UserProvider = ({ children }: { children: ReactNode }) => {
       },
     });
 
-    if (error) throw new Error(error.message);
+    if (error) console.log(error);
   };
 
   const values = {

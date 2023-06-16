@@ -1,7 +1,7 @@
 import "./globals.css";
-import { MuiSetup } from "./theme/MuiSetup";
+import { MuiSetup } from "../context/theme/MuiSetup";
 import NavBar from "../components/NavBar";
-import UserProvider from "./context/user";
+import UserProvider from "../context/user";
 
 export const metadata = {
   title: "We Should Watch...",

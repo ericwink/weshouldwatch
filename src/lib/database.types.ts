@@ -75,27 +75,27 @@ export interface Database {
           {
             foreignKeyName: "comments_user_id_fkey"
             columns: ["user_id"]
-            referencedRelation: "users"
-            referencedColumns: ["id"]
+            referencedRelation: "user_public_profile"
+            referencedColumns: ["user_id"]
           }
         ]
       }
       group: {
         Row: {
-          created_at: string | null
-          created_by: string | null
+          created_at: string
+          created_by: string
           group_name: string
           id: number
         }
         Insert: {
-          created_at?: string | null
-          created_by?: string | null
+          created_at?: string
+          created_by?: string
           group_name: string
           id?: number
         }
         Update: {
-          created_at?: string | null
-          created_by?: string | null
+          created_at?: string
+          created_by?: string
           group_name?: string
           id?: number
         }
@@ -103,45 +103,45 @@ export interface Database {
           {
             foreignKeyName: "group_created_by_fkey"
             columns: ["created_by"]
-            referencedRelation: "users"
-            referencedColumns: ["id"]
+            referencedRelation: "user_public_profile"
+            referencedColumns: ["user_id"]
           }
         ]
       }
       group_media: {
         Row: {
-          added_by: string | null
-          added_reason: string | null
-          created_at: string | null
-          group_id: number | null
+          added_by: string
+          added_reason: string
+          created_at: string
+          group_id: number
           id: number
-          media_id: number | null
+          media_id: number
           watched: boolean
         }
         Insert: {
-          added_by?: string | null
-          added_reason?: string | null
-          created_at?: string | null
-          group_id?: number | null
+          added_by?: string
+          added_reason: string
+          created_at?: string
+          group_id: number
           id?: number
-          media_id?: number | null
+          media_id: number
           watched?: boolean
         }
         Update: {
-          added_by?: string | null
-          added_reason?: string | null
-          created_at?: string | null
-          group_id?: number | null
+          added_by?: string
+          added_reason?: string
+          created_at?: string
+          group_id?: number
           id?: number
-          media_id?: number | null
+          media_id?: number
           watched?: boolean
         }
         Relationships: [
           {
             foreignKeyName: "group_media_added_by_fkey"
             columns: ["added_by"]
-            referencedRelation: "users"
-            referencedColumns: ["id"]
+            referencedRelation: "user_public_profile"
+            referencedColumns: ["user_id"]
           },
           {
             foreignKeyName: "group_media_group_id_fkey"
@@ -157,28 +157,65 @@ export interface Database {
           }
         ]
       }
+      invite_to_group: {
+        Row: {
+          created_at: string
+          created_by: string
+          email: string
+          group_id: number
+          id: string
+        }
+        Insert: {
+          created_at?: string
+          created_by?: string
+          email: string
+          group_id: number
+          id?: string
+        }
+        Update: {
+          created_at?: string
+          created_by?: string
+          email?: string
+          group_id?: number
+          id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "invite_to_group_created_by_fkey"
+            columns: ["created_by"]
+            referencedRelation: "user_public_profile"
+            referencedColumns: ["user_id"]
+          },
+          {
+            foreignKeyName: "invite_to_group_group_id_fkey"
+            columns: ["group_id"]
+            referencedRelation: "group"
+            referencedColumns: ["id"]
+          }
+        ]
+      }
       media: {
         Row: {
-          created_at: string | null
-          genres: string[] | null
-          media_type: string | null
-          poster_path: string | null
+          created_at: string
+          genres: string[]
+          media_type: string
+          poster_path: string
           title: string
           tmdb_id: number
         }
         Insert: {
-          created_at?: string | null
-          genres?: string[] | null
-          media_type?: string | null
-          poster_path?: string | null
+          created_at?: string
+          genres: string[]
+          media_type: string
+          poster_path: string
           title: string
           tmdb_id: number
         }
         Update: {
-          created_at?: string | null
-          genres?: string[] | null
-          media_type?: string | null
-          poster_path?: string | null
+          created_at?: string
+          genres?: string[]
+          media_type?: string
+          poster_path?: string
           title?: string
           tmdb_id?: number
         }
@@ -212,6 +249,34 @@ export interface Database {
           },
           {
             foreignKeyName: "user_group_join_user_id_fkey"
+            columns: ["user_id"]
+            referencedRelation: "user_public_profile"
+            referencedColumns: ["user_id"]
+          }
+        ]
+      }
+      user_public_profile: {
+        Row: {
+          created_at: string | null
+          profile_pic: string | null
+          user_id: string
+          user_name: string
+        }
+        Insert: {
+          created_at?: string | null
+          profile_pic?: string | null
+          user_id: string
+          user_name: string
+        }
+        Update: {
+          created_at?: string | null
+          profile_pic?: string | null
+          user_id?: string
+          user_name?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_public_profile_user_id_fkey"
             columns: ["user_id"]
             referencedRelation: "users"
             referencedColumns: ["id"]
@@ -368,7 +433,7 @@ export interface Database {
         }
         Relationships: [
           {
-            foreignKeyName: "objects_bucketId_fkey"
+            foreignKeyName: "objects_bucket_id_fkey"
             columns: ["bucket_id"]
             referencedRelation: "buckets"
             referencedColumns: ["id"]

@@ -2,7 +2,7 @@
 
 import { TextField, Button, Box, Container, Typography } from "@mui/material";
 import { useState, ChangeEvent } from "react";
-import { useUser } from "../app/context/user";
+import { useUser } from "../context/user";
 import Link from "next/link";
 
 const LogInSignUp = ({ type }: { type: "login" | "signup" }) => {
@@ -80,28 +80,25 @@ const LogInSignUp = ({ type }: { type: "login" | "signup" }) => {
   const emailSent = <Typography>Check your email!</Typography>;
 
   return (
-    <Container sx={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
-      <Box
-        display="flex"
-        flexDirection="column"
-        gap={1}
-        justifyContent="center"
-        alignItems="center"
-        width="300px"
-        height={"90vh"}
+    <Box
+      display="flex"
+      flexDirection="column"
+      gap={1}
+      justifyContent="center"
+      alignItems="center"
+      width="300px"
+    >
+      <Typography
+        variant="h3"
+        component="h2"
+        mb={1}
+        textAlign="center"
       >
-        <Typography
-          variant="h3"
-          component="h2"
-          mb={1}
-          textAlign="center"
-        >
-          {header}
-        </Typography>
-        {submitted ? emailSent : loginForm}
-        {type === "login" ? signUpRedirect : loginRedirect}
-      </Box>
-    </Container>
+        {header}
+      </Typography>
+      {submitted ? emailSent : loginForm}
+      {type === "login" ? signUpRedirect : loginRedirect}
+    </Box>
   );
 };
 

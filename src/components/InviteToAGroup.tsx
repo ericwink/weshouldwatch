@@ -2,7 +2,7 @@
 
 import { Box, InputLabel, MenuItem, FormControl, TextField, Button, CircularProgress, Typography } from "@mui/material";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
-import { useUser } from "../app/context/user";
+import { useUser } from "../context/user";
 import type { User } from "@supabase/supabase-js";
 import { useState, ChangeEvent } from "react";
 import { inviteToGroup } from "../lib/serverActions";

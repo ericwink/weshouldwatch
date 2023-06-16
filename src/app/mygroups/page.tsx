@@ -26,19 +26,24 @@ const groupsPage = async () => {
 
   const groups = await fetchGroups();
 
-  if (groups?.length! < 1) return <h2>No Groups Yet!</h2>;
+  const usersGroups = () => {
+    if (groups?.length! < 1) return <div>No Groups Yet!</div>;
+    return (
+      <CardGrid>
+        {groups?.map(group => (
+          <GroupCard
+            key={group.id}
+            {...group}
+          />
+        ))}
+      </CardGrid>
+    );
+  };
 
   return (
     <main>
       <TabDisplay tabNames={["My Groups", "Create A Group", "Invite To A Group"]}>
-        <CardGrid>
-          {groups?.map(group => (
-            <GroupCard
-              key={group.id}
-              {...group}
-            />
-          ))}
-        </CardGrid>
+        {usersGroups()}
         <MakeGroup />
         <InviteToAGroup groups={groups} />
       </TabDisplay>

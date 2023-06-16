@@ -1,7 +1,7 @@
 "use client";
 
 import { Button } from "@mui/material";
-import { useUser } from "../app/context/user";
+import { useUser } from "../context/user";
 
 const LogOut = () => {
   const { logout, user } = useUser();
