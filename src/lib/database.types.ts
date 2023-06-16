@@ -89,7 +89,7 @@ export interface Database {
         }
         Insert: {
           created_at?: string
-          created_by: string
+          created_by?: string
           group_name: string
           id?: number
         }
@@ -119,7 +119,7 @@ export interface Database {
           watched: boolean
         }
         Insert: {
-          added_by: string
+          added_by?: string
           added_reason: string
           created_at?: string
           group_id: number
@@ -167,7 +167,7 @@ export interface Database {
         }
         Insert: {
           created_at?: string
-          created_by: string
+          created_by?: string
           email: string
           group_id: number
           id?: string
@@ -258,19 +258,19 @@ export interface Database {
       user_public_profile: {
         Row: {
           created_at: string | null
-          profile_pic: string
+          profile_pic: string | null
           user_id: string
           user_name: string
         }
         Insert: {
           created_at?: string | null
-          profile_pic: string
+          profile_pic?: string | null
           user_id: string
           user_name: string
         }
         Update: {
           created_at?: string | null
-          profile_pic?: string
+          profile_pic?: string | null
           user_id?: string
           user_name?: string
         }
@@ -433,7 +433,7 @@ export interface Database {
         }
         Relationships: [
           {
-            foreignKeyName: "objects_bucketId_fkey"
+            foreignKeyName: "objects_bucket_id_fkey"
             columns: ["bucket_id"]
             referencedRelation: "buckets"
             referencedColumns: ["id"]

@@ -50,7 +50,7 @@ const MediaCardCollection = ({ media }: Props) => {
               variant="body2"
               component="p"
             >
-              "{media.added_reason}"
+              {media.added_reason}
             </Typography>
             <Grid xs={12}>
               <Typography

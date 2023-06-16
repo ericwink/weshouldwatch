@@ -34,7 +34,7 @@ const makeGenreArray = (mediaData: Condensed[]) => {
   for (let media of mediaData) {
     media.genres.forEach(genre => genreSet.add(genre));
   }
-  genreSet.forEach(genreName => genreArray.push({ genre: genreName, enabled: true }));
+  genreSet.forEach(genreName => genreArray.push({ genre: genreName as string, enabled: true }));
   return genreArray;
 };
 

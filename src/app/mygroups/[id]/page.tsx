@@ -16,7 +16,7 @@ interface GroupMedia {
   created_at: string;
   added_by: string;
   added_reason: string;
-  watched: false;
+  watched: boolean;
   group_id: number;
   media_id: number;
   media: {
@@ -64,7 +64,7 @@ const fetchMediaCollection = async (id: number) => {
     )
     .eq("group_id", id);
 
-  return group_media;
+  return group_media as GroupMedia[];
 };
 
 const manipulateData = (data: GroupMedia[] | null) => {
@@ -76,10 +76,10 @@ const manipulateData = (data: GroupMedia[] | null) => {
       watched: entry.watched,
       added_reason: entry.added_reason,
       added_by: entry.user_public_profile ? entry.user_public_profile : { user_name: "not provided", profile_pic: "not provided" },
-      genres: entry.media.genres,
-      media_type: entry.media.media_type,
-      poster_path: entry.media.poster_path,
-      title: entry.media.title,
+      genres: entry.media!.genres,
+      media_type: entry.media!.media_type,
+      poster_path: entry.media!.poster_path,
+      title: entry.media!.title,
       enabled: true,
     };
     if (newEntry.media_type === "movie") {
@@ -108,59 +108,3 @@ const groupPageById = async ({ params: { id } }: Props) => {
 };
 
 export default groupPageById;
-
-[
-  {
-    id: 17,
-    created_at: "2023-06-12T19:57:19.596457+00:00",
-    added_by: "a8ba9e52-2368-4b1d-969c-c539f1ca43f4",
-    added_reason: "this is a client test",
-    watched: false,
-    group_id: 31,
-    media_id: 569094,
-    media: {
-      created_at: "2023-06-10T22:27:44.929652+00:00",
-      tmdb_id: 569094,
-      title: "Spider-Man: Across the Spider-Verse",
-      poster_path: "/8Vt6mWEReuy4Of61Lnj5Xj704m8.jpg",
-      genres: ["Action", "Adventure", "Animation", "Science Fiction"],
-      media_type: "movie",
-    },
-  },
-  {
-    id: 21,
-    created_at: "2023-06-13T20:17:35.263677+00:00",
-    added_by: "a8ba9e52-2368-4b1d-969c-c539f1ca43f4",
-    added_reason: "I love this movie!",
-    watched: false,
-    group_id: 31,
-    media_id: 324857,
-    media: {
-      created_at: "2023-06-13T20:17:35.134431+00:00",
-      tmdb_id: 324857,
-      title: "Spider-Man: Into the Spider-Verse",
-      poster_path: "/iiZZdoQBEYBv6id8su7ImL0oCbD.jpg",
-      genres: ["Action", "Adventure", "Animation", "Science Fiction"],
-      media_type: "movie",
-    },
-  },
-  {
-    id: 22,
-    created_at: "2023-06-13T20:17:53.871202+00:00",
-    added_by: "a8ba9e52-2368-4b1d-969c-c539f1ca43f4",
-    added_reason: "Looks like a cool show about boxing",
-    watched: false,
-    group_id: 31,
-    media_id: 127529,
-    media: {
-      created_at: "2023-06-13T20:17:53.762957+00:00",
-      tmdb_id: 127529,
-      title: "Bloodhounds",
-      poster_path: "/kxU1hhebWZGaz8gkMVi8zkZhzVt.jpg",
-      genres: ["Action & Adventure", "Drama", "Crime"],
-      media_type: "tv",
-    },
-  },
-];
-
-//(auth.uid() = id)

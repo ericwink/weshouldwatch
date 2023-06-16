@@ -7,6 +7,7 @@ import { revalidatePath } from "next/cache";
 import type { MediaPayload } from "./interface";
 
 const supabase = createServerComponentClient<Database>({ cookies });
+const user = supabase.auth.getUser();
 
 export async function addGroup(name: string) {
   const { data, error } = await supabase.from("group").insert([{ group_name: name }]);
