@@ -13,20 +13,21 @@ const UserProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
   const router = useRouter();
 
+  const getUserProfile = async () => {
+    console.log("getting updated profile info!");
+    const {
+      data: { session },
+      error,
+    } = await supabase.auth.getSession();
+    const user = session?.user || null;
+
+    if (user) {
+      let { data: users, error } = await supabase.from("users").select("*, user_public_profile (profile_pic, user_name)").eq("id", user.id).single();
+      setUser({ ...user, ...users });
+    }
+  };
+
   useEffect(() => {
-    const getUserProfile = async () => {
-      const {
-        data: { session },
-        error,
-      } = await supabase.auth.getSession();
-      const user = session?.user || null;
-
-      if (user) {
-        let { data: users, error } = await supabase.from("users").select("*, user_public_profile (profile_pic, user_name)").eq("id", user.id).single();
-        setUser({ ...user, ...users });
-      }
-    };
-
     getUserProfile();
 
     const {
@@ -80,6 +81,7 @@ const UserProvider = ({ children }: { children: ReactNode }) => {
     logout,
     gmail,
     noPasswordLogin,
+    getUserProfile,
   };
 
   return <UserContext.Provider value={values}>{children}</UserContext.Provider>;

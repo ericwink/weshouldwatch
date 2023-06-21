@@ -1,6 +1,7 @@
 import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
 import { Database } from "@/src/lib/database.types";
 import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
 
 import TabDisplay from "@/src/components/TabDisplay";
 import CardGridFilter from "@/src/components/CardGridFilter";
@@ -51,6 +52,7 @@ interface Sorted {
 }
 
 const supabase = createServerComponentClient<Database>({ cookies });
+
 const fetchMediaCollection = async (id: number) => {
   let { data: group_media, error } = await supabase
     .from("group_media")
@@ -94,7 +96,10 @@ const manipulateData = (data: GroupMedia[] | null) => {
 const groupPageById = async ({ params: { id } }: Props) => {
   const data = await fetchMediaCollection(parseInt(id));
   const sortedData = manipulateData(data);
-  console.log(JSON.stringify(data, null, 2));
+  // console.log(JSON.stringify(data, null, 2));
+
+  const { data: session } = await supabase.auth.getSession();
+  if (!session.session) redirect("/login");
 
   return (
     <main>

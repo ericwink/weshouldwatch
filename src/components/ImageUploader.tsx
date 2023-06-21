@@ -6,14 +6,14 @@ import { useUser } from "../context/user";
 
 const ImageUploader = () => {
   const supabase = createClientComponentClient();
-  const { user } = useUser();
+  const { user, getUserProfile } = useUser();
 
   const handleChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
       const avatarFile = e.target.files[0];
-      const { data, error } = await supabase.storage.from("avatars").upload(`${user.id}/${avatarFile.name}`, avatarFile, {
+      const { data, error } = await supabase.storage.from("avatars").upload(`${user.id}/userAvatarImage`, avatarFile, {
         cacheControl: "3600",
-        upsert: false,
+        upsert: true,
       });
 
       if (data) {
@@ -25,6 +25,8 @@ const ImageUploader = () => {
     } else {
       alert("Something went wrong");
     }
+
+    getUserProfile();
   };
 
   const updateProfilePath = async (path: string) => {
@@ -37,7 +39,7 @@ const ImageUploader = () => {
       variant="contained"
       component="label"
     >
-      Upload File
+      Update Avatar
       <input
         type="file"
         accept="image/png, image/jpeg, image/jpg"

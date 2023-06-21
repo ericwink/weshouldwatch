@@ -151,3 +151,16 @@ export interface MediaPayload {
   genres: string[];
   media_type: string;
 }
+
+export interface User {
+  email: string;
+  id: string;
+  is_subscribed: boolean;
+  role: string;
+  session_id: string;
+  stripe_customer: string;
+  user_public_profile: {
+    profile_pic: string;
+    user_name: string;
+  };
+}
