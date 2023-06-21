@@ -1,5 +1,7 @@
 "use client";
 
+export const revalidate = 0;
+
 import { Button } from "@mui/material";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { useUser } from "../context/user";
@@ -8,25 +10,33 @@ const ImageUploader = () => {
   const supabase = createClientComponentClient();
   const { user, getUserProfile } = useUser();
 
+  const emptyBucket = async () => {
+    const { data: files, error: listError } = await supabase.storage.from("avatars").list(`${user.id}`);
+    if (files) {
+      const { data: confirmation, error: deleteError } = await supabase.storage.from("avatars").remove([`${user.id}/${files[1].name}`]);
+    }
+  };
+
   const handleChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
       const avatarFile = e.target.files[0];
-      const { data, error } = await supabase.storage.from("avatars").upload(`${user.id}/userAvatarImage`, avatarFile, {
+      await emptyBucket();
+
+      const { data, error } = await supabase.storage.from("avatars").upload(`${user.id}/${avatarFile.name}`, avatarFile, {
         cacheControl: "3600",
-        upsert: true,
+        upsert: false,
       });
 
       if (data) {
         const fullPath = `https://zojrocbtklqjgxfijsje.supabase.co/storage/v1/object/public/avatars/${data.path}`;
-        updateProfilePath(fullPath);
+        await updateProfilePath(fullPath);
+        getUserProfile();
       }
 
       if (error) console.log(error);
     } else {
       alert("Something went wrong");
     }
-
-    getUserProfile();
   };
 
   const updateProfilePath = async (path: string) => {
@@ -42,7 +52,7 @@ const ImageUploader = () => {
       Update Avatar
       <input
         type="file"
-        accept="image/png, image/jpeg, image/jpg"
+        accept="image/png, image/jpg"
         hidden
         onChange={handleChange}
       />

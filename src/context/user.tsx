@@ -1,5 +1,7 @@
 "use client";
 
+export const revalidate = 0;
+
 import { createContext, useContext, ReactNode, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
