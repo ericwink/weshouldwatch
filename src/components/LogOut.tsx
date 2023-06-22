@@ -14,12 +14,12 @@ const LogOut = () => {
       >
         Log Out
       </Button>
-      <Button
+      {/* <Button
         variant="contained"
         onClick={() => console.log(user)}
       >
         View Session Data From Context
-      </Button>
+      </Button> */}
     </>
   );
 };

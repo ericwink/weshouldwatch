@@ -1,6 +1,6 @@
 "use client";
 
-import { TextField, Button, Box, Paper, Typography } from "@mui/material";
+import { TextField, Button, Box, Typography } from "@mui/material";
 import { useState, ChangeEvent } from "react";
 import { useUser } from "../context/user";
 import Link from "next/link";
@@ -80,7 +80,15 @@ const LogInSignUp = ({ type }: { type: "login" | "signup" }) => {
   const emailSent = <Typography>Check your email!</Typography>;
 
   return (
-    <Paper sx={{ display: "flex", flexDirection: "column", gap: 1, p: 1, justifyContent: "center", alignItems: "center", width: "300px" }}>
+    <Box
+      display="flex"
+      flexDirection="column"
+      gap={1}
+      p={1}
+      justifyContent="center"
+      alignContent="center"
+      width="300px"
+    >
       <Typography
         variant="h3"
         component="h2"
@@ -91,7 +99,7 @@ const LogInSignUp = ({ type }: { type: "login" | "signup" }) => {
       </Typography>
       {submitted ? emailSent : loginForm}
       {type === "login" ? signUpRedirect : loginRedirect}
-    </Paper>
+    </Box>
   );
 };
 

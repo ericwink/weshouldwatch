@@ -1,5 +1,6 @@
 import Stripe from "stripe";
-import { supabase } from "@/src/lib/supabase";
+import { createRouteHandlerClient } from "@supabase/auth-helpers-nextjs";
+import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
 
 interface StripeRequest {
@@ -24,6 +25,7 @@ export async function POST(req: Request) {
 
   //pull contents of body from req, which comes from supabase webhook
   const body: StripeRequest = await req.json();
+  // console.log({ body });
 
   try {
     // make stripe customer
@@ -32,8 +34,12 @@ export async function POST(req: Request) {
     });
     // console.log(customer);
 
+    const supabase = createRouteHandlerClient({ cookies });
     // update table in supabase with stripe data
+    // ***THIS IS BROKEN UNTIL NEXT TEAM UPDATES TO FIX ASYNC STORAGE ISSUE****
     const { data, error } = await supabase.from("users").update({ stripe_customer: customer.id }).eq("id", body.record.id);
+    console.log({ data });
+    console.log({ error });
 
     return new Response(`stripe customer created: ${customer.id} and user table updated`);
   } catch (error: any) {

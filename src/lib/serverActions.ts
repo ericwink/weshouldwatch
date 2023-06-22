@@ -60,3 +60,18 @@ export async function inviteToGroup(group_id: number, email: string) {
     return { error: false, message: "Email Sent!" };
   }
 }
+
+export async function acceptInvite(group_id: number) {
+  const { data: user } = await supabase.auth.getUser();
+  if (user.user) {
+    const { data, error } = await supabase.from("user_group_join").insert([{ group_id: group_id, user_id: user.user?.id }]);
+    if (error) {
+      console.log(error);
+      return { error: true, message: "An error occurred. Please try again." };
+    } else {
+      return { error: false, message: "Invitation accepted!" };
+    }
+  } else {
+    return { error: true, message: "An error occurred. Please sign in and try again." };
+  }
+}

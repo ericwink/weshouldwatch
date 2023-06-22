@@ -10,17 +10,19 @@ const ImageUploader = () => {
   const supabase = createClientComponentClient();
   const { user, getUserProfile } = useUser();
 
-  const emptyBucket = async () => {
+  const emptyFolder = async () => {
     const { data: files, error: listError } = await supabase.storage.from("avatars").list(`${user.id}`);
     if (files) {
-      const { data: confirmation, error: deleteError } = await supabase.storage.from("avatars").remove([`${user.id}/${files[1].name}`]);
+      files.forEach(async image => {
+        await supabase.storage.from("avatars").remove([`${user.id}/${image.name}`]);
+      });
     }
   };
 
   const handleChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
       const avatarFile = e.target.files[0];
-      await emptyBucket();
+      await emptyFolder();
 
       const { data, error } = await supabase.storage.from("avatars").upload(`${user.id}/${avatarFile.name}`, avatarFile, {
         cacheControl: "3600",
