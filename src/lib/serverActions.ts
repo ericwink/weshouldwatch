@@ -75,3 +75,13 @@ export async function acceptInvite(group_id: number) {
     return { error: true, message: "An error occurred. Please sign in and try again." };
   }
 }
+
+export async function addComment(group_id: number, media_id: number, comment: string) {
+  const { data, error } = await supabase.from("comments").insert([{ group_id: group_id, media_id: media_id, comment: comment }]);
+  if (error) {
+    console.log(error);
+    return { error: true, message: "An error occurred. Please try again." };
+  } else {
+    return { error: false, message: "Comment posted!" };
+  }
+}

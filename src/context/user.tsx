@@ -16,7 +16,6 @@ const UserProvider = ({ children }: { children: ReactNode }) => {
   const router = useRouter();
 
   const getUserProfile = async () => {
-    console.log("getting updated profile info!");
     const {
       data: { session },
       error,
