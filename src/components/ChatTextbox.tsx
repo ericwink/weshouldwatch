@@ -23,7 +23,7 @@ const ChatTextbox = () => {
       return "success";
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["comments", { group_id: 36 }, { media_id: 385687 }] });
+      //   queryClient.invalidateQueries({ queryKey: ["comments", { group_id: 36 }, { media_id: 385687 }] });
       setComment("");
     },
   });
