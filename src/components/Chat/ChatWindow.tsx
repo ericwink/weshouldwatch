@@ -96,9 +96,9 @@ const ChatWindow = ({ groupId, mediaId }: Props) => {
     })
     .subscribe();
 
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading) return <div>{`Loading...`}</div>;
 
-  if (error) return <div>'An error occurred try again'</div>;
+  if (error) return <div>{`An error occurred try again`}</div>;
 
   return (
     <Box sx={{ maxHeight: "100%", pb: "80px", overflow: "auto" }}>
@@ -121,7 +121,9 @@ const ChatWindow = ({ groupId, mediaId }: Props) => {
               {comment.user_name}
             </Typography>
             {comment.comments.map(each => (
-              <Typography>{each}</Typography>
+              <div key={each}>
+                <Typography>{each}</Typography>
+              </div>
             ))}
           </Paper>
         </Box>

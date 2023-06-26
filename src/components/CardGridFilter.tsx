@@ -26,7 +26,7 @@ interface GenreFilter {
 
 interface Props {
   mediaData: Condensed[];
-  groupId: string;
+  groupId: number;
 }
 
 const makeGenreArray = (mediaData: Condensed[]) => {
