@@ -1,10 +1,12 @@
 "use client";
 
 import getPoster from "@/src/lib/getPoster";
-import { Paper, Typography, Box, Avatar, Button } from "@mui/material";
+import { Paper, Typography, Box, Avatar, IconButton } from "@mui/material";
 import Grid from "@mui/material/Unstable_Grid2"; // Grid version 2
 import Image from "next/image";
 import Link from "next/link";
+import ChatModal from "./Chat/ChatModal";
+import InfoIcon from "@mui/icons-material/Info";
 
 interface Props {
   media: {
@@ -18,9 +20,10 @@ interface Props {
     title: string;
     enabled: boolean;
   };
+  groupId: number;
 }
 
-const MediaCardCollection = ({ media }: Props) => {
+const MediaCardCollection = ({ media, groupId }: Props) => {
   return (
     <Grid>
       <Paper
@@ -36,10 +39,8 @@ const MediaCardCollection = ({ media }: Props) => {
           />
           <Avatar
             src={media.added_by.profile_pic}
-            sx={{ height: 40, width: 40, position: "absolute", left: "5px", top: "5px" }}
-          >
-            EW
-          </Avatar>
+            sx={{ height: 45, width: 45, position: "absolute", left: "2px", top: "2px", border: "1px", borderColor: "white", borderStyle: "solid" }}
+          ></Avatar>
         </Box>
         <Grid
           container
@@ -60,13 +61,34 @@ const MediaCardCollection = ({ media }: Props) => {
                 - {media.added_by.user_name}
               </Typography>
             </Grid>
-            <Grid xs={12}>
-              <Link
-                className="flex"
-                href={`/media/${media.media_id}/?media_type=${media.media_type}`}
+            <Grid
+              container
+              justifyContent="space-between"
+            >
+              <Grid
+                xs={6}
+                alignItems="center"
+                justifyContent="center"
               >
-                <Button>View Details</Button>
-              </Link>
+                <IconButton>
+                  <Link
+                    className="flex"
+                    href={`/media/${media.media_id}/?media_type=${media.media_type}`}
+                  >
+                    <InfoIcon />
+                  </Link>
+                </IconButton>
+              </Grid>
+              <Grid
+                xs={6}
+                alignItems="center"
+                justifyContent="center"
+              >
+                <ChatModal
+                  media={media}
+                  groupId={groupId}
+                />
+              </Grid>
             </Grid>
           </Grid>
         </Grid>
