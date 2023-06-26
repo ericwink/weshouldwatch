@@ -36,28 +36,28 @@ export interface Database {
     Tables: {
       comments: {
         Row: {
-          comment: string | null
-          created_at: string | null
-          group_id: number | null
+          comment: string
+          created_at: string
+          group_id: number
           id: number
-          media_id: number | null
-          user_id: string | null
+          media_id: number
+          user_id: string
         }
         Insert: {
-          comment?: string | null
-          created_at?: string | null
-          group_id?: number | null
+          comment: string
+          created_at?: string
+          group_id: number
           id?: number
-          media_id?: number | null
-          user_id?: string | null
+          media_id: number
+          user_id?: string
         }
         Update: {
-          comment?: string | null
-          created_at?: string | null
-          group_id?: number | null
+          comment?: string
+          created_at?: string
+          group_id?: number
           id?: number
-          media_id?: number | null
-          user_id?: string | null
+          media_id?: number
+          user_id?: string
         }
         Relationships: [
           {

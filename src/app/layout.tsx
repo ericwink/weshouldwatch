@@ -2,6 +2,7 @@ import "./globals.css";
 import { MuiSetup } from "../context/theme/MuiSetup";
 import NavBar from "../components/NavBar";
 import UserProvider from "../context/user";
+import TanstackProvider from "../context/tanstack";
 
 export const metadata = {
   title: "We Should Watch...",
@@ -18,8 +19,10 @@ export default function RootLayout({ children }: Props) {
     <html lang="en">
       <body>
         <UserProvider>
-          <NavBar />
-          <MuiSetup>{children}</MuiSetup>
+          <TanstackProvider>
+            <NavBar />
+            <MuiSetup>{children}</MuiSetup>
+          </TanstackProvider>
         </UserProvider>
       </body>
     </html>

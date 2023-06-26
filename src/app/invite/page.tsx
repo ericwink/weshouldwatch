@@ -33,7 +33,7 @@ export default async function invitePage({ searchParams }: Props) {
   let { data: invite_to_group, error } = await supabase.from("invite_to_group").select("*, user_public_profile ( * )").eq("id", token).single();
   console.log(invite_to_group);
 
-  if (!invite_to_group) return <h1>You're not on the list</h1>;
+  if (!invite_to_group) return <h1>{`You're not on the list`}</h1>;
 
   return (
     <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">

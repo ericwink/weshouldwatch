@@ -19,7 +19,7 @@ const UserAvatar = ({ height = 40, width = 40, userImage = null }: Props) => {
     <Avatar
       sx={{ height: height, width: width }}
       src={image}
-    ></Avatar>
+    />
   );
 };
 

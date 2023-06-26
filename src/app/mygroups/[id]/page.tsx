@@ -105,8 +105,14 @@ const groupPageById = async ({ params: { id } }: Props) => {
     <main>
       <TabDisplay tabNames={["Group Info", "Movies", "TV Shows"]}>
         <h1>This is where the group info will be</h1>
-        <CardGridFilter mediaData={sortedData.movies} />
-        <CardGridFilter mediaData={sortedData.tv} />
+        <CardGridFilter
+          mediaData={sortedData.movies}
+          groupId={parseInt(id)}
+        />
+        <CardGridFilter
+          mediaData={sortedData.tv}
+          groupId={parseInt(id)}
+        />
       </TabDisplay>
     </main>
   );

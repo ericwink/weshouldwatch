@@ -26,6 +26,7 @@ interface GenreFilter {
 
 interface Props {
   mediaData: Condensed[];
+  groupId: number;
 }
 
 const makeGenreArray = (mediaData: Condensed[]) => {
@@ -38,7 +39,7 @@ const makeGenreArray = (mediaData: Condensed[]) => {
   return genreArray;
 };
 
-const CardGridFilter = ({ mediaData }: Props) => {
+const CardGridFilter = ({ mediaData, groupId }: Props) => {
   const [cards, setCards] = useState(mediaData);
   const [genres, setGenres] = useState(makeGenreArray(mediaData));
 
@@ -64,6 +65,7 @@ const CardGridFilter = ({ mediaData }: Props) => {
         <MediaCardCollection
           media={card}
           key={card.media_id}
+          groupId={groupId}
         />
       );
   });
