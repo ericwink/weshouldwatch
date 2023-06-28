@@ -16,7 +16,7 @@ const LogInSignUp = ({ type }: { type: "login" | "signup" }) => {
   const header = type === "login" ? "Log In" : "Create An Account";
 
   const signUpRedirect = (
-    <Typography>
+    <Typography textAlign="center">
       Need an account?{" "}
       <Button>
         <Link href={"/signup"}>Sign Up</Link>
@@ -24,7 +24,7 @@ const LogInSignUp = ({ type }: { type: "login" | "signup" }) => {
     </Typography>
   );
   const loginRedirect = (
-    <Typography>
+    <Typography textAlign="center">
       Already have an account?{" "}
       <Button>
         <Link href={"/login"}>Log In</Link>

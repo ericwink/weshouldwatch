@@ -5,11 +5,12 @@ export const revalidate = 0;
 import { createContext, useContext, ReactNode, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
+import { Database } from "../lib/database.types";
 
 const UserContext = createContext<any>(null);
 const supabase = createClientComponentClient();
 
-import type { User } from "@supabase/supabase-js";
+import { User } from "@supabase/supabase-js";
 
 const UserProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);

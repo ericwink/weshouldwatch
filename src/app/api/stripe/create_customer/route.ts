@@ -1,6 +1,5 @@
 import Stripe from "stripe";
-import { createRouteHandlerClient } from "@supabase/auth-helpers-nextjs";
-import { cookies } from "next/headers";
+import { getServiceSupabase } from "@/src/lib/supabase";
 import { NextResponse } from "next/server";
 
 interface StripeRequest {
@@ -34,12 +33,9 @@ export async function POST(req: Request) {
     });
     // console.log(customer);
 
-    const supabase = createRouteHandlerClient({ cookies });
+    const supabase = getServiceSupabase();
     // update table in supabase with stripe data
-    // ***THIS IS BROKEN UNTIL NEXT TEAM UPDATES TO FIX ASYNC STORAGE ISSUE****
     const { data, error } = await supabase.from("users").update({ stripe_customer: customer.id }).eq("id", body.record.id);
-    console.log({ data });
-    console.log({ error });
 
     return new Response(`stripe customer created: ${customer.id} and user table updated`);
   } catch (error: any) {
