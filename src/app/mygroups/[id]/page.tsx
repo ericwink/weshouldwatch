@@ -51,24 +51,6 @@ interface Sorted {
   tv: Condensed[];
 }
 
-const supabase = createServerComponentClient<Database>({ cookies });
-
-const fetchMediaCollection = async (id: number) => {
-  let { data: group_media, error } = await supabase
-    .from("group_media")
-    .select(
-      `
-    *,
-    media (
-      *
-    ) , user_public_profile ( user_name, profile_pic )
-  `
-    )
-    .eq("group_id", id);
-
-  return group_media as GroupMedia[];
-};
-
 const manipulateData = (data: GroupMedia[] | null) => {
   const sorted: Sorted = { movies: [], tv: [] };
   if (data === null) return sorted;
@@ -94,6 +76,24 @@ const manipulateData = (data: GroupMedia[] | null) => {
 };
 
 const groupPageById = async ({ params: { id } }: Props) => {
+  const supabase = createServerComponentClient<Database>({ cookies });
+
+  const fetchMediaCollection = async (id: number) => {
+    let { data: group_media, error } = await supabase
+      .from("group_media")
+      .select(
+        `
+      *,
+      media (
+        *
+      ) , user_public_profile ( user_name, profile_pic )
+    `
+      )
+      .eq("group_id", id);
+
+    return group_media as GroupMedia[];
+  };
+
   const data = await fetchMediaCollection(parseInt(id));
   const sortedData = manipulateData(data);
   // console.log(JSON.stringify(data, null, 2));

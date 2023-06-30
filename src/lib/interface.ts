@@ -164,3 +164,15 @@ export interface User {
     user_name: string;
   };
 }
+
+export interface UserAccount {
+  created_at: string | null;
+  email: string | null;
+  id: string;
+  is_subscribed: boolean;
+  stripe_customer: string | null;
+  user_public_profile: {
+    profile_pic: string | null;
+    user_name: string;
+  };
+}

@@ -2,11 +2,10 @@
 
 import { TextField, Button, Box, Typography } from "@mui/material";
 import { useState, ChangeEvent } from "react";
-import { useUser } from "../context/user";
 import Link from "next/link";
+import { gmailLogin, noPasswordLogin } from "../lib/supabaseClientHelper";
 
 const LogInSignUp = ({ type }: { type: "login" | "signup" }) => {
-  const { gmail, noPasswordLogin } = useUser();
   const [email, setEmail] = useState("");
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState(false);
@@ -68,7 +67,7 @@ const LogInSignUp = ({ type }: { type: "login" | "signup" }) => {
       </Button>
       <Button
         variant="contained"
-        onClick={gmail}
+        onClick={() => gmailLogin()}
         fullWidth
         color="error"
       >

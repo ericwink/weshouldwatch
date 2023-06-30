@@ -2,17 +2,17 @@
 
 import { Box, InputLabel, MenuItem, FormControl, TextField, Button, CircularProgress, Typography } from "@mui/material";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
-import { useUser } from "../context/user";
-import type { User } from "@supabase/supabase-js";
 import { useState, ChangeEvent } from "react";
 import { inviteToGroup } from "../lib/serverActions";
+import { useUserAccount } from "../lib/tanstackHooks";
 
 interface Props {
   groups: { created_at: string | null; created_by: string | null; group_name: string; id: number }[] | null;
 }
 
 export default function InviteToAGroup({ groups }: Props) {
-  const { user }: { user: User } = useUser();
+  const { data: user } = useUserAccount();
+
   const [group, setGroup] = useState("");
   const [error, setError] = useState({ error: false, message: "" });
   const [email, setEmail] = useState("");

@@ -2,8 +2,7 @@
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { TextField, Button, CircularProgress, Box } from "@mui/material";
 import { ChangeEvent, useState } from "react";
-import { useMutation } from "@tanstack/react-query";
-import { useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 interface Props {
   groupId: number;
@@ -13,7 +12,7 @@ interface Props {
 const ChatTextbox = ({ groupId, mediaId }: Props) => {
   const [comment, setComment] = useState<string>("");
   const supabase = createClientComponentClient();
-  const queryClient = useQueryClient();
+  // const queryClient = useQueryClient();
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     setComment(e.target.value);

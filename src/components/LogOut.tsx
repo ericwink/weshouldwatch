@@ -1,26 +1,30 @@
 "use client";
 
 import { Button } from "@mui/material";
-import { useUser } from "../context/user";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { logout } from "../lib/supabaseClientHelper";
+import { useRouter } from "next/navigation";
 
 const LogOut = () => {
-  const { logout, user } = useUser();
+  const router = useRouter();
+  const queryClient = useQueryClient();
+
+  const { mutate: logoutUser } = useMutation({
+    mutationFn: logout,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["userAccount"] });
+      queryClient.setQueryData(["userAccount"], null);
+    },
+    onSettled: () => router.push("/"),
+  });
 
   return (
-    <>
-      <Button
-        variant="contained"
-        onClick={logout}
-      >
-        Log Out
-      </Button>
-      {/* <Button
-        variant="contained"
-        onClick={() => console.log(user)}
-      >
-        View Session Data From Context
-      </Button> */}
-    </>
+    <Button
+      variant="contained"
+      onClick={() => logoutUser()}
+    >
+      Log Out
+    </Button>
   );
 };
 

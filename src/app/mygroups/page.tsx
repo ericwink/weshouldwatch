@@ -11,20 +11,13 @@ import { Database } from "@/src/lib/database.types";
 import TabDisplay from "@/src/components/TabDisplay";
 import InviteToAGroup from "@/src/components/InviteToAGroup";
 
-const supabase = createServerComponentClient<Database>({ cookies });
-
-const fetchGroups = async () => {
-  let { data: group, error } = await supabase.from("group").select("*");
-  if (error) console.log(error);
-
-  return group;
-};
-
 const groupsPage = async () => {
+  const supabase = createServerComponentClient<Database>({ cookies });
   const { data: session } = await supabase.auth.getSession();
   if (!session.session) redirect("/login");
 
-  const groups = await fetchGroups();
+  let { data: groups, error } = await supabase.from("group").select("*");
+  if (error) console.log(error);
 
   const usersGroups = () => {
     if (groups?.length! < 1) return <div>No Groups Yet!</div>;

@@ -1,6 +1,5 @@
 "use client";
 import { Paper, Box, Typography, Button } from "@mui/material";
-import { useUser } from "../context/user";
 
 interface Props {
   id: string;
@@ -12,9 +11,6 @@ interface Props {
 }
 
 const Pricing = ({ id, name, price, interval, currency }: Props) => {
-  const user = useUser();
-  console.log(user);
-
   return (
     <Paper sx={{ display: "flex", flexDirection: "column", gap: 2, p: 2, alignItems: "center" }}>
       <Typography

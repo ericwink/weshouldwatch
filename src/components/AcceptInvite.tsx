@@ -1,7 +1,7 @@
 "use client";
 
 import { Typography, Paper, Box, Button } from "@mui/material";
-import UserAvatar from "./UserAvatar";
+import UserAvatar from "./Account/UserAvatar";
 import { acceptInvite } from "../lib/serverActions";
 import { useState } from "react";
 

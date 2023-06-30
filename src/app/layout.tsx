@@ -1,7 +1,6 @@
 import "./globals.css";
 import { MuiSetup } from "../context/theme/MuiSetup";
 import NavBar from "../components/NavBar";
-import UserProvider from "../context/user";
 import TanstackProvider from "../context/tanstack";
 
 export const metadata = {
@@ -18,12 +17,10 @@ export default function RootLayout({ children }: Props) {
   return (
     <html lang="en">
       <body>
-        <UserProvider>
-          <TanstackProvider>
-            <NavBar />
-            <MuiSetup>{children}</MuiSetup>
-          </TanstackProvider>
-        </UserProvider>
+        <TanstackProvider>
+          <NavBar />
+          <MuiSetup>{children}</MuiSetup>
+        </TanstackProvider>
       </body>
     </html>
   );

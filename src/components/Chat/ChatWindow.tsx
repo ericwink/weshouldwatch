@@ -3,7 +3,7 @@
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { Database } from "../../lib/database.types";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import UserAvatar from "../UserAvatar";
+import UserAvatar from "../Account/UserAvatar";
 import { Box, Paper, Typography } from "@mui/material";
 import { useRef, useEffect } from "react";
 

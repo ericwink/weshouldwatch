@@ -2,6 +2,7 @@ import TabDisplay from "@/src/components/TabDisplay";
 import CardGrid from "@/src/components/CardGrid";
 import MediaCardMUI from "@/src/components/MediaCardMUI";
 import PeopleCard from "@/src/components/PeopleCard";
+import UserAvatar from "../components/Account/UserAvatar";
 
 const getData = async (mediaType: string) => {
   const tmdbKey = process.env.MOVIE_DB_API;
