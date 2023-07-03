@@ -1,7 +1,6 @@
 "use client";
 
-import { Typography, Paper, Box, Button } from "@mui/material";
-import UserAvatar from "./Account/UserAvatar";
+import { Typography, Paper, Button, Avatar } from "@mui/material";
 import { acceptInvite } from "../lib/serverActions";
 import { useState } from "react";
 
@@ -62,10 +61,10 @@ export default function AcceptInvite({ invite }: Props) {
     <Paper sx={{ minWidth: "300px", display: "flex", flexDirection: "column", alignItems: "center", gap: 2, p: 2 }}>
       <Typography>You have been invited to a group by</Typography>
       <Typography variant="h6">{invite.user_public_profile.user_name}</Typography>
-      <UserAvatar
-        height={100}
-        width={100}
-        userImage={invite.user_public_profile.profile_pic}
+      <Avatar
+        src={invite.user_public_profile.profile_pic ?? ""}
+        alt={invite.user_public_profile.user_name}
+        sx={{ height: 100, width: 100 }}
       />
       {accepted ? confirmation : pendingAccept}
     </Paper>

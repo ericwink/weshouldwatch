@@ -26,7 +26,7 @@ export default function InviteToAGroup({ groups }: Props) {
   const button = isPending ? <CircularProgress /> : "Send Email";
 
   const menuItems = groups!.map(group => {
-    if (group.created_by === user.id) return <MenuItem value={group.id}>{group.group_name}</MenuItem>;
+    if (group.created_by === user!.id) return <MenuItem value={group.id}>{group.group_name}</MenuItem>;
   });
 
   const handleChange = (event: SelectChangeEvent) => {
