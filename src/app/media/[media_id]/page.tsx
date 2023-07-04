@@ -3,50 +3,33 @@ import CardGrid from "@/src/components/CardGrid";
 import PeopleCard from "@/src/components/PeopleCard";
 import MediaCardMUI from "@/src/components/MediaCardMUI";
 import MediaData from "@/src/components/MediaData";
+import { fetchMediaData } from "@/src/lib/tmdbHelper";
 
 interface Props {
   params: { media_id: string };
   searchParams: { media_type: string };
 }
 
-const fetchData = async (mediaType: string, id: string) => {
-  const tmdbKey = process.env.MOVIE_DB_API;
-  const url = `https://api.themoviedb.org/3/${mediaType}/${id}?api_key=${tmdbKey}&language=en-US`;
-  const result = await fetch(url, { next: { revalidate: 28800 } });
-  // await new Promise(resolve => setTimeout(resolve, 80000));
-
-  return result.json();
-};
-
-const fetchCredits = async (mediaType: string, id: string) => {
-  const tmdbKey = process.env.MOVIE_DB_API;
-  const url = `https://api.themoviedb.org/3/${mediaType}/${id}/credits?api_key=${tmdbKey}&language=en-US`;
-  const results = await fetch(url, { next: { revalidate: 28800 } });
-  const creditsData = await results.json();
-  return creditsData;
-};
-
-const fetchRecommended = async (mediaType: string, id: string) => {
-  const tmdbKey = process.env.MOVIE_DB_API;
-  const url = `https://api.themoviedb.org/3/${mediaType}/${id}/recommendations?api_key=${tmdbKey}&language=en-US`;
-  const results = await fetch(url, { next: { revalidate: 28800 } });
-  const recommended = await results.json();
-  return recommended.results;
-};
-
 const mediaPage = async ({ params, searchParams }: Props) => {
   const { media_type } = searchParams;
   const { media_id } = params;
 
-  const mediaData = await fetchData(media_type, media_id);
-  const recommended = await fetchRecommended(media_type, media_id);
-  const { cast, crew } = await fetchCredits(media_type, media_id);
+  const mediaData = await fetchMediaData(media_type, media_id);
+  const { results: recommmendations } = await fetchMediaData(media_type, media_id, "recommendations");
+  const { cast, crew } = await fetchMediaData(media_type, media_id, "credits");
 
-  // console.log(mediaData);
+  const createTabTitles = () => {
+    const tabTitles = [];
+    if (mediaData) tabTitles.push("Media Data");
+    if (cast.length > 0) tabTitles.push("Cast");
+    if (crew.length > 0) tabTitles.push("Crew");
+    if (recommmendations.length > 0) tabTitles.push("Recommended");
+    return tabTitles;
+  };
 
   return (
-    <>
-      <TabDisplay tabNames={["Media Data", "Cast", "Crew", "Recommended"]}>
+    <main>
+      <TabDisplay tabNames={createTabTitles()}>
         <MediaData
           media_type={media_type}
           media_id={media_id}
@@ -69,7 +52,7 @@ const mediaPage = async ({ params, searchParams }: Props) => {
           ))}
         </CardGrid>
         <CardGrid>
-          {recommended.map((media: any) => (
+          {recommmendations.map((media: any) => (
             <MediaCardMUI
               media={media}
               key={media.id}
@@ -77,7 +60,7 @@ const mediaPage = async ({ params, searchParams }: Props) => {
           ))}
         </CardGrid>
       </TabDisplay>
-    </>
+    </main>
   );
 };
 

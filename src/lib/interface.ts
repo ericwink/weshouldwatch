@@ -176,3 +176,14 @@ export interface UserAccount {
     user_name: string;
   };
 }
+
+export interface TVCredits {
+  cast?: TV[];
+  crew?: TV[];
+  id: number;
+}
+export interface MovieCredits {
+  cast?: Movie[];
+  crew?: Movie[];
+  id: number;
+}

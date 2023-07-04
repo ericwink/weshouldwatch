@@ -51,7 +51,7 @@ const PeopleCard = ({ person }: Props) => {
             <IconButton>
               <Link
                 className="flex"
-                href={`/media/${person.id}/?media_type=${person.media_type}`}
+                href={`/person/${person.id}`}
               >
                 <InfoIcon />
               </Link>

@@ -12,10 +12,11 @@ const LogOut = () => {
   const { mutate: logoutUser } = useMutation({
     mutationFn: logout,
     onSuccess: () => {
+      router.push("/");
       queryClient.invalidateQueries({ queryKey: ["userAccount"] });
       queryClient.setQueryData(["userAccount"], null);
     },
-    onSettled: () => router.push("/"),
+    onSettled: () => router.refresh(),
   });
 
   return (

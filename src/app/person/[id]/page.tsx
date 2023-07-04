@@ -1,45 +1,19 @@
 import TabDisplay from "@/src/components/TabDisplay";
 import CardGrid from "@/src/components/CardGrid";
 import MediaCardMUI from "@/src/components/MediaCardMUI";
-import { Movie, TV } from "@/src/lib/interface";
+import { Movie, TV, TVCredits, MovieCredits } from "@/src/lib/interface";
 import PersonBio from "@/src/components/PersonBio";
+import { fetchMediaData } from "@/src/lib/tmdbHelper";
+import { fetchCredits } from "@/src/lib/tmdbHelper";
 
-interface TVCredits {
-  cast?: TV[];
-  crew?: TV[];
-  id: number;
-}
-interface MovieCredits {
-  cast?: Movie[];
-  crew?: Movie[];
-  id: number;
+interface Props {
+  params: { id: string };
 }
 
-const fetchData = async (mediaType: string, id: string) => {
-  const tmdbKey = process.env.MOVIE_DB_API;
-  const url = `https://api.themoviedb.org/3/${mediaType}/${id}?api_key=${tmdbKey}&language=en-US`;
-  const result = await fetch(url, { next: { revalidate: 28800 } });
-  return result.json();
-};
-
-const fetchMovieCredits = async (id: string): Promise<MovieCredits> => {
-  const tmdbKey = process.env.MOVIE_DB_API;
-  const url = `https://api.themoviedb.org/3/person/${id}/movie_credits?api_key=${tmdbKey}&language=en-US`;
-  const result = await fetch(url, { next: { revalidate: 28800 } });
-  return result.json();
-};
-
-const fetchTVCredits = async (id: string): Promise<TVCredits> => {
-  const tmdbKey = process.env.MOVIE_DB_API;
-  const url = `https://api.themoviedb.org/3/person/${id}/tv_credits?api_key=${tmdbKey}&language=en-US`;
-  const result = await fetch(url, { next: { revalidate: 28800 } });
-  return result.json();
-};
-
-const PersonPage = async () => {
-  const personBio = await fetchData("person", "976");
-  const movieCredits = await fetchMovieCredits("976");
-  const tvCredits = await fetchTVCredits("976");
+const PersonPage = async ({ params: { id } }: Props) => {
+  const personBio = await fetchMediaData("person", id);
+  const movieCredits = await fetchCredits(id, "movie_credits");
+  const tvCredits = await fetchCredits(id, "tv_credits");
 
   function consolidateMedia(media: (Movie | TV)[], type: "movie" | "tv") {
     interface Tracker {
