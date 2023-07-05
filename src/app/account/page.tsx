@@ -7,7 +7,7 @@ import { UserAccount } from "@/src/lib/interface";
 import { PostgrestError } from "@supabase/supabase-js";
 
 const AccountPage = async () => {
-  const supabase = createServerComponentClient<Database>({ cookies });
+  const supabase = createServerComponentClient({ cookies });
   // await new Promise(resolve => setTimeout(resolve, 5000));
 
   const {
@@ -16,7 +16,7 @@ const AccountPage = async () => {
   } = await supabase.auth.getSession();
   if (!session) redirect("/login");
 
-  let { data: user, error: fetchError }: { data: UserAccount | null; error: PostgrestError | null } = await supabase.from("users").select("*, user_public_profile (profile_pic, user_name)").single();
+  let { data: user, error: fetchError } = await supabase.from("users").select("*, user_public_profile (profile_pic, user_name)").single();
   if (error) throw new Error(error.message);
 
   return (

@@ -24,7 +24,7 @@ export async function POST(req: Request) {
   sgMail.setApiKey(process.env.SENDGRID_API_KEY!);
 
   //create link
-  const invitationLink = `http://localhost:3000/invite?token=${body.record.id}`;
+  const invitationLink = `${process.env.HOST_URL}/invite?token=${body.record.id}`;
 
   //Create email
   const message = {

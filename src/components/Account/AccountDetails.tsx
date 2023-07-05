@@ -16,7 +16,7 @@ const supabase = createClientComponentClient();
 
 const AccountDetails = ({ userInfo }: Props) => {
   const { data: user } = useUserAccount(userInfo);
-  const [userName, setUserName] = useState<string>(user!.user_public_profile.user_name);
+  const [userName, setUserName] = useState<string>(userInfo.user_public_profile.user_name ?? "");
 
   const updateUsername = async (username: string, id: string) => {
     const { data, error } = await supabase.from("user_public_profile").update({ user_name: username }).eq("user_id", user!.id);
