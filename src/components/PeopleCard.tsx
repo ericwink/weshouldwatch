@@ -21,28 +21,34 @@ interface Props {
 const PeopleCard = ({ person }: Props) => {
   return (
     <Grid>
-      <Paper
-        elevation={3}
-        sx={{ width: "135px" }}
-      >
-        <Box sx={{ height: 200, position: "relative" }}>
-          <Image
-            src={getPoster(person.profile_path, "200")}
-            alt={person.name}
-            fill={true}
-            style={{ borderTopRightRadius: "4px", borderTopLeftRadius: "4px" }}
-          />
-        </Box>
-        <Grid container>
-          <Grid
-            xs={9}
-            display="flex"
-            justifyContent="center"
-            alignItems="center"
+      <button>
+        <Link
+          className="flex"
+          href={`/person/${person.id}`}
+        >
+          <Paper
+            elevation={3}
+            sx={{ width: "135px" }}
           >
-            <Typography variant="subtitle2">{person.name}</Typography>
-          </Grid>
-          <Grid
+            <Box sx={{ height: 200, position: "relative" }}>
+              <Image
+                src={getPoster(person.profile_path, "200")}
+                alt={person.name}
+                fill={true}
+                style={{ borderTopRightRadius: "4px", borderTopLeftRadius: "4px" }}
+              />
+            </Box>
+            <Grid container>
+              <Grid
+                xs={12}
+                display="flex"
+                justifyContent="center"
+                alignItems="center"
+                p={1}
+              >
+                <Typography variant="subtitle2">{person.name}</Typography>
+              </Grid>
+              {/* <Grid
             xs={3}
             display="flex"
             justifyContent="center"
@@ -56,9 +62,11 @@ const PeopleCard = ({ person }: Props) => {
                 <InfoIcon />
               </Link>
             </IconButton>
-          </Grid>
-        </Grid>
-      </Paper>
+          </Grid> */}
+            </Grid>
+          </Paper>
+        </Link>
+      </button>
     </Grid>
   );
 };

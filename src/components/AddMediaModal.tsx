@@ -7,6 +7,8 @@ import Modal from "@mui/material/Modal";
 import Fade from "@mui/material/Fade";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
+import { IconButton } from "@mui/material";
+import AddCircleIcon from "@mui/icons-material/AddCircle";
 
 const style = {
   position: "absolute" as "absolute",
@@ -23,19 +25,24 @@ const style = {
 };
 
 interface Props {
-  button: string;
+  iconButton: boolean;
   children: React.ReactNode;
   title: string;
 }
 
-export default function ModalChildren({ button, title, children }: Props) {
+export default function AddMediaModal({ iconButton, title, children }: Props) {
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
   return (
     <div>
-      <Button onClick={handleOpen}>{button}</Button>
+      {!iconButton && <Button onClick={handleOpen}>{"Add To Group"}</Button>}
+      {iconButton && (
+        <IconButton onClick={handleOpen}>
+          <AddCircleIcon />
+        </IconButton>
+      )}
       <Modal
         aria-labelledby="transition-modal-title"
         aria-describedby="transition-modal-description"

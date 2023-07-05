@@ -3,7 +3,7 @@ import Genres from "./Genres";
 import StreamingOptions from "@/src/components/StreamingOptions/StreamingOptions";
 import DateTimeRating from "@/src/components/DateTimeRating/DateTimeRating";
 import Image from "next/image";
-import ModalChildren from "./ModalChildren";
+import AddMediaModal from "./AddMediaModal";
 import AddMediaContainer from "./AddMediaContainer";
 import FetchVideo from "@/src/components/FetchVideo";
 import noBackground from "../../public/We Should Watch.png";
@@ -51,8 +51,8 @@ const MediaData = ({ mediaData, media_id, media_type }: Props) => {
               height={300}
               width={200}
             />
-            <ModalChildren
-              button="Add To Group"
+            <AddMediaModal
+              iconButton={false}
               title={`Add ${media_type} to group`}
             >
               {/* @ts-expect-error Server Component */}
@@ -60,7 +60,7 @@ const MediaData = ({ mediaData, media_id, media_type }: Props) => {
                 media_id={mediaData.id}
                 mediaPayload={mediaInfoPayload}
               />
-            </ModalChildren>
+            </AddMediaModal>
           </div>
 
           <Genres genre_ids={mediaData.genres} />
