@@ -8,6 +8,7 @@ import AddMediaContainer from "./AddMediaContainer";
 import FetchVideo from "@/src/components/FetchVideo";
 import noBackground from "../../public/We Should Watch.png";
 import type { MediaData } from "../lib/interface";
+import { Suspense } from "react";
 
 interface Props {
   media_id: string;
@@ -73,11 +74,13 @@ const MediaData = ({ mediaData, media_id, media_type }: Props) => {
 
           <p>{mediaData.overview}</p>
 
-          {/* @ts-expect-error Server Component */}
-          <FetchVideo
-            media_id={media_id}
-            media_type={media_type}
-          />
+          <Suspense fallback={<p>Loading Video...</p>}>
+            {/* @ts-expect-error Server Component */}
+            <FetchVideo
+              media_id={media_id}
+              media_type={media_type}
+            />
+          </Suspense>
 
           <section>
             <div>

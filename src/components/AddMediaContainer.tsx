@@ -4,21 +4,28 @@ import { Database } from "@/src/lib/database.types";
 import AddMediaGroupEntry from "./AddMediaGroupEntry";
 import ListWrapper from "./ListWrapper";
 import type { MediaPayload } from "../lib/interface";
-
-const supabase = createServerComponentClient<Database>({ cookies });
+import Link from "next/link";
 
 interface Props {
   media_id: number;
   mediaPayload: MediaPayload;
 }
 
-const fetchGroupsAndMovies = async () => {
-  let { data: group, error } = await supabase.from("group").select(`
-    id, group_name, group_media ( media_id )`);
-  return group;
-};
-
 const AddMediaContainer = async ({ media_id, mediaPayload }: Props) => {
+  const supabase = createServerComponentClient<Database>({ cookies });
+
+  const {
+    data: { session },
+    error,
+  } = await supabase.auth.getSession();
+  console.log(session);
+  if (!session) return <p>Log in to add movies to a group!</p>;
+
+  const fetchGroupsAndMovies = async () => {
+    let { data: group, error } = await supabase.from("group").select(`
+    id, group_name, group_media ( media_id )`);
+    return group;
+  };
   const groupsAndMovies = await fetchGroupsAndMovies();
 
   return (
