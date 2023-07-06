@@ -21,8 +21,8 @@ export default function RootLayout({ children, authModal }: Props) {
         <TanstackProvider>
           <NavBar />
           <MuiSetup>
-            {children}
             {authModal}
+            {children}
           </MuiSetup>
         </TanstackProvider>
       </body>
