@@ -11,15 +11,19 @@ export const metadata = {
 
 interface Props {
   children: React.ReactNode;
+  authModal: React.ReactNode;
 }
 
-export default function RootLayout({ children }: Props) {
+export default function RootLayout({ children, authModal }: Props) {
   return (
     <html lang="en">
       <body>
         <TanstackProvider>
           <NavBar />
-          <MuiSetup>{children}</MuiSetup>
+          <MuiSetup>
+            {children}
+            {authModal}
+          </MuiSetup>
         </TanstackProvider>
       </body>
     </html>
