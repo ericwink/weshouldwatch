@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { styled, alpha } from "@mui/material/styles";
-import { InputBase, IconButton, FormControl, TextField } from "@mui/material";
+import { InputBase, IconButton } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import { useRouter } from "next/navigation";
 
@@ -17,7 +17,7 @@ const Search = styled("div")(({ theme }) => ({
   width: "100%",
   display: "flex",
   justifyContent: "space-between",
-  marginRight: `${theme.spacing(3)}`,
+  marginRight: `${theme.spacing(1)}`,
 }));
 
 const StyledInputBase = styled(InputBase)(({ theme }) => ({

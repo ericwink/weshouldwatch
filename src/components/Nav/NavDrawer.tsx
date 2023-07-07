@@ -2,12 +2,12 @@
 
 import { useState, KeyboardEvent, MouseEvent } from "react";
 import { Box, Drawer, List, Divider, ListItem, ListItemButton, ListItemIcon, ListItemText, IconButton } from "@mui/material";
-import MenuIcon from "@mui/icons-material/Menu";
 import HomeIcon from "@mui/icons-material/Home";
 import WorkspacesIcon from "@mui/icons-material/Workspaces";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
-import LogOut from "../LogOut";
+import LogOut from "./LogOut";
 import { useRouter } from "next/navigation";
+import UserAvatar from "../Account/UserAvatar";
 
 const NavDrawer = () => {
   const [state, setState] = useState(false);
@@ -59,17 +59,17 @@ const NavDrawer = () => {
     <div>
       <IconButton
         size="large"
-        edge="start"
+        edge="end"
         color="inherit"
         aria-label="open drawer"
-        sx={{ mr: 2 }}
         onClick={toggleDrawer(true)}
       >
-        <MenuIcon />
+        <UserAvatar />
       </IconButton>
 
       <Drawer
         open={state}
+        anchor="right"
         onClose={toggleDrawer(false)}
       >
         {list}
