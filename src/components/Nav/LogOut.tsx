@@ -2,7 +2,7 @@
 
 import { Button } from "@mui/material";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { logout } from "../lib/supabaseClientHelper";
+import { logout } from "../../lib/supabaseClientHelper";
 import { useRouter } from "next/navigation";
 
 const LogOut = () => {
@@ -21,7 +21,7 @@ const LogOut = () => {
 
   return (
     <Button
-      variant="contained"
+      variant="text"
       onClick={() => logoutUser()}
     >
       Log Out
