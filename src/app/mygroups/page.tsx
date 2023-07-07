@@ -14,7 +14,7 @@ import InviteToAGroup from "@/src/components/GroupControl/InviteToAGroup";
 const groupsPage = async () => {
   const supabase = createServerComponentClient<Database>({ cookies });
   const { data: session } = await supabase.auth.getSession();
-  if (!session.session) redirect("/login");
+  if (!session) redirect("/login");
 
   let { data: groups, error } = await supabase.from("group").select("*");
   if (error) console.log(error);

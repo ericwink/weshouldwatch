@@ -13,21 +13,21 @@ interface Props {
 
 export default function InviteToAGroup({ groups }: Props) {
   const { data: user } = useUserAccount();
-
   const [group, setGroup] = useState("");
   const [error, setError] = useState({ error: false, message: "" });
   const [email, setEmail] = useState("");
   const [isPending, setIsPending] = useState(false);
   const [success, setSuccess] = useState(false);
-  //   change this failure state later to a global alert notification
-  const [failure, setFailure] = useState({ error: false, message: "" });
+
+  if (!user) return <h1>Pending user data</h1>;
+  if (!groups) return <h1>Create a group first!</h1>;
 
   const emailRegex = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
   const isDisabled = group === null || email === "";
   const button = isPending ? <CircularProgress /> : "Send Email";
 
-  const menuItems = groups!.map(group => {
-    if (group.created_by === user!.id) return <MenuItem value={group.id}>{group.group_name}</MenuItem>;
+  const menuItems = groups.map(group => {
+    if (group.created_by === user.id) return <MenuItem value={group.id}>{group.group_name}</MenuItem>;
   });
 
   const handleChange = (event: SelectChangeEvent) => {
@@ -50,7 +50,6 @@ export default function InviteToAGroup({ groups }: Props) {
 
   const sendInvite = async () => {
     setIsPending(true);
-    setFailure({ error: false, message: "" });
     const result = await inviteToGroup(parseInt(group), email);
     if (result.error) {
       toast.error(`${result.message}`, { theme: "colored" });
@@ -69,14 +68,14 @@ export default function InviteToAGroup({ groups }: Props) {
   if (!groups)
     return (
       <Box sx={{ minWidth: 120, display: "flex", flexDirection: "column", gap: 2 }}>
-        <Typography textAlign="center">You haven&apos;t created any groups yet!</Typography>
+        <Typography textAlign="center">{`You haven't created any groups yet!`}</Typography>
       </Box>
     );
 
   if (success)
     return (
       <Box sx={{ minWidth: 120, display: "flex", flexDirection: "column", gap: 2 }}>
-        <Typography textAlign="center">Invitation sent!</Typography>
+        <Typography textAlign="center">{`Invitation sent!`}</Typography>
         <Button onClick={reset}>Send Another?</Button>
       </Box>
     );
@@ -117,8 +116,6 @@ export default function InviteToAGroup({ groups }: Props) {
         >
           {button}
         </Button>
-
-        {failure.error && <Typography textAlign="center">{`${failure.message}`}</Typography>}
       </Box>
     </form>
   );
