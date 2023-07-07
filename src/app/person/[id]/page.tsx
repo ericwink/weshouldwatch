@@ -1,6 +1,6 @@
 import TabDisplay from "@/src/components/TabDisplay";
-import CardGrid from "@/src/components/CardGrid";
-import MediaCardMUI from "@/src/components/MediaCardMUI";
+import CardGrid from "@/src/components/Cards/CardGrid";
+import MediaCardMUI from "@/src/components/Cards/MediaCardMUI";
 import { Movie, TV, TVCredits, MovieCredits } from "@/src/lib/interface";
 import PersonBio from "@/src/components/PersonBio";
 import { fetchMediaData } from "@/src/lib/tmdbHelper";

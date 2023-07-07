@@ -1,8 +1,8 @@
 import { Movie, TV, Person } from "@/src/lib/interface";
 import TabDisplay from "@/src/components/TabDisplay";
-import MediaCardMUI from "@/src/components/MediaCardMUI";
-import PeopleCard from "@/src/components/PeopleCard";
-import CardGrid from "@/src/components/CardGrid";
+import MediaCardMUI from "@/src/components/Cards/MediaCardMUI";
+import PeopleCard from "@/src/components/Cards/PeopleCard";
+import CardGrid from "@/src/components/Cards/CardGrid";
 
 interface Props {
   params: { searchTerm: string };

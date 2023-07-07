@@ -4,7 +4,7 @@ import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 
 import TabDisplay from "@/src/components/TabDisplay";
-import CardGridFilter from "@/src/components/CardGridFilter";
+import CardGridFilter from "@/src/components/Cards/CardGridFilter";
 
 interface Props {
   params: {

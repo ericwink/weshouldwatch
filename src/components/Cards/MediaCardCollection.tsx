@@ -5,8 +5,10 @@ import { Paper, Typography, Box, Avatar, IconButton } from "@mui/material";
 import Grid from "@mui/material/Unstable_Grid2"; // Grid version 2
 import Image from "next/image";
 import Link from "next/link";
-import ChatModal from "./Chat/ChatModal";
+import ChatModal from "../Chat/ChatModal";
 import InfoIcon from "@mui/icons-material/Info";
+import FakeChat from "../FakeChat";
+import { useUserAccount } from "@/src/lib/tanstackHooks";
 
 interface Props {
   media: {
@@ -24,6 +26,8 @@ interface Props {
 }
 
 const MediaCardCollection = ({ media, groupId }: Props) => {
+  const { data: user } = useUserAccount();
+
   return (
     <Grid>
       <Paper
@@ -84,10 +88,13 @@ const MediaCardCollection = ({ media, groupId }: Props) => {
                 alignItems="center"
                 justifyContent="center"
               >
-                <ChatModal
-                  media={media}
-                  groupId={groupId}
-                />
+                {user?.is_subscribed && (
+                  <ChatModal
+                    media={media}
+                    groupId={groupId}
+                  />
+                )}
+                {!user?.is_subscribed && <FakeChat />}
               </Grid>
             </Grid>
           </Grid>

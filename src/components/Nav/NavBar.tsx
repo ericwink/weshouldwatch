@@ -3,9 +3,9 @@
 import { AppBar, Box, Toolbar, Button } from "@mui/material/";
 import NavDrawer from "./NavDrawer";
 import SearchBar from "./SearchBar";
-import UserAvatar from "./Account/UserAvatar";
+import UserAvatar from "../Account/UserAvatar";
 import Link from "next/link";
-import { useUserAccount } from "../lib/tanstackHooks";
+import { useUserAccount } from "../../lib/tanstackHooks";
 
 const NavBar = () => {
   const { data: user } = useUserAccount();

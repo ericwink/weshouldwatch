@@ -46,7 +46,7 @@ export async function addMediaToGroup(mediaPayload: MediaPayload, groupId: numbe
     return { error: true, message: "An error occurred. Please try again." };
   } else {
     revalidatePath(`/media/${mediaPayload.tmdb_id}?media_type=${mediaPayload.media_type}`);
-    return { error: false, message: "succes!" };
+    return { error: false, message: "Successfully added to group!" };
   }
 }
 
@@ -56,7 +56,7 @@ export async function inviteToGroup(group_id: number, email: string) {
     console.log(error);
     return { error: true, message: "An error occurred. Please try again." };
   } else {
-    return { error: false, message: "Email Sent!" };
+    return { error: false, message: "Invitation Sent!" };
   }
 }
 

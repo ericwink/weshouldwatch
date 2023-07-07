@@ -1,10 +1,8 @@
 import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
 import { cookies } from "next/headers";
-import { Database } from "@/src/lib/database.types";
 import { redirect } from "next/navigation";
 import AccountDetails from "@/src/components/Account/AccountDetails";
 import { UserAccount } from "@/src/lib/interface";
-import { PostgrestError } from "@supabase/supabase-js";
 
 const AccountPage = async () => {
   const supabase = createServerComponentClient({ cookies });
