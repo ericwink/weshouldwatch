@@ -3,10 +3,11 @@
 import { ListItem, ListItemText, IconButton, CircularProgress } from "@mui/material";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
-import { addMediaToGroup } from "../lib/serverActions";
-import type { MediaPayload } from "../lib/interface";
-import { useState } from "react";
+import { addMediaToGroup } from "../../../lib/serverActions";
 import ReasonModal from "./ReasonModal";
+import type { MediaPayload } from "../../../lib/interface";
+import { useState } from "react";
+import { toast } from "react-toastify";
 
 interface Props {
   media_id: number;
@@ -18,7 +19,6 @@ interface Props {
 
 export default function AddMediaGroupEntry({ id, media_id, group_name, group_media, mediaPayload }: Props) {
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState({ error: false, message: "" });
   const [reason, setReason] = useState("");
   const [open, setOpen] = useState(false);
 
@@ -27,9 +27,9 @@ export default function AddMediaGroupEntry({ id, media_id, group_name, group_med
     setIsLoading(true);
     const result = await addMediaToGroup(mediaPayload, id, reason);
     if (result.error) {
-      setError({ ...result });
+      toast.error(`${result.message}`, { theme: "colored" });
     } else {
-      // setSuccess(true);
+      toast.success(`${result.message}`, { theme: "colored" });
     }
     setIsLoading(false);
   };
@@ -69,10 +69,3 @@ export default function AddMediaGroupEntry({ id, media_id, group_name, group_med
     </>
   );
 }
-
-//want to have name here
-//modal that opens when you click the button
-//user enters a reason
-//hit submit
-//modal closes
-//show the spinning on the original modal

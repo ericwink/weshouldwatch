@@ -1,7 +1,7 @@
 import TabDisplay from "@/src/components/TabDisplay";
-import CardGrid from "@/src/components/CardGrid";
-import PeopleCard from "@/src/components/PeopleCard";
-import MediaCardMUI from "@/src/components/MediaCardMUI";
+import CardGrid from "@/src/components/Cards/CardGrid";
+import PeopleCard from "@/src/components/Cards/PeopleCard";
+import MediaCardMUI from "@/src/components/Cards/MediaCardMUI";
 import MediaData from "@/src/components/MediaData";
 import { fetchMediaData } from "@/src/lib/tmdbHelper";
 

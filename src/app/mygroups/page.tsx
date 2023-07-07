@@ -4,12 +4,12 @@ export const revalidate = 0;
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
-import MakeGroup from "../../components/MakeGroup";
-import GroupCard from "../../components/GroupCard";
-import CardGrid from "../../components/CardGrid";
+import MakeGroup from "../../components/GroupControl/MakeGroup";
+import GroupCard from "@/src/components/GroupControl/GroupCard";
+import CardGrid from "@/src/components/Cards/CardGrid";
 import { Database } from "@/src/lib/database.types";
 import TabDisplay from "@/src/components/TabDisplay";
-import InviteToAGroup from "@/src/components/InviteToAGroup";
+import InviteToAGroup from "@/src/components/GroupControl/InviteToAGroup";
 
 const groupsPage = async () => {
   const supabase = createServerComponentClient<Database>({ cookies });

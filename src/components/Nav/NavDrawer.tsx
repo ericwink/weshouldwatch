@@ -6,7 +6,7 @@ import MenuIcon from "@mui/icons-material/Menu";
 import HomeIcon from "@mui/icons-material/Home";
 import WorkspacesIcon from "@mui/icons-material/Workspaces";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
-import LogOut from "./LogOut";
+import LogOut from "../LogOut";
 import { useRouter } from "next/navigation";
 
 const NavDrawer = () => {

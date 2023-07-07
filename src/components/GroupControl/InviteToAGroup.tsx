@@ -3,8 +3,9 @@
 import { Box, InputLabel, MenuItem, FormControl, TextField, Button, CircularProgress, Typography } from "@mui/material";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 import { useState, ChangeEvent } from "react";
-import { inviteToGroup } from "../lib/serverActions";
-import { useUserAccount } from "../lib/tanstackHooks";
+import { inviteToGroup } from "../../lib/serverActions";
+import { useUserAccount } from "../../lib/tanstackHooks";
+import { toast } from "react-toastify";
 
 interface Props {
   groups: { created_at: string | null; created_by: string | null; group_name: string; id: number }[] | null;
@@ -52,7 +53,7 @@ export default function InviteToAGroup({ groups }: Props) {
     setFailure({ error: false, message: "" });
     const result = await inviteToGroup(parseInt(group), email);
     if (result.error) {
-      setFailure({ error: true, message: result.message });
+      toast.error(`${result.message}`, { theme: "colored" });
     } else {
       setSuccess(true);
     }

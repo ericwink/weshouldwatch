@@ -2,9 +2,8 @@ import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
 import { cookies } from "next/headers";
 import { Database } from "@/src/lib/database.types";
 import AddMediaGroupEntry from "./AddMediaGroupEntry";
-import ListWrapper from "./ListWrapper";
-import type { MediaPayload } from "../lib/interface";
-import Link from "next/link";
+import ListWrapper from "../../ListWrapper";
+import type { MediaPayload } from "../../../lib/interface";
 
 interface Props {
   media_id: number;
@@ -18,7 +17,6 @@ const AddMediaContainer = async ({ media_id, mediaPayload }: Props) => {
     data: { session },
     error,
   } = await supabase.auth.getSession();
-  console.log(session);
   if (!session) return <p>Log in to add movies to a group!</p>;
 
   const fetchGroupsAndMovies = async () => {

@@ -1,7 +1,7 @@
 import TabDisplay from "@/src/components/TabDisplay";
-import CardGrid from "@/src/components/CardGrid";
-import MediaCardMUI from "@/src/components/MediaCardMUI";
-import PeopleCard from "@/src/components/PeopleCard";
+import CardGrid from "../components/Cards/CardGrid";
+import MediaCardMUI from "@/src/components/Cards/MediaCardMUI";
+import PeopleCard from "@/src/components/Cards/PeopleCard";
 
 const getData = async (mediaType: string) => {
   const tmdbKey = process.env.MOVIE_DB_API;

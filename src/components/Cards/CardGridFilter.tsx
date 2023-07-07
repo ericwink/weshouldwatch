@@ -3,9 +3,9 @@
 import Grid from "@mui/material/Unstable_Grid2"; // Grid version 2
 import { Container } from "@mui/material";
 import { useEffect, useState } from "react";
-import GenreChipFilter from "./GenreChipFilter";
+import GenreChipFilter from "../GenreChipFilter";
 import MediaCardCollection from "./MediaCardCollection";
-import AccordionChildren from "../ui/AccordionChildren";
+import AccordionChildren from "../../ui/AccordionChildren";
 
 interface Condensed {
   media_id: number;
