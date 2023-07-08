@@ -33,14 +33,15 @@ export default async function invitePage({ searchParams }: Props) {
   if (!session) redirect("/login");
 
   const { token } = searchParams;
-  let { data: invite_to_group, error } = await supabase.from("invite_to_group").select("*, user_public_profile ( * )").eq("id", token).single();
-  // console.log(invite_to_group);
+  let { data: invitations, error } = await supabase.from("invite_to_group").select("*, user_public_profile ( * )").eq("id", token);
 
-  if (!invite_to_group) return <h1>{`No invitations found for your email address`}</h1>;
+  if (!invitations) return <h1>{`No invitations found for your email address`}</h1>;
 
   return (
     <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
-      <AcceptInvite invite={invite_to_group as Invite} />
+      {invitations.map(invitation => (
+        <AcceptInvite invite={invitation as Invite} />
+      ))}
     </div>
   );
 }
