@@ -1,14 +1,22 @@
 "use client";
 
-import { TextField, Button, Box, Typography } from "@mui/material";
+import { TextField, Button, Box, Typography, Divider, CircularProgress } from "@mui/material";
 import { useState, ChangeEvent } from "react";
 import Link from "next/link";
-import { gmailLogin, noPasswordLogin } from "../lib/supabaseClientHelper";
+import { signup, login, gmailLogin } from "../lib/supabaseClientHelper";
+import { toast } from "react-toastify";
+import { useRouter } from "next/navigation";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 const LogInSignUp = ({ type }: { type: "login" | "signup" }) => {
   const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const disabled = !password || !email;
+  const router = useRouter();
+  const queryClient = useQueryClient();
 
   const emailRegex = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
 
@@ -30,15 +38,36 @@ const LogInSignUp = ({ type }: { type: "login" | "signup" }) => {
       </Button>
     </Typography>
   );
+  const redirect = type === "login" ? signUpRedirect : loginRedirect;
 
-  const handleClick = () => {
+  const { mutate: handleLogin } = useMutation({
+    mutationFn: async () => await login(email, password),
+    onSuccess: () => {
+      router.back();
+    },
+    onSettled: () => {
+      router.push("/");
+      queryClient.invalidateQueries({ queryKey: ["userAccount"] });
+      setTimeout(() => {
+        router.refresh();
+      }, 500);
+    },
+    onError: (error: any) => {
+      toast.error(`${error.message}`, { theme: "colored" });
+    },
+  });
+
+  const handleSignup = async () => {
     const isValidEmail = emailRegex.test(email);
-    if (isValidEmail) {
-      noPasswordLogin(email);
-      setSubmitted(true);
+    if (!isValidEmail) return setError(true);
+    setIsLoading(true);
+    const result = await signup(email, password);
+    if (result.error) {
+      toast.error(`${result.message}`, { theme: "colored" });
     } else {
-      setError(true);
+      setSubmitted(true);
     }
+    setIsLoading(false);
   };
 
   const handleInput = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -57,14 +86,23 @@ const LogInSignUp = ({ type }: { type: "login" | "signup" }) => {
         onChange={handleInput}
         fullWidth
       />
+      <TextField
+        label="password"
+        variant="outlined"
+        type="password"
+        onChange={e => setPassword(e.target.value)}
+        fullWidth
+      />
 
       <Button
         variant="contained"
-        onClick={handleClick}
+        onClick={type === "signup" ? handleSignup : handleLogin}
+        disabled={disabled || isLoading}
         fullWidth
       >
-        {`${type} with email`}
+        {isLoading ? <CircularProgress /> : `${type}`}
       </Button>
+      <Divider variant="middle" />
       <Button
         variant="contained"
         onClick={() => gmailLogin()}
@@ -76,7 +114,7 @@ const LogInSignUp = ({ type }: { type: "login" | "signup" }) => {
     </>
   );
 
-  const emailSent = <Typography>Check your email!</Typography>;
+  const emailSent = <Typography textAlign={"center"}>Check your email to verify your account!</Typography>;
 
   return (
     <Box
@@ -97,7 +135,7 @@ const LogInSignUp = ({ type }: { type: "login" | "signup" }) => {
         {header}
       </Typography>
       {submitted ? emailSent : loginForm}
-      {type === "login" ? signUpRedirect : loginRedirect}
+      {!submitted && redirect}
     </Box>
   );
 };

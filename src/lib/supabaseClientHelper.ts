@@ -42,19 +42,8 @@ export async function gmailLogin() {
   return "user signed in successfully";
 }
 
-export async function noPasswordLogin(email: string) {
-  let { data, error } = await supabase.auth.signInWithOtp({
-    email: email,
-    options: {
-      emailRedirectTo: `${location.origin}/auth/callback`,
-    },
-  });
-  if (error) console.log(error);
-  if (error) throw new Error(error.message);
-}
-
 // not currently in use
-export async function passwordSignUp(email: string, password: string) {
+export async function signup(email: string, password: string) {
   let { data, error } = await supabase.auth.signUp({
     email: email,
     password: password,
@@ -63,5 +52,15 @@ export async function passwordSignUp(email: string, password: string) {
     },
   });
 
-  if (error) console.log(error);
+  if (error) return { error: true, message: error.message };
+  return { error: false, message: "Check your email to confirm your account" };
+}
+
+export async function login(email: string, password: string) {
+  let { data, error } = await supabase.auth.signInWithPassword({
+    email: email,
+    password: password,
+  });
+  if (error) throw new Error(error.message);
+  return "login successful";
 }
