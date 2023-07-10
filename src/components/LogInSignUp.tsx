@@ -1,45 +1,67 @@
 "use client";
 
-import { TextField, Button, Box, Typography } from "@mui/material";
+import { TextField, Button, Box, Typography, Divider, CircularProgress } from "@mui/material";
 import { useState, ChangeEvent } from "react";
 import Link from "next/link";
-import { gmailLogin, noPasswordLogin } from "../lib/supabaseClientHelper";
+import { signup, login, gmailLogin } from "../lib/supabaseClientHelper";
+import { toast } from "react-toastify";
+import { useRouter } from "next/navigation";
+import { useMutation } from "@tanstack/react-query";
+import { useUserStore } from "../lib/store";
 
-const LogInSignUp = ({ type }: { type: "login" | "signup" }) => {
+interface Props {
+  type: "login" | "signup";
+}
+
+const LogInSignUp = ({ type }: Props) => {
   const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState(false);
+  const disabled = !password || !email;
+  const router = useRouter();
+  const setUser = useUserStore(state => state.setUser);
 
   const emailRegex = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
 
-  const header = type === "login" ? "Log In" : "Create An Account";
-
-  const signUpRedirect = (
+  const authRedirect = (
     <Typography textAlign="center">
-      Need an account?{" "}
+      {type === "login" && `Need an account? `}
+      {type === "signup" && `Already have an account? `}
       <Button>
-        <Link href={"/signup"}>Sign Up</Link>
-      </Button>
-    </Typography>
-  );
-  const loginRedirect = (
-    <Typography textAlign="center">
-      Already have an account?{" "}
-      <Button>
-        <Link href={"/login"}>Log In</Link>
+        {type === "login" && <Link href={"/signup"}>Sign Up</Link>}
+        {type === "signup" && <Link href={"/login"}>Log In</Link>}
       </Button>
     </Typography>
   );
 
-  const handleClick = () => {
-    const isValidEmail = emailRegex.test(email);
-    if (isValidEmail) {
-      noPasswordLogin(email);
+  const { mutate: handleLogin, isLoading: loading } = useMutation({
+    mutationFn: async () => await login(email, password),
+    onSuccess: data => {
+      router.push("/");
+      setUser(data);
+    },
+    onError: (error: any) => {
+      toast.error(`${error.message}`, { theme: "colored" });
+    },
+  });
+
+  const { mutate: handleSignup, isLoading } = useMutation({
+    mutationFn: async () => {
+      const isValidEmail = emailRegex.test(email);
+      if (!isValidEmail) {
+        setError(true);
+        throw new Error("Please enter a valid email address");
+      }
+      await signup(email, password);
+    },
+    onSuccess: () => {
       setSubmitted(true);
-    } else {
-      setError(true);
-    }
-  };
+    },
+    onError: (error: any) => {
+      toast.error(`${error.message}`, { theme: "colored" });
+    },
+  });
 
   const handleInput = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setError(false);
@@ -57,14 +79,23 @@ const LogInSignUp = ({ type }: { type: "login" | "signup" }) => {
         onChange={handleInput}
         fullWidth
       />
+      <TextField
+        label="password"
+        variant="outlined"
+        type="password"
+        onChange={e => setPassword(e.target.value)}
+        fullWidth
+      />
 
       <Button
         variant="contained"
-        onClick={handleClick}
+        onClick={() => (type === "signup" ? handleSignup() : handleLogin())}
+        disabled={disabled || isLoading || loading}
         fullWidth
       >
-        {`${type} with email`}
+        {isLoading || loading ? <CircularProgress /> : `${type}`}
       </Button>
+      <Divider variant="middle" />
       <Button
         variant="contained"
         onClick={() => gmailLogin()}
@@ -76,7 +107,7 @@ const LogInSignUp = ({ type }: { type: "login" | "signup" }) => {
     </>
   );
 
-  const emailSent = <Typography>Check your email!</Typography>;
+  const emailSent = <Typography textAlign={"center"}>Check your email to verify your account!</Typography>;
 
   return (
     <Box
@@ -94,10 +125,10 @@ const LogInSignUp = ({ type }: { type: "login" | "signup" }) => {
         mb={1}
         textAlign="center"
       >
-        {header}
+        {type === "login" ? "Log In" : "Create An Account"}
       </Typography>
       {submitted ? emailSent : loginForm}
-      {type === "login" ? signUpRedirect : loginRedirect}
+      {!submitted && authRedirect}
     </Box>
   );
 };

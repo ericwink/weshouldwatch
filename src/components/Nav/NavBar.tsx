@@ -1,16 +1,16 @@
 "use client";
 
-import { AppBar, Box, Toolbar, Button } from "@mui/material/";
+import { AppBar, Toolbar, Button } from "@mui/material/";
 import NavDrawer from "./NavDrawer";
 import SearchBar from "./SearchBar";
 import Link from "next/link";
-import { useUserAccount } from "../../lib/tanstackHooks";
+import { useUserStore } from "@/src/lib/store";
 
 const NavBar = () => {
-  const { data: user } = useUserAccount();
+  const user = useUserStore(state => state.user);
 
   return (
-    <Box>
+    <nav>
       <AppBar position="static">
         <Toolbar>
           <SearchBar />
@@ -25,7 +25,7 @@ const NavBar = () => {
           )}
         </Toolbar>
       </AppBar>
-    </Box>
+    </nav>
   );
 };
 

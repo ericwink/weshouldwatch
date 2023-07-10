@@ -13,10 +13,9 @@ export async function addGroup(name: string) {
   if (error) {
     console.log(error);
     return { error: true, message: "An error occurred. Please try again." };
-  } else {
-    revalidatePath("/mygroups");
-    return { error: false, message: "succes!" };
   }
+  revalidatePath("/mygroups");
+  return { error: false, message: "succes!" };
 }
 
 // haven't done anything wiht this one yet

@@ -1,7 +1,7 @@
 "use client";
 
 import { Avatar } from "@mui/material";
-import { useUserAccount } from "@/src/lib/tanstackHooks";
+import { useUserStore } from "@/src/lib/store";
 
 interface Props {
   height?: number;
@@ -9,7 +9,7 @@ interface Props {
 }
 
 const UserAvatar = ({ height = 40, width = 40 }: Props) => {
-  const { data: user } = useUserAccount();
+  const user = useUserStore(state => state.user);
 
   return (
     <Avatar
