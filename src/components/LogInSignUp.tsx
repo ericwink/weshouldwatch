@@ -8,57 +8,47 @@ import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
-const LogInSignUp = ({ type }: { type: "login" | "signup" }) => {
+interface Props {
+  type: "login" | "signup";
+}
+
+const LogInSignUp = ({ type }: Props) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
   const disabled = !password || !email;
   const router = useRouter();
   const queryClient = useQueryClient();
 
   const emailRegex = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
 
-  const header = type === "login" ? "Log In" : "Create An Account";
-
-  const signUpRedirect = (
+  const authRedirect = (
     <Typography textAlign="center">
-      Need an account?{" "}
+      {type === "login" && `Need an account? `}
+      {type === "signup" && `Already have an account? `}
       <Button>
-        <Link href={"/signup"}>Sign Up</Link>
+        {type === "login" && <Link href={"/signup"}>Sign Up</Link>}
+        {type === "signup" && <Link href={"/login"}>Log In</Link>}
       </Button>
     </Typography>
   );
-  const loginRedirect = (
-    <Typography textAlign="center">
-      Already have an account?{" "}
-      <Button>
-        <Link href={"/login"}>Log In</Link>
-      </Button>
-    </Typography>
-  );
-  const redirect = type === "login" ? signUpRedirect : loginRedirect;
 
-  const { mutate: handleLogin } = useMutation({
+  const { mutate: handleLogin, isLoading: loading } = useMutation({
     mutationFn: async () => await login(email, password),
     onSuccess: data => {
-      console.log(data);
-      queryClient.invalidateQueries({ queryKey: ["userAccount"] });
-      // router.back();
-    },
-    onSettled: () => {
+      queryClient.setQueryData(["userAccount"], data);
       router.push("/");
-      // setTimeout(() => {
-      //   router.refresh();
-      // }, 500);
+      // note, route intercept is buggy. Currently not utilizing as router.push doesn't navigate away from intercept. Re-instate once fixed.
+      //https://github.com/vercel/next.js/issues/49662
+      router.refresh();
     },
     onError: (error: any) => {
       toast.error(`${error.message}`, { theme: "colored" });
     },
   });
 
-  const { mutate: handleSignup } = useMutation({
+  const { mutate: handleSignup, isLoading } = useMutation({
     mutationFn: async () => {
       const isValidEmail = emailRegex.test(email);
       if (!isValidEmail) {
@@ -102,10 +92,10 @@ const LogInSignUp = ({ type }: { type: "login" | "signup" }) => {
       <Button
         variant="contained"
         onClick={() => (type === "signup" ? handleSignup() : handleLogin())}
-        disabled={disabled || isLoading}
+        disabled={disabled || isLoading || loading}
         fullWidth
       >
-        {isLoading ? <CircularProgress /> : `${type}`}
+        {isLoading || loading ? <CircularProgress /> : `${type}`}
       </Button>
       <Divider variant="middle" />
       <Button
@@ -137,10 +127,10 @@ const LogInSignUp = ({ type }: { type: "login" | "signup" }) => {
         mb={1}
         textAlign="center"
       >
-        {header}
+        {type === "login" ? "Log In" : "Create An Account"}
       </Typography>
       {submitted ? emailSent : loginForm}
-      {!submitted && redirect}
+      {!submitted && authRedirect}
     </Box>
   );
 };
