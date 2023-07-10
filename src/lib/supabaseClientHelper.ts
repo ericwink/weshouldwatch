@@ -62,5 +62,5 @@ export async function login(email: string, password: string) {
     password: password,
   });
   if (error) throw new Error(error.message);
-  return "login successful";
+  return data;
 }

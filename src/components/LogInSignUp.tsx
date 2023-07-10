@@ -42,33 +42,38 @@ const LogInSignUp = ({ type }: { type: "login" | "signup" }) => {
 
   const { mutate: handleLogin } = useMutation({
     mutationFn: async () => await login(email, password),
-    onSuccess: () => {
-      router.back();
+    onSuccess: data => {
+      console.log(data);
+      queryClient.invalidateQueries({ queryKey: ["userAccount"] });
+      // router.back();
     },
     onSettled: () => {
       router.push("/");
-      queryClient.invalidateQueries({ queryKey: ["userAccount"] });
-      setTimeout(() => {
-        router.refresh();
-      }, 500);
+      // setTimeout(() => {
+      //   router.refresh();
+      // }, 500);
     },
     onError: (error: any) => {
       toast.error(`${error.message}`, { theme: "colored" });
     },
   });
 
-  const handleSignup = async () => {
-    const isValidEmail = emailRegex.test(email);
-    if (!isValidEmail) return setError(true);
-    setIsLoading(true);
-    const result = await signup(email, password);
-    if (result.error) {
-      toast.error(`${result.message}`, { theme: "colored" });
-    } else {
+  const { mutate: handleSignup } = useMutation({
+    mutationFn: async () => {
+      const isValidEmail = emailRegex.test(email);
+      if (!isValidEmail) {
+        setError(true);
+        throw new Error("Please enter a valid email address");
+      }
+      await signup(email, password);
+    },
+    onSuccess: () => {
       setSubmitted(true);
-    }
-    setIsLoading(false);
-  };
+    },
+    onError: (error: any) => {
+      toast.error(`${error.message}`, { theme: "colored" });
+    },
+  });
 
   const handleInput = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setError(false);
@@ -96,7 +101,7 @@ const LogInSignUp = ({ type }: { type: "login" | "signup" }) => {
 
       <Button
         variant="contained"
-        onClick={type === "signup" ? handleSignup : handleLogin}
+        onClick={() => (type === "signup" ? handleSignup() : handleLogin())}
         disabled={disabled || isLoading}
         fullWidth
       >
