@@ -36,12 +36,9 @@ const LogInSignUp = ({ type }: Props) => {
 
   const { mutate: handleLogin, isLoading: loading } = useMutation({
     mutationFn: async () => await login(email, password),
-    onSuccess: data => {
-      queryClient.setQueryData(["userAccount"], data);
+    onSuccess: () => {
+      queryClient.invalidateQueries(["userAccount"]);
       router.push("/");
-      // note, route intercept is buggy. Currently not utilizing as router.push doesn't navigate away from intercept. Re-instate once fixed.
-      //https://github.com/vercel/next.js/issues/49662
-      router.refresh();
     },
     onError: (error: any) => {
       toast.error(`${error.message}`, { theme: "colored" });

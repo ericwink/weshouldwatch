@@ -16,7 +16,6 @@ const LogOut = () => {
     },
     onSettled: () => {
       router.push("/");
-      router.refresh();
     },
   });
 
