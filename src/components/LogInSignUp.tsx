@@ -11,10 +11,9 @@ import { useUserStore } from "../lib/store";
 
 interface Props {
   type: "login" | "signup";
-  intercept?: boolean;
 }
 
-const LogInSignUp = ({ type, intercept }: Props) => {
+const LogInSignUp = ({ type }: Props) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [submitted, setSubmitted] = useState(false);
@@ -39,7 +38,7 @@ const LogInSignUp = ({ type, intercept }: Props) => {
   const { mutate: handleLogin, isLoading: loading } = useMutation({
     mutationFn: async () => await login(email, password),
     onSuccess: data => {
-      intercept ? router.back() : router.push("/");
+      router.push("/");
       setUser(data);
     },
     onError: (error: any) => {
