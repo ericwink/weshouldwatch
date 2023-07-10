@@ -6,20 +6,22 @@ import Link from "next/link";
 import { signup, login, gmailLogin } from "../lib/supabaseClientHelper";
 import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
+import { useUserStore } from "../lib/store";
 
 interface Props {
   type: "login" | "signup";
+  intercept?: boolean;
 }
 
-const LogInSignUp = ({ type }: Props) => {
+const LogInSignUp = ({ type, intercept }: Props) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState(false);
   const disabled = !password || !email;
   const router = useRouter();
-  const queryClient = useQueryClient();
+  const setUser = useUserStore(state => state.setUser);
 
   const emailRegex = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
 
@@ -36,9 +38,9 @@ const LogInSignUp = ({ type }: Props) => {
 
   const { mutate: handleLogin, isLoading: loading } = useMutation({
     mutationFn: async () => await login(email, password),
-    onSuccess: () => {
-      queryClient.invalidateQueries(["userAccount"]);
-      router.push("/");
+    onSuccess: data => {
+      intercept ? router.back() : router.push("/");
+      setUser(data);
     },
     onError: (error: any) => {
       toast.error(`${error.message}`, { theme: "colored" });

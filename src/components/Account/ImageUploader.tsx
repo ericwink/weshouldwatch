@@ -4,16 +4,18 @@ export const revalidate = 0;
 
 import { Button, CircularProgress } from "@mui/material";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 import { UserAccount } from "@/src/lib/interface";
+import { getUserAccount } from "@/src/lib/supabaseClientHelper";
+import { useUserStore } from "@/src/lib/store";
 
 interface Props {
   user: UserAccount;
 }
 
 const ImageUploader = ({ user }: Props) => {
-  const queryClient = useQueryClient();
   const supabase = createClientComponentClient();
+  const setUser = useUserStore(state => state.setUser);
 
   const emptyFolder = async () => {
     const { data: files, error } = await supabase.storage.from("avatars").list(`${user.id}`);
@@ -26,7 +28,7 @@ const ImageUploader = ({ user }: Props) => {
 
   const updateProfilePath = async (path: string) => {
     const { data, error } = await supabase.from("user_public_profile").update({ profile_pic: path }).eq("user_id", user.id);
-    if (error) console.log(error);
+    if (error) throw new Error(error.message);
   };
 
   const { mutate: changeAvatar, isLoading } = useMutation({
@@ -49,9 +51,8 @@ const ImageUploader = ({ user }: Props) => {
     onSuccess: async data => {
       const fullPath = `https://zojrocbtklqjgxfijsje.supabase.co/storage/v1/object/public/avatars/${data!.path}`;
       await updateProfilePath(fullPath);
-    },
-    onSettled: async () => {
-      queryClient.invalidateQueries({ queryKey: ["userAccount"] });
+      const userData = await getUserAccount();
+      setUser(userData);
     },
   });
 

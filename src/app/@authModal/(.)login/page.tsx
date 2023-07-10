@@ -31,7 +31,10 @@ const LoginModalIntercept = () => {
         aria-describedby="modal-modal-description"
       >
         <Box sx={style}>
-          <LogInSignUp type="login" />
+          <LogInSignUp
+            type="login"
+            intercept={true}
+          />
         </Box>
       </Modal>
     </div>

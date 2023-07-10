@@ -13,12 +13,12 @@ export const metadata = {
 
 interface Props {
   children: React.ReactNode;
-  // authModal: React.ReactNode;
+  authModal: React.ReactNode;
   //https://github.com/vercel/next.js/issues/49662
   //intercepting routes are buggy - once this is resolved, replace and put @ back in front of authmodal folder
 }
 
-export default function RootLayout({ children }: Props) {
+export default function RootLayout({ children, authModal }: Props) {
   return (
     <html lang="en">
       <body>
@@ -26,7 +26,7 @@ export default function RootLayout({ children }: Props) {
           <MuiSetup>
             <ToastContainer />
             <NavBar />
-            {/* {authModal} */}
+            {authModal}
             {children}
           </MuiSetup>
         </TanstackProvider>
