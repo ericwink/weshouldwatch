@@ -22,7 +22,7 @@ const NavBar = () => {
 
   return (
     <nav>
-      <AppBar position="static">
+      <AppBar position="sticky">
         <Toolbar>
           <SearchBar />
           {user && <NavDrawer />}

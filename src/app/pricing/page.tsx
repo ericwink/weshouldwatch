@@ -2,6 +2,7 @@ export const revalidate = 0;
 
 import Stripe from "stripe";
 import Pricing from "@/src/components/Pricing";
+import FreeTier from "@/src/components/FreeTier";
 
 interface PriceInfo {
   id: string;
@@ -36,7 +37,8 @@ const PricingPage = async () => {
   const sortedPlans = plans.sort((a, b) => a.price - b.price);
 
   return (
-    <div className="flex gap-3 absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
+    <div className="flex justify-center items-center flex-col gap-4 pt-10 lg:flex-row lg:h-[calc(100vh-60px)] lg:pt-0">
+      <FreeTier />
       {sortedPlans.map(plan => {
         if (plan.active === true)
           return (
