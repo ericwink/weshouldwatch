@@ -90,6 +90,5 @@ export async function stripeCheckout(priceId: string) {
     success_url: `${process.env.HOST_URL}/payment/success`,
     cancel_url: `${process.env.HOST_URL}/payment/cancelled`,
   });
-  console.log(session);
   return { error: false, sessionId: session.id };
 }
