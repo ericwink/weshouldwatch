@@ -37,7 +37,6 @@ export async function gmailLogin() {
       redirectTo: `${location.origin}/auth/callback`,
     },
   });
-  if (error) console.log(error);
   if (error) throw new Error(error.message);
   return "user signed in successfully";
 }
