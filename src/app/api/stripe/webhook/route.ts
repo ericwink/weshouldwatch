@@ -27,14 +27,12 @@ export async function POST(req: Request) {
   const plan = subscriptionData.items.data[0].plan.interval;
   console.log("stripe customer id: ", subscriptionData.customer);
 
-  if (event.type === "customer.subscription.created") {
+  if (event.type === "customer.subscription.updated") {
     const { data, error } = await supabase.from("users").update({ is_subscribed: true, interval: plan }).eq("stripe_customer", subscriptionData.customer);
-    console.log({ data });
     console.log({ error });
   }
   if (event.type === "customer.subscription.deleted") {
     const { data, error } = await supabase.from("users").update({ is_subscribed: false, interval: null }).eq("stripe_customer", subscriptionData.customer);
-    console.log({ data });
     console.log({ error });
   }
 

@@ -103,3 +103,25 @@ export async function stripeCheckout(priceId: string) {
   });
   return { error: false, sessionId: session.id };
 }
+
+export async function stripeCustomerPortal() {
+  //get current session from jwt
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (!user) return { error: true, message: "An error occurred. Please sign in and try again." };
+
+  //get stripe customer id based on above session
+
+  let { data, error } = await supabase.from("users").select("stripe_customer").single();
+  if (!data) return { error: true, message: "No stripe customer found. Please contact support" };
+  if (error) {
+    console.log(error);
+    return { error: true, message: "There was an error. Please try again" };
+  }
+  const session = await stripe.billingPortal.sessions.create({
+    customer: data.stripe_customer!,
+    return_url: `${process.env.HOST_URL}/account`,
+  });
+  return { error: false, sessionUrl: session.url };
+}

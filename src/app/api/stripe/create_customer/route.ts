@@ -13,12 +13,9 @@ export async function POST(req: Request) {
   //  check params sent with Supabase request to ensure it has the secret key
   const { searchParams } = new URL(req.url);
   const secret = searchParams.get("secret");
-  console.log(secret);
   if (secret !== process.env.API_ROUTE_SECRET) {
-    console.log("rejected");
     return NextResponse.json({ error: "You are not authorized to call this API" }, { status: 401 });
   }
-  console.log("approved");
 
   //initialize stripe
   const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
@@ -39,8 +36,7 @@ export async function POST(req: Request) {
     const supabase = getServiceSupabase();
     // update table in supabase with stripe data
     const { data, error } = await supabase.from("users").update({ stripe_customer: customer.id }).eq("id", body.record.id);
-    console.log(data);
-    console.log(error);
+    if (error) console.log(error);
     return new Response(`stripe customer created: ${customer.id} and user table updated`);
   } catch (error: any) {
     console.log(error);
