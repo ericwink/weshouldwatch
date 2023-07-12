@@ -7,14 +7,15 @@ import Link from "next/link";
 import { useUserStore } from "@/src/lib/store";
 import { useQuery } from "@tanstack/react-query";
 import { getUserAccount } from "@/src/lib/supabaseClientHelper";
+import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 
 const NavBar = () => {
   const user = useUserStore(state => state.user);
   const setUser = useUserStore(state => state.setUser);
+  const supabase = createClientComponentClient();
 
   const { isLoading } = useQuery({
     queryFn: async () => {
-      console.log("navbar query running");
       const data = await getUserAccount();
       setUser(data);
     },

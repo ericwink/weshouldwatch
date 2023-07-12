@@ -90,7 +90,6 @@ const ChatWindow = ({ groupId, mediaId }: Props) => {
   const comments = supabase
     .channel(`channel_for_${groupId}_${mediaId}`)
     .on("postgres_changes", { event: "*", schema: "public", table: "comments", filter: `group_id=eq.${groupId}` }, payload => {
-      console.log("Change received!", payload);
       queryClient.invalidateQueries({ queryKey: ["comments", { group_id: groupId }, { media_id: mediaId }] });
     })
     .subscribe();
