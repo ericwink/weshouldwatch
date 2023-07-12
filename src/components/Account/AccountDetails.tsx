@@ -7,6 +7,8 @@ import { UserAccount } from "../../lib/interface";
 import ImageUploader from "@/src/components/Account/ImageUploader";
 import UserAvatar from "./UserAvatar";
 import { toast } from "react-toastify";
+import { stripeCustomerPortal } from "@/src/lib/serverActions";
+import { useRouter } from "next/navigation";
 
 interface Props {
   userInfo: UserAccount;
@@ -16,12 +18,19 @@ const supabase = createClientComponentClient();
 
 const AccountDetails = ({ userInfo }: Props) => {
   const [userName, setUserName] = useState<string>(userInfo.user_public_profile.user_name ?? "");
+  const router = useRouter();
 
   const updateUsername = async () => {
     const { data, error } = await supabase.from("user_public_profile").update({ user_name: userName }).eq("user_id", userInfo.id);
 
     if (error) toast.error(`${error.message}`, { theme: "colored" });
     if (!error) toast.success(`Username updated!`, { theme: "colored" });
+  };
+
+  const createStripePortal = async () => {
+    const { error, message, sessionUrl } = await stripeCustomerPortal();
+    if (error) return toast.error(`${message}`, { theme: "colored" });
+    router.push(sessionUrl as string);
   };
 
   return (
@@ -46,6 +55,12 @@ const AccountDetails = ({ userInfo }: Props) => {
         width={100}
       />
       <ImageUploader user={userInfo as UserAccount} />
+      {userInfo.is_subscribed && (
+        <>
+          <Typography>{`Subscription Plan: ${userInfo.interval}ly`}</Typography>
+          <Button onClick={createStripePortal}>Manage Plan</Button>
+        </>
+      )}
     </Paper>
   );
 };

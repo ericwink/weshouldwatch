@@ -3,7 +3,7 @@ export type Json =
   | number
   | boolean
   | null
-  | { [key: string]: Json }
+  | { [key: string]: Json | undefined }
   | Json[]
 
 export interface Database {
@@ -288,6 +288,7 @@ export interface Database {
           created_at: string | null
           email: string | null
           id: string
+          interval: string | null
           is_subscribed: boolean
           stripe_customer: string | null
         }
@@ -295,6 +296,7 @@ export interface Database {
           created_at?: string | null
           email?: string | null
           id: string
+          interval?: string | null
           is_subscribed?: boolean
           stripe_customer?: string | null
         }
@@ -302,6 +304,7 @@ export interface Database {
           created_at?: string | null
           email?: string | null
           id?: string
+          interval?: string | null
           is_subscribed?: boolean
           stripe_customer?: string | null
         }

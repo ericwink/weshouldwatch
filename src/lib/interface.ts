@@ -171,6 +171,7 @@ export interface UserAccount {
   id: string;
   is_subscribed: boolean;
   stripe_customer: string | null;
+  interval: string;
   user_public_profile: {
     profile_pic: string | null;
     user_name: string;
