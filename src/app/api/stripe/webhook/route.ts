@@ -25,6 +25,7 @@ export async function POST(req: Request) {
   const supabase = getServiceSupabase();
   const subscriptionData = event.data.object as Stripe.Subscription;
   const plan = subscriptionData.items.data[0].plan.interval;
+  console.log("stripe customer id: ", subscriptionData.customer);
 
   if (event.type === "customer.subscription.created") {
     const { data, error } = await supabase.from("users").update({ is_subscribed: true, interval: plan }).eq("stripe_customer", subscriptionData.customer);

@@ -74,12 +74,23 @@ export async function acceptInvite(group_id: number) {
 }
 
 export async function stripeCheckout(priceId: string) {
+  //get current session from jwt
   const {
     data: { user },
   } = await supabase.auth.getUser();
   if (!user) return { error: true, message: "An error occurred. Please sign in and try again." };
+
+  //get stripe customer id based on above session
+
+  let { data, error } = await supabase.from("users").select("stripe_customer").single();
+  if (!data) return { error: true, message: "No stripe customer found. Please contact support" };
+  if (error) {
+    console.log(error);
+    return { error: true, message: "There was an error. Please try again" };
+  }
   const session = await stripe.checkout.sessions.create({
     billing_address_collection: "auto",
+    customer: data.stripe_customer!,
     line_items: [
       {
         price: priceId,
