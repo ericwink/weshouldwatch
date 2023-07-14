@@ -8,7 +8,7 @@ const Footer = () => {
   const year = new Date().getFullYear();
 
   return (
-    <footer className="flex flex-col items-center p-0.5 opacity-50 absolute bottom-0 w-full">
+    <div className="flex flex-col items-center p-0.5 opacity-50 mt-auto">
       <Typography
         variant="subtitle2"
         mb={0.5}
@@ -20,7 +20,7 @@ const Footer = () => {
         src={TMDB}
         alt="The Movie Database Logo"
       />
-    </footer>
+    </div>
   );
 };
 

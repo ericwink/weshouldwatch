@@ -5,9 +5,11 @@ import { Box, Drawer, List, Divider, ListItem, ListItemButton, ListItemIcon, Lis
 import HomeIcon from "@mui/icons-material/Home";
 import WorkspacesIcon from "@mui/icons-material/Workspaces";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import WorkspacePremiumIcon from "@mui/icons-material/WorkspacePremium";
 import LogOut from "./LogOut";
 import { useRouter } from "next/navigation";
 import UserAvatar from "../Account/UserAvatar";
+import Footer from "../Footer";
 
 const NavDrawer = () => {
   const [state, setState] = useState(false);
@@ -36,7 +38,7 @@ const NavDrawer = () => {
 
   const list = (
     <Box
-      sx={{ width: 250 }}
+      sx={{ width: 250, pb: "5px" }}
       role="presentation"
       onClick={toggleDrawer(false)}
       onKeyDown={toggleDrawer(false)}
@@ -45,6 +47,7 @@ const NavDrawer = () => {
         {listItem("/", <HomeIcon />, "Home")}
         {listItem("/mygroups", <WorkspacesIcon />, "My Groups")}
         {listItem("/account", <AccountCircleIcon />, "My Account")}
+        {listItem("/pricing", <WorkspacePremiumIcon />, "Get Premium")}
       </List>
       <Divider />
       <List>
@@ -71,8 +74,10 @@ const NavDrawer = () => {
         open={state}
         anchor="right"
         onClose={toggleDrawer(false)}
+        sx={{ position: "relative" }}
       >
         {list}
+        <Footer />
       </Drawer>
     </div>
   );
