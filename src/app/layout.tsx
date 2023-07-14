@@ -4,6 +4,7 @@ import NavBar from "../components/Nav/NavBar";
 import TanstackProvider from "../context/tanstack";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import Footer from "../components/Footer";
 
 export const metadata = {
   title: "We Should Watch...",
@@ -25,9 +26,14 @@ export default function RootLayout({ children }: Props) {
         <TanstackProvider>
           <MuiSetup>
             <ToastContainer />
-            <NavBar />
-            {/* {authModal} */}
-            {children}
+            <div className="relative min-h-screen">
+              <div className="pb-12">
+                <NavBar />
+                {/* {authModal} */}
+                {children}
+              </div>
+              <Footer />
+            </div>
           </MuiSetup>
         </TanstackProvider>
       </body>
