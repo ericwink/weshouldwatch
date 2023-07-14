@@ -37,7 +37,7 @@ const PricingPage = async () => {
   const sortedPlans = plans.sort((a, b) => a.price - b.price);
 
   return (
-    <div className="flex justify-center items-center flex-col gap-4 pt-10 lg:flex-row lg:h-[calc(100vh-60px)] lg:pt-0">
+    <div className="flex justify-center items-center flex-col gap-4 pt-10 lg:flex-row lg:h-[calc(100vh-65px)] lg:pt-0">
       <FreeTier />
       {sortedPlans.map(plan => {
         if (plan.active === true)
