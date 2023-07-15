@@ -1,14 +1,13 @@
 "use client";
 
 import getPoster from "@/src/lib/getPoster";
-import { Paper, Typography, Box, Avatar, IconButton } from "@mui/material";
+import { Paper, Typography, Box, Avatar } from "@mui/material";
 import Grid from "@mui/material/Unstable_Grid2"; // Grid version 2
 import Image from "next/image";
-import Link from "next/link";
 import ChatModal from "../Chat/ChatModal";
-import InfoIcon from "@mui/icons-material/Info";
-import FakeChat from "../FakeChat";
 import { useUserAccount } from "@/src/lib/tanstackHooks";
+import CardMenu from "./CardMenu";
+import { useState } from "react";
 
 interface Props {
   media: {
@@ -26,81 +25,56 @@ interface Props {
 }
 
 const MediaCardCollection = ({ media, groupId }: Props) => {
-  const { data: user } = useUserAccount();
+  const [chatIsOpen, setChatIsOpen] = useState(false);
 
   return (
-    <Grid>
-      <Paper
-        elevation={3}
-        sx={{ width: "135px" }}
-      >
-        <Box sx={{ height: 200, position: "relative" }}>
-          <Image
-            src={getPoster(media.poster_path, "200")}
-            alt={media.title}
-            fill={true}
-            style={{ borderTopRightRadius: "4px", borderTopLeftRadius: "4px" }}
-          />
-          <Avatar
-            src={media.added_by.profile_pic}
-            sx={{ height: 45, width: 45, position: "absolute", left: "2px", top: "2px", border: "1px", borderColor: "white", borderStyle: "solid" }}
-          ></Avatar>
-        </Box>
-        <Grid
-          container
-          p={1}
+    <>
+      <ChatModal
+        groupId={groupId}
+        media={media}
+        chatIsOpen={chatIsOpen}
+        setChatIsOpen={setChatIsOpen}
+      />
+
+      <Grid>
+        <Paper
+          elevation={3}
+          sx={{ width: "135px" }}
         >
-          <Grid xs={12}>
-            <Typography
-              variant="body2"
-              component="p"
+          <Box sx={{ height: 200, position: "relative" }}>
+            <Image
+              src={getPoster(media.poster_path, "200")}
+              alt={media.title}
+              fill={true}
+              style={{ borderTopRightRadius: "4px", borderTopLeftRadius: "4px" }}
+            />
+            <Avatar
+              src={media.added_by.profile_pic}
+              sx={{ height: 45, width: 45, position: "absolute", left: "2px", top: "2px", border: "1px", borderColor: "white", borderStyle: "solid" }}
+            ></Avatar>
+            <Box
+              position="absolute"
+              bottom="2px"
+              right="2px"
             >
-              {media.added_reason}
-            </Typography>
+              <CardMenu
+                groupId={groupId}
+                media={media}
+                setChatIsOpen={setChatIsOpen}
+              />
+            </Box>
+          </Box>
+          <Grid
+            container
+            p={1}
+          >
             <Grid xs={12}>
-              <Typography
-                variant="subtitle2"
-                component="p"
-              >
-                - {media.added_by.user_name}
-              </Typography>
-            </Grid>
-            <Grid
-              container
-              justifyContent="space-between"
-            >
-              <Grid
-                xs={6}
-                alignItems="center"
-                justifyContent="center"
-              >
-                <IconButton>
-                  <Link
-                    className="flex"
-                    href={`/media/${media.media_id}/?media_type=${media.media_type}`}
-                  >
-                    <InfoIcon />
-                  </Link>
-                </IconButton>
-              </Grid>
-              <Grid
-                xs={6}
-                alignItems="center"
-                justifyContent="center"
-              >
-                {user?.is_subscribed && (
-                  <ChatModal
-                    media={media}
-                    groupId={groupId}
-                  />
-                )}
-                {!user?.is_subscribed && <FakeChat />}
-              </Grid>
+              <Typography>{media.title}</Typography>
             </Grid>
           </Grid>
-        </Grid>
-      </Paper>
-    </Grid>
+        </Paper>
+      </Grid>
+    </>
   );
 };
 
