@@ -38,7 +38,7 @@ interface Condensed {
   media_id: number;
   watched: boolean;
   added_reason: string;
-  added_by: { user_name: string; profile_pic: string };
+  added_by: { user_id: string; user_name: string; profile_pic: string };
   genres: string[];
   media_type: string;
   poster_path: string;
@@ -59,7 +59,7 @@ const manipulateData = (data: GroupMedia[] | null) => {
       media_id: entry.media_id,
       watched: entry.watched,
       added_reason: entry.added_reason,
-      added_by: entry.user_public_profile ? entry.user_public_profile : { user_name: "not provided", profile_pic: "not provided" },
+      added_by: entry.user_public_profile ? { user_id: entry.added_by, ...entry.user_public_profile } : { user_id: "not provided", user_name: "not provided", profile_pic: "not provided" },
       genres: entry.media!.genres,
       media_type: entry.media!.media_type,
       poster_path: entry.media!.poster_path,

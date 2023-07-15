@@ -11,7 +11,7 @@ interface Condensed {
   media_id: number;
   watched: boolean;
   added_reason: string;
-  added_by: { user_name: string; profile_pic: string };
+  added_by: { user_id: string; user_name: string; profile_pic: string };
   genres: string[];
   media_type: string;
   poster_path: string;

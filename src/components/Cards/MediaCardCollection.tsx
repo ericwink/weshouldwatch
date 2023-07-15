@@ -5,7 +5,6 @@ import { Paper, Typography, Box, Avatar } from "@mui/material";
 import Grid from "@mui/material/Unstable_Grid2"; // Grid version 2
 import Image from "next/image";
 import ChatModal from "../Chat/ChatModal";
-import { useUserAccount } from "@/src/lib/tanstackHooks";
 import CardMenu from "./CardMenu";
 import { useState } from "react";
 
@@ -14,7 +13,7 @@ interface Props {
     media_id: number;
     watched: boolean;
     added_reason: string;
-    added_by: { user_name: string; profile_pic: string };
+    added_by: { user_id: string; user_name: string; profile_pic: string };
     genres: string[];
     media_type: string;
     poster_path: string;

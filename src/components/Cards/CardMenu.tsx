@@ -1,23 +1,21 @@
 import * as React from "react";
-import ListItem from "@mui/material/ListItem";
-import ListItemButton from "@mui/material/ListItemButton";
-import ListItemIcon from "@mui/material/ListItemIcon";
-import ListItemText from "@mui/material/ListItemText";
-import InboxIcon from "@mui/icons-material/MoveToInbox";
-import MailIcon from "@mui/icons-material/Mail";
 import MenuIcon from "@mui/icons-material/Menu";
-import { IconButton, Box, Drawer, List, Divider, Typography, Avatar } from "@mui/material";
+import { IconButton, Box, Drawer, List, Divider, Typography, Avatar, ListItem, ListItemButton, ListItemIcon, ListItemText } from "@mui/material";
 import InfoIcon from "@mui/icons-material/Info";
 import ChatIcon from "@mui/icons-material/Chat";
 import { useUserStore } from "@/src/lib/store";
 import Link from "next/link";
+import VisibilityIcon from "@mui/icons-material/Visibility";
+import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
+import EditIcon from "@mui/icons-material/Edit";
+import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 
 interface Props {
   media: {
     media_id: number;
     watched: boolean;
     added_reason: string;
-    added_by: { user_name: string; profile_pic: string };
+    added_by: { user_id: string; user_name: string; profile_pic: string };
     genres: string[];
     media_type: string;
     poster_path: string;
@@ -89,21 +87,34 @@ const CardMenu = ({ media, groupId, setChatIsOpen }: Props) => {
             <ListItemText primary={"Show Chat"} />
           </ListItemButton>
         </ListItem>
-      </List>
 
-      <Divider />
-      <List>
-        {["All mail", "Trash", "Spam"].map((text, index) => (
-          <ListItem
-            key={text}
-            disablePadding
-          >
-            <ListItemButton>
-              <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
-              <ListItemText primary={text} />
-            </ListItemButton>
-          </ListItem>
-        ))}
+        <ListItem disablePadding>
+          <ListItemButton>
+            <ListItemIcon>{!media.watched ? <VisibilityIcon /> : <VisibilityOffIcon />}</ListItemIcon>
+            <ListItemText primary={!media.watched ? "Mark as Watched" : "Mark as Not Watched"} />
+          </ListItemButton>
+        </ListItem>
+
+        {media.added_by.user_id === user?.id && (
+          <>
+            <ListItem disablePadding>
+              <ListItemButton>
+                <ListItemIcon>
+                  <EditIcon />
+                </ListItemIcon>
+                <ListItemText primary={"Edit Reason"} />
+              </ListItemButton>
+            </ListItem>
+            <ListItem disablePadding>
+              <ListItemButton>
+                <ListItemIcon>
+                  <DeleteForeverIcon />
+                </ListItemIcon>
+                <ListItemText primary={"Remove From Group"} />
+              </ListItemButton>
+            </ListItem>
+          </>
+        )}
       </List>
     </Box>
   );
