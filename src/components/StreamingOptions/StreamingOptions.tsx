@@ -16,9 +16,9 @@ const fetchStreamingOptions = async (mediaType: string, id: string) => {
 const reorderData = (obj: AvailabilityData) => {
   const data: StreamOptions = {};
   for (let watchOption in obj) {
-    if (watchOption === "link") continue;
+    if (watchOption === "link") continue; //skip over the link entry since we aren't using it
     for (let provider of obj[watchOption as keyof AvailabilityData]) {
-      if (typeof provider === "string") continue; // Skip if it's a string
+      if (typeof provider === "string") continue; //added to skip over some extraneous data
 
       let host = provider.provider_name;
       let logo = provider.logo_path;
