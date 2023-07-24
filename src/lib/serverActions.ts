@@ -127,7 +127,6 @@ export async function stripeCustomerPortal() {
 }
 
 export async function editReason(newReason: string, rowId: number, groupId: number) {
-  console.log(rowId, groupId);
   //get current session from jwt
   const {
     data: { user },
@@ -136,7 +135,29 @@ export async function editReason(newReason: string, rowId: number, groupId: numb
 
   const { data, error } = await supabase.from("group_media").update({ added_reason: newReason }).eq("id", rowId).select();
 
-  if (error) return { error: true, message: error.message };
-  revalidatePath(`/mygroups/${groupId}`);
-  return { error: false, message: "Reason updated successfully!" };
+  if (error) {
+    console.log(error.message);
+    return { error: true, message: error.message };
+  } else {
+    revalidatePath(`/mygroups/${groupId}`);
+    return { error: false, message: "Reason updated successfully!" };
+  }
+}
+
+export async function removeMediaFromGroup(rowId: number, groupId: number) {
+  //get current session from jwt
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (!user) return { error: true, message: "An error occurred. Please sign in and try again." };
+
+  const { error } = await supabase.from("group_media").delete().eq("id", rowId);
+
+  if (error) {
+    console.log(error.message);
+    return { error: true, message: error.message };
+  } else {
+    revalidatePath(`/mygroups/${groupId}`);
+    return { error: false, message: "Media removed successfully!" };
+  }
 }

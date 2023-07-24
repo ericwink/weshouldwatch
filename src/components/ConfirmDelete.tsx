@@ -7,44 +7,38 @@ import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 
 interface Props {
-  openButton: ReactNode;
   confirmDelete: () => void;
+  warningMessage: string;
+  showDeleteModal: boolean;
+  setShowDeleteModal: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-export default function ConfirmDelete({ openButton }: Props) {
-  const [open, setOpen] = useState(false);
-
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
-
+export default function ConfirmDelete({ showDeleteModal, setShowDeleteModal, warningMessage, confirmDelete }: Props) {
   const handleClose = () => {
-    setOpen(false);
+    setShowDeleteModal(false);
+    confirmDelete();
   };
 
   return (
-    <div>
-      {openButton}
-      <Dialog
-        open={open}
-        onClose={handleClose}
-        aria-labelledby="alert-dialog-title"
-        aria-describedby="alert-dialog-description"
-      >
-        <DialogTitle id="alert-dialog-title">{"Are you sure you want to delete?"}</DialogTitle>
-        <DialogContent>
-          <DialogContentText id="alert-dialog-description">Deleting cannot be undone. This will be gone forever! Are you sure you want to delete?</DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleClose}>Delete</Button>
-          <Button
-            onClick={handleClose}
-            autoFocus
-          >
-            Cancel
-          </Button>
-        </DialogActions>
-      </Dialog>
-    </div>
+    <Dialog
+      open={showDeleteModal}
+      onClose={handleClose}
+      aria-labelledby="alert-dialog-title"
+      aria-describedby="alert-dialog-description"
+    >
+      <DialogTitle id="alert-dialog-title">{"Are you sure you want to delete?"}</DialogTitle>
+      <DialogContent>
+        <DialogContentText id="alert-dialog-description">{`${warningMessage} Are you sure you want to delete?`}</DialogContentText>
+      </DialogContent>
+      <DialogActions>
+        <Button onClick={handleClose}>Delete</Button>
+        <Button
+          onClick={handleClose}
+          autoFocus
+        >
+          Cancel
+        </Button>
+      </DialogActions>
+    </Dialog>
   );
 }

@@ -6,6 +6,8 @@ import { redirect } from "next/navigation";
 import TabDisplay from "@/src/components/TabDisplay";
 import CardGridFilter from "@/src/components/Cards/CardGridFilter";
 
+import { CondensedMedia } from "@/src/lib/interface";
+
 interface Props {
   params: {
     id: string;
@@ -34,22 +36,9 @@ interface GroupMedia {
   };
 }
 
-interface Condensed {
-  entry_id: number;
-  media_id: number;
-  watched: boolean;
-  added_reason: string;
-  added_by: { user_id: string; user_name: string; profile_pic: string };
-  genres: string[];
-  media_type: string;
-  poster_path: string;
-  title: string;
-  enabled: boolean;
-}
-
 interface Sorted {
-  movies: Condensed[];
-  tv: Condensed[];
+  movies: CondensedMedia[];
+  tv: CondensedMedia[];
 }
 
 const manipulateData = (data: GroupMedia[] | null) => {

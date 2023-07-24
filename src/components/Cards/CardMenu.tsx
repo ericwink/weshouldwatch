@@ -13,6 +13,7 @@ import { toast } from "react-toastify";
 
 interface Props {
   media: {
+    entry_id: number;
     media_id: number;
     watched: boolean;
     added_reason: string;
@@ -26,9 +27,10 @@ interface Props {
   groupId: number;
   setChatIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
   setShowReasonModal: React.Dispatch<React.SetStateAction<boolean>>;
+  setShowDeleteModal: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const CardMenu = ({ media, groupId, setChatIsOpen, setShowReasonModal }: Props) => {
+const CardMenu = ({ media, groupId, setChatIsOpen, setShowReasonModal, setShowDeleteModal }: Props) => {
   const [state, setState] = React.useState(false);
   const user = useUserStore(state => state.user);
 
@@ -113,7 +115,7 @@ const CardMenu = ({ media, groupId, setChatIsOpen, setShowReasonModal }: Props) 
               </ListItemButton>
             </ListItem>
             <ListItem disablePadding>
-              <ListItemButton>
+              <ListItemButton onClick={()=>setShowDeleteModal(true)}>
                 <ListItemIcon>
                   <DeleteForeverIcon />
                 </ListItemIcon>
