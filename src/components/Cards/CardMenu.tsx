@@ -9,6 +9,7 @@ import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
+import { toast } from "react-toastify";
 
 interface Props {
   media: {
@@ -29,6 +30,11 @@ interface Props {
 const CardMenu = ({ media, groupId, setChatIsOpen }: Props) => {
   const [state, setState] = React.useState(false);
   const user = useUserStore(state => state.user);
+
+  const chatToggle = () => {
+    if (!user?.is_subscribed) return toast.warning("Get Premium to access this feature!", { theme: "colored" });
+    setChatIsOpen(true);
+  };
 
   const toggleDrawer = (open: boolean) => (event: React.KeyboardEvent | React.MouseEvent) => {
     if (event.type === "keydown" && ((event as React.KeyboardEvent).key === "Tab" || (event as React.KeyboardEvent).key === "Shift")) {
@@ -80,7 +86,7 @@ const CardMenu = ({ media, groupId, setChatIsOpen }: Props) => {
         </Link>
 
         <ListItem disablePadding>
-          <ListItemButton onClick={() => setChatIsOpen(true)}>
+          <ListItemButton onClick={chatToggle}>
             <ListItemIcon>
               <ChatIcon />
             </ListItemIcon>
