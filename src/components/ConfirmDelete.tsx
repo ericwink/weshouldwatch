@@ -16,6 +16,10 @@ interface Props {
 export default function ConfirmDelete({ showDeleteModal, setShowDeleteModal, warningMessage, confirmDelete }: Props) {
   const handleClose = () => {
     setShowDeleteModal(false);
+  };
+
+  const handleConfirm = () => {
+    handleClose();
     confirmDelete();
   };
 
@@ -31,7 +35,7 @@ export default function ConfirmDelete({ showDeleteModal, setShowDeleteModal, war
         <DialogContentText id="alert-dialog-description">{`${warningMessage} Are you sure you want to delete?`}</DialogContentText>
       </DialogContent>
       <DialogActions>
-        <Button onClick={handleClose}>Delete</Button>
+        <Button onClick={handleConfirm}>Delete</Button>
         <Button
           onClick={handleClose}
           autoFocus
