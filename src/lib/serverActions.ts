@@ -125,3 +125,18 @@ export async function stripeCustomerPortal() {
   });
   return { error: false, sessionUrl: session.url };
 }
+
+export async function editReason(newReason: string, rowId: number, groupId: number) {
+  console.log(rowId, groupId);
+  //get current session from jwt
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (!user) return { error: true, message: "An error occurred. Please sign in and try again." };
+
+  const { data, error } = await supabase.from("group_media").update({ added_reason: newReason }).eq("id", rowId).select();
+
+  if (error) return { error: true, message: error.message };
+  revalidatePath(`/mygroups/${groupId}`);
+  return { error: false, message: "Reason updated successfully!" };
+}

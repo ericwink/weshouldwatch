@@ -35,6 +35,7 @@ interface GroupMedia {
 }
 
 interface Condensed {
+  entry_id: number;
   media_id: number;
   watched: boolean;
   added_reason: string;
@@ -56,6 +57,7 @@ const manipulateData = (data: GroupMedia[] | null) => {
   if (data === null) return sorted;
   for (let entry of data) {
     let newEntry = {
+      entry_id: entry.id,
       media_id: entry.media_id,
       watched: entry.watched,
       added_reason: entry.added_reason,
@@ -90,13 +92,12 @@ const groupPageById = async ({ params: { id } }: Props) => {
     `
       )
       .eq("group_id", id);
-
     return group_media as GroupMedia[];
   };
 
   const data = await fetchMediaCollection(parseInt(id));
   const sortedData = manipulateData(data);
-  // console.log(JSON.stringify(data, null, 2));
+  // console.log(JSON.stringify(sortedData, null, 2));
 
   const { data: session } = await supabase.auth.getSession();
   if (!session.session) redirect("/login");

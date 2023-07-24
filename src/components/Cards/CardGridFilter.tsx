@@ -8,6 +8,7 @@ import MediaCardCollection from "./MediaCardCollection";
 import AccordionChildren from "../../ui/AccordionChildren";
 
 interface Condensed {
+  entry_id: number;
   media_id: number;
   watched: boolean;
   added_reason: string;

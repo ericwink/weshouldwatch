@@ -25,9 +25,10 @@ interface Props {
   };
   groupId: number;
   setChatIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  setShowReasonModal: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const CardMenu = ({ media, groupId, setChatIsOpen }: Props) => {
+const CardMenu = ({ media, groupId, setChatIsOpen, setShowReasonModal }: Props) => {
   const [state, setState] = React.useState(false);
   const user = useUserStore(state => state.user);
 
@@ -104,7 +105,7 @@ const CardMenu = ({ media, groupId, setChatIsOpen }: Props) => {
         {media.added_by.user_id === user?.id && (
           <>
             <ListItem disablePadding>
-              <ListItemButton>
+              <ListItemButton onClick={() => setShowReasonModal(true)}>
                 <ListItemIcon>
                   <EditIcon />
                 </ListItemIcon>

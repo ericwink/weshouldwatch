@@ -7,9 +7,12 @@ import Image from "next/image";
 import ChatModal from "../Chat/ChatModal";
 import CardMenu from "./CardMenu";
 import { useState } from "react";
+import { editReason } from "@/src/lib/serverActions";
+import ReasonModal from "../GroupControl/AddMedia/ReasonModal";
 
 interface Props {
   media: {
+    entry_id: number;
     media_id: number;
     watched: boolean;
     added_reason: string;
@@ -25,6 +28,18 @@ interface Props {
 
 const MediaCardCollection = ({ media, groupId }: Props) => {
   const [chatIsOpen, setChatIsOpen] = useState(false);
+  const [showReasonModal, setShowReasonModal] = useState(false);
+  const [newReason, setNewReason] = useState("");
+
+  const updateReasonTest = async () => {
+    const response = await editReason(newReason, media.entry_id, groupId);
+    console.log(response);
+    if (response.error) console.log(response.message);
+    setShowReasonModal(false);
+    console.log(response.message);
+    media.added_reason = newReason; //update the object we pass down so that a click of the menu will re-render correctly. Data from page.tsx updates immediately
+    setNewReason("");
+  };
 
   return (
     <>
@@ -34,7 +49,12 @@ const MediaCardCollection = ({ media, groupId }: Props) => {
         chatIsOpen={chatIsOpen}
         setChatIsOpen={setChatIsOpen}
       />
-
+      <ReasonModal
+        open={showReasonModal}
+        setOpen={setShowReasonModal}
+        handleSubmit={updateReasonTest}
+        setReason={setNewReason}
+      />
       <Grid>
         <Paper
           elevation={3}
@@ -60,6 +80,7 @@ const MediaCardCollection = ({ media, groupId }: Props) => {
                 groupId={groupId}
                 media={media}
                 setChatIsOpen={setChatIsOpen}
+                setShowReasonModal={setShowReasonModal}
               />
             </Box>
           </Box>
