@@ -1,7 +1,7 @@
 "use client";
 
 import getPoster from "@/src/lib/getPoster";
-import { Paper, Typography, Box, Avatar } from "@mui/material";
+import { Paper, Typography, Box, Avatar, Button } from "@mui/material";
 import Grid from "@mui/material/Unstable_Grid2"; // Grid version 2
 import Image from "next/image";
 import ChatModal from "../Chat/ChatModal";
@@ -9,36 +9,31 @@ import CardMenu from "./CardMenu";
 import { useState } from "react";
 import { editReason } from "@/src/lib/serverActions";
 import ReasonModal from "../GroupControl/AddMedia/ReasonModal";
+import ConfirmDelete from "../ConfirmDelete";
+import { toast } from "react-toastify";
+import { CondensedMedia } from "@/src/lib/interface";
 
 interface Props {
-  media: {
-    entry_id: number;
-    media_id: number;
-    watched: boolean;
-    added_reason: string;
-    added_by: { user_id: string; user_name: string; profile_pic: string };
-    genres: string[];
-    media_type: string;
-    poster_path: string;
-    title: string;
-    enabled: boolean;
-  };
+  media: CondensedMedia;
   groupId: number;
+  removeMedia: (rowId: number, GroupId: number) => Promise<void>;
 }
 
-const MediaCardCollection = ({ media, groupId }: Props) => {
+const MediaCardCollection = ({ media, groupId, removeMedia }: Props) => {
   const [chatIsOpen, setChatIsOpen] = useState(false);
   const [showReasonModal, setShowReasonModal] = useState(false);
   const [newReason, setNewReason] = useState("");
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
 
   const updateReasonTest = async () => {
     const response = await editReason(newReason, media.entry_id, groupId);
-    console.log(response);
-    if (response.error) console.log(response.message);
-    setShowReasonModal(false);
-    console.log(response.message);
-    media.added_reason = newReason; //update the object we pass down so that a click of the menu will re-render correctly. Data from page.tsx updates immediately
-    setNewReason("");
+    if (response.error) {
+      toast.error("There was an error, please try again!", { theme: "colored" });
+    } else {
+      setShowReasonModal(false);
+      media.added_reason = newReason; //update the object we pass down so that a click of the menu will re-render correctly. Data from page.tsx updates immediately
+      setNewReason("");
+    }
   };
 
   return (
@@ -54,6 +49,12 @@ const MediaCardCollection = ({ media, groupId }: Props) => {
         setOpen={setShowReasonModal}
         handleSubmit={updateReasonTest}
         setReason={setNewReason}
+      />
+      <ConfirmDelete
+        showDeleteModal={showDeleteModal}
+        setShowDeleteModal={setShowDeleteModal}
+        confirmDelete={() => removeMedia(media.entry_id, groupId)}
+        warningMessage="This media and all associated chats will be removed forever."
       />
       <Grid>
         <Paper
@@ -81,6 +82,7 @@ const MediaCardCollection = ({ media, groupId }: Props) => {
                 media={media}
                 setChatIsOpen={setChatIsOpen}
                 setShowReasonModal={setShowReasonModal}
+                setShowDeleteModal={setShowDeleteModal}
               />
             </Box>
           </Box>

@@ -6,6 +6,8 @@ import { useEffect, useState } from "react";
 import GenreChipFilter from "../GenreChipFilter";
 import MediaCardCollection from "./MediaCardCollection";
 import AccordionChildren from "../../ui/AccordionChildren";
+import { removeMediaFromGroup } from "@/src/lib/serverActions";
+import { toast } from "react-toastify";
 
 interface Condensed {
   entry_id: number;
@@ -60,6 +62,19 @@ const CardGridFilter = ({ mediaData, groupId }: Props) => {
     setCards(updatedMedia);
   }, [genres]);
 
+  const removeMedia = async (entry_id: number, GroupId: number) => {
+    const response = await removeMediaFromGroup(entry_id, GroupId);
+    if (response.error) {
+      toast.error("There was an error, please try again!", { theme: "colored" });
+    } else {
+      const updatedCards = cards.filter(card => card.entry_id !== entry_id);
+      console.log(updatedCards);
+      setCards(updatedCards);
+      const newFilters = makeGenreArray(updatedCards);
+      setGenres(newFilters);
+    }
+  };
+
   const cardDisplay = cards.map(card => {
     if (card.enabled === true)
       return (
@@ -67,6 +82,7 @@ const CardGridFilter = ({ mediaData, groupId }: Props) => {
           media={card}
           key={card.media_id}
           groupId={groupId}
+          removeMedia={removeMedia}
         />
       );
   });

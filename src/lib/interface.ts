@@ -188,3 +188,16 @@ export interface MovieCredits {
   crew?: Movie[];
   id: number;
 }
+
+export interface CondensedMedia {
+  entry_id: number;
+  media_id: number;
+  watched: boolean;
+  added_reason: string;
+  added_by: { user_id: string; user_name: string; profile_pic: string };
+  genres: string[];
+  media_type: string;
+  poster_path: string;
+  title: string;
+  enabled: boolean;
+}
