@@ -4,15 +4,16 @@ import { Box, InputLabel, MenuItem, FormControl, TextField, Button, CircularProg
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 import { useState, ChangeEvent } from "react";
 import { inviteToGroup } from "../../lib/serverActions";
-import { useUserAccount } from "../../lib/tanstackHooks";
 import { toast } from "react-toastify";
+import { useUserStore } from "@/src/lib/store";
 
 interface Props {
   groups: { created_at: string | null; created_by: string | null; group_name: string; id: number }[] | null;
 }
 
 export default function InviteToAGroup({ groups }: Props) {
-  const { data: user } = useUserAccount();
+  const user = useUserStore(state => state.user);
+
   const [group, setGroup] = useState("");
   const [error, setError] = useState({ error: false, message: "" });
   const [email, setEmail] = useState("");
