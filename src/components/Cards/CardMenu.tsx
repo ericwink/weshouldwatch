@@ -10,6 +10,8 @@ import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import { toast } from "react-toastify";
+import { updateWatched } from "@/src/lib/supabaseClientHelper";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 interface Props {
   media: {
@@ -33,6 +35,7 @@ interface Props {
 const CardMenu = ({ media, groupId, setChatIsOpen, setShowReasonModal, setShowDeleteModal }: Props) => {
   const [state, setState] = React.useState(false);
   const user = useUserStore(state => state.user);
+  const queryClient = useQueryClient();
 
   const chatToggle = () => {
     if (!user?.is_subscribed) return toast.warning("Get Premium to access this feature!", { theme: "colored" });
@@ -46,6 +49,12 @@ const CardMenu = ({ media, groupId, setChatIsOpen, setShowReasonModal, setShowDe
 
     setState(open);
   };
+
+  const { mutate: toggleWatched } = useMutation({
+    mutationFn: async () => await updateWatched(media.entry_id, groupId, !media.watched),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["groupMedia", { id: groupId }, { type: media.media_type }] }),
+    onError: () => toast.error("There was an error, please try again!", { theme: "colored" }),
+  });
 
   const list = (
     <Box
@@ -98,7 +107,7 @@ const CardMenu = ({ media, groupId, setChatIsOpen, setShowReasonModal, setShowDe
         </ListItem>
 
         <ListItem disablePadding>
-          <ListItemButton>
+          <ListItemButton onClick={() => toggleWatched()}>
             <ListItemIcon>{!media.watched ? <VisibilityIcon /> : <VisibilityOffIcon />}</ListItemIcon>
             <ListItemText primary={!media.watched ? "Mark as Watched" : "Mark as Not Watched"} />
           </ListItemButton>

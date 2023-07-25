@@ -2,7 +2,7 @@
 
 import Grid from "@mui/material/Unstable_Grid2"; // Grid version 2
 import { Container } from "@mui/material";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import GenreChipFilter from "../GenreChipFilter";
 import MediaCardCollection from "./MediaCardCollection";
 import AccordionChildren from "../../ui/AccordionChildren";
@@ -33,48 +33,28 @@ const makeGenreArray = (mediaData: CondensedMedia[]) => {
 };
 
 const CardGridFilter = ({ mediaData, groupId, mediaType }: Props) => {
-  const [cards, setCards] = useState(mediaData);
   const [genres, setGenres] = useState(makeGenreArray(mediaData));
 
   //set a loading state to spin over the whole screen?
-  const { data, isLoading, isError } = useQuery({
+  const {
+    data: media,
+    isLoading,
+    isError,
+  } = useQuery({
     queryFn: async () => {
       const results = await fetchMediaCollection(groupId);
       const organizedResults = reorganizeGroupMedia(results);
-      setCards(organizedResults[mediaType]);
-      setGenres(makeGenreArray(organizedResults[mediaType]));
       return organizedResults[mediaType];
     },
     queryKey: ["groupMedia", { id: groupId }, { type: mediaType }],
     initialData: mediaData,
+    // refetchOnWindowFocus: false,
   });
 
-  useEffect(() => {
-    const updatedMedia = cards.map(card => {
-      let score = 0;
-      for (let each of genres) {
-        if (card.genres.find(g => g === each.genre) && each.enabled === true) score++;
-      }
-      if (score >= 1) {
-        card.enabled = true;
-      } else {
-        card.enabled = false;
-      }
-      return card;
-    });
-    setCards(updatedMedia);
-  }, [genres]);
-
-  const cardDisplay = cards.map(card => {
-    if (card.enabled === true)
-      return (
-        <MediaCardCollection
-          media={card}
-          key={card.media_id}
-          groupId={groupId}
-        />
-      );
-  });
+  //return array of enabled genres
+  const enabledGenres = genres.filter(genre => genre.enabled === true).map(genre => genre.genre);
+  //filder media list and return media if any of the genres assigned to it are included in the enabledGenres array
+  const cardDisplayTwo = media.filter(each => each.genres.some(genre => enabledGenres.includes(genre)));
 
   return (
     <Container maxWidth="md">
@@ -90,7 +70,14 @@ const CardGridFilter = ({ mediaData, groupId, mediaType }: Props) => {
         mt={2}
         justifyContent="center"
       >
-        {cardDisplay}
+        {/* {cardDisplay} */}
+        {cardDisplayTwo.map(card => (
+          <MediaCardCollection
+            media={card}
+            key={card.media_id}
+            groupId={groupId}
+          />
+        ))}
       </Grid>
     </Container>
   );
