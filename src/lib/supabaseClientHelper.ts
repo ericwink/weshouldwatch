@@ -77,7 +77,8 @@ export async function fetchMediaCollection(id: number) {
     ) , user_public_profile ( user_name, profile_pic )
   `
     )
-    .eq("group_id", id);
+    .eq("group_id", id)
+    .order("id", { ascending: false });
   if (error) throw new Error(error.message);
   return group_media as GroupMedia[];
 }

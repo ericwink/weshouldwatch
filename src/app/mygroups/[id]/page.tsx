@@ -56,7 +56,8 @@ const groupPageById = async ({ params: { id } }: Props) => {
       ) , user_public_profile ( user_name, profile_pic )
     `
       )
-      .eq("group_id", id);
+      .eq("group_id", id)
+      .order("id", { ascending: false });
     return group_media as GroupMedia[];
   };
 

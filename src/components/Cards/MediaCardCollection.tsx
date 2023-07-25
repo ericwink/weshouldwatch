@@ -18,7 +18,6 @@ import { removeMediaFromGroup } from "@/src/lib/supabaseClientHelper";
 interface Props {
   media: CondensedMedia;
   groupId: number;
-  // removeMedia: (rowId: number, GroupId: number) => Promise<void>;
 }
 
 const MediaCardCollection = ({ media, groupId }: Props) => {
@@ -27,17 +26,6 @@ const MediaCardCollection = ({ media, groupId }: Props) => {
   const [newReason, setNewReason] = useState("");
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const queryClient = useQueryClient();
-
-  // const updateReasonTest = async () => {
-  //   const response = await editReason(newReason, media.entry_id, groupId);
-  //   if (response.error) {
-  //     toast.error("There was an error, please try again!", { theme: "colored" });
-  //   } else {
-  //     setShowReasonModal(false);
-  //     media.added_reason = newReason; //update the object we pass down so that a click of the menu will re-render correctly. Data from page.tsx updates immediately
-  //     setNewReason("");
-  //   }
-  // };
 
   const { mutate: removeMedia } = useMutation({
     mutationFn: async () => await removeMediaFromGroup(media.entry_id, groupId),
