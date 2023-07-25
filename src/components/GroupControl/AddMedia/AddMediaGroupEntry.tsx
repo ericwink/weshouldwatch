@@ -64,7 +64,7 @@ export default function AddMediaGroupEntry({ id, media_id, group_name, group_med
         open={open}
         setOpen={setOpen}
         setReason={setReason}
-        handleSubmit={handleSubmit}
+        handleSubmit={() => handleSubmit()}
       />
     </>
   );

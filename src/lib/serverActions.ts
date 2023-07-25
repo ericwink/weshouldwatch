@@ -144,6 +144,7 @@ export async function editReason(newReason: string, rowId: number, groupId: numb
   }
 }
 
+// removed and set in tanstack
 export async function removeMediaFromGroup(rowId: number, groupId: number) {
   //get current session from jwt
   const {
@@ -152,6 +153,24 @@ export async function removeMediaFromGroup(rowId: number, groupId: number) {
   if (!user) return { error: true, message: "An error occurred. Please sign in and try again." };
 
   const { error } = await supabase.from("group_media").delete().eq("id", rowId);
+
+  if (error) {
+    console.log(error.message);
+    return { error: true, message: error.message };
+  } else {
+    revalidatePath(`/mygroups/${groupId}`);
+    return { error: false, message: "Media removed successfully!" };
+  }
+}
+
+export async function updateWatched(rowId: number, groupId: number, watched: boolean) {
+  //get current session from jwt
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (!user) return { error: true, message: "An error occurred. Please sign in and try again." };
+
+  const { data, error } = await supabase.from("group_media").update({ watched: watched }).eq("id", rowId).select();
 
   if (error) {
     console.log(error.message);

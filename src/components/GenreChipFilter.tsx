@@ -38,7 +38,7 @@ export default function GenreChipFilter({ genres, setGenres }: Props) {
   const chips = genres.map(genre => {
     if (genre.enabled)
       return (
-        <Grid>
+        <Grid key={genre.genre}>
           <Chip
             label={genre.genre}
             onClick={updateGenres}
@@ -47,7 +47,7 @@ export default function GenreChipFilter({ genres, setGenres }: Props) {
       );
     if (!genre.enabled)
       return (
-        <Grid>
+        <Grid key={genre.genre}>
           <Chip
             label={genre.genre}
             onClick={updateGenres}
