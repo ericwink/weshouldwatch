@@ -38,7 +38,7 @@ export interface GroupMedia {
 }
 
 export interface Sorted {
-  movies: CondensedMedia[];
+  movie: CondensedMedia[];
   tv: CondensedMedia[];
 }
 
@@ -72,9 +72,9 @@ const groupPageById = async ({ params: { id } }: Props) => {
       <TabDisplay tabNames={["Group Info", "Movies", "TV Shows"]}>
         <h1>This is where the group info will be</h1>
         <CardGridFilter
-          mediaData={sortedData.movies}
+          mediaData={sortedData.movie}
           groupId={parseInt(id)}
-          mediaType="movies"
+          mediaType="movie"
         />
         <CardGridFilter
           mediaData={sortedData.tv}

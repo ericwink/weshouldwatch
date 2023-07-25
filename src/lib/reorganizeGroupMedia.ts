@@ -1,7 +1,7 @@
 import { GroupMedia, Sorted } from "../app/mygroups/[id]/page";
 
 export const reorganizeGroupMedia = (data: GroupMedia[] | null) => {
-  const sorted: Sorted = { movies: [], tv: [] };
+  const sorted: Sorted = { movie: [], tv: [] };
   if (data === null) return sorted;
   for (let entry of data) {
     let newEntry = {
@@ -17,7 +17,7 @@ export const reorganizeGroupMedia = (data: GroupMedia[] | null) => {
       enabled: true,
     };
     if (newEntry.media_type === "movie") {
-      sorted.movies.push(newEntry);
+      sorted.movie.push(newEntry);
     } else {
       sorted.tv.push(newEntry);
     }

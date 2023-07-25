@@ -19,7 +19,7 @@ interface GenreFilter {
 interface Props {
   mediaData: CondensedMedia[];
   groupId: number;
-  mediaType: "movies" | "tv";
+  mediaType: "movie" | "tv";
 }
 
 const makeGenreArray = (mediaData: CondensedMedia[]) => {
@@ -45,7 +45,7 @@ const CardGridFilter = ({ mediaData, groupId, mediaType }: Props) => {
       setGenres(makeGenreArray(organizedResults[mediaType]));
       return organizedResults[mediaType];
     },
-    queryKey: ["groupMedia", { id: groupId }],
+    queryKey: ["groupMedia", { id: groupId }, { type: mediaType }],
     initialData: mediaData,
   });
 

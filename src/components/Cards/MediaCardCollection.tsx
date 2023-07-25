@@ -41,13 +41,14 @@ const MediaCardCollection = ({ media, groupId }: Props) => {
 
   const { mutate: removeMedia } = useMutation({
     mutationFn: async () => await removeMediaFromGroup(media.entry_id, groupId),
-    onSuccess: () => queryClient.invalidateQueries(["groupMedia", { id: groupId }]),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["groupMedia", { id: groupId }, { type: media.media_type }] }),
     onError: () => toast.error("There was an error, please try again!", { theme: "colored" }),
   });
   const { mutate: updateReason } = useMutation({
     mutationFn: async () => await editReason(newReason, media.entry_id, groupId),
     onSuccess: () => {
-      queryClient.invalidateQueries(["groupMedia", { id: groupId }]);
+      console.log(`groupMedia, ${groupId} ${media.media_type}`);
+      queryClient.invalidateQueries({ queryKey: ["groupMedia", { id: groupId }, { type: media.media_type }] });
       setShowReasonModal(false);
       setNewReason("");
     },
