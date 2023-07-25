@@ -115,7 +115,7 @@ const CardMenu = ({ media, groupId, setChatIsOpen, setShowReasonModal, setShowDe
               </ListItemButton>
             </ListItem>
             <ListItem disablePadding>
-              <ListItemButton onClick={()=>setShowDeleteModal(true)}>
+              <ListItemButton onClick={() => setShowDeleteModal(true)}>
                 <ListItemIcon>
                   <DeleteForeverIcon />
                 </ListItemIcon>

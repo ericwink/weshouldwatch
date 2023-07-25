@@ -1,5 +1,6 @@
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { UserAccount } from "./interface";
+import { GroupMedia } from "../app/mygroups/[id]/page";
 
 const supabase = createClientComponentClient();
 
@@ -63,4 +64,33 @@ export async function login(email: string, password: string) {
   if (error) throw new Error(error.message);
   const userData = await getUserAccount();
   return userData;
+}
+
+export async function fetchMediaCollection(id: number) {
+  let { data: group_media, error } = await supabase
+    .from("group_media")
+    .select(
+      `
+    *,
+    media (
+      *
+    ) , user_public_profile ( user_name, profile_pic )
+  `
+    )
+    .eq("group_id", id);
+  if (error) throw new Error(error.message);
+  return group_media as GroupMedia[];
+}
+
+export async function removeMediaFromGroup(rowId: number, groupId: number) {
+  //get current session from jwt
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (!user) throw new Error("Please sign in and try again");
+
+  const { error } = await supabase.from("group_media").delete().eq("id", rowId);
+
+  if (error) throw new Error(error.message);
+  return "Media removed successfully!";
 }

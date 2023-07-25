@@ -6,21 +6,10 @@ import { useEffect, useState } from "react";
 import GenreChipFilter from "../GenreChipFilter";
 import MediaCardCollection from "./MediaCardCollection";
 import AccordionChildren from "../../ui/AccordionChildren";
-import { removeMediaFromGroup } from "@/src/lib/serverActions";
-import { toast } from "react-toastify";
-
-interface Condensed {
-  entry_id: number;
-  media_id: number;
-  watched: boolean;
-  added_reason: string;
-  added_by: { user_id: string; user_name: string; profile_pic: string };
-  genres: string[];
-  media_type: string;
-  poster_path: string;
-  title: string;
-  enabled: boolean;
-}
+import { CondensedMedia } from "@/src/lib/interface";
+import { useQuery } from "@tanstack/react-query";
+import { fetchMediaCollection } from "@/src/lib/supabaseClientHelper";
+import { reorganizeGroupMedia } from "@/src/lib/reorganizeGroupMedia";
 
 interface GenreFilter {
   genre: string;
@@ -28,11 +17,12 @@ interface GenreFilter {
 }
 
 interface Props {
-  mediaData: Condensed[];
+  mediaData: CondensedMedia[];
   groupId: number;
+  mediaType: "movies" | "tv";
 }
 
-const makeGenreArray = (mediaData: Condensed[]) => {
+const makeGenreArray = (mediaData: CondensedMedia[]) => {
   const genreSet = new Set();
   const genreArray: GenreFilter[] = [];
   for (let media of mediaData) {
@@ -42,9 +32,22 @@ const makeGenreArray = (mediaData: Condensed[]) => {
   return genreArray;
 };
 
-const CardGridFilter = ({ mediaData, groupId }: Props) => {
+const CardGridFilter = ({ mediaData, groupId, mediaType }: Props) => {
   const [cards, setCards] = useState(mediaData);
   const [genres, setGenres] = useState(makeGenreArray(mediaData));
+
+  //set a loading state to spin over the whole screen?
+  const { data, isLoading, isError } = useQuery({
+    queryFn: async () => {
+      const results = await fetchMediaCollection(groupId);
+      const organizedResults = reorganizeGroupMedia(results);
+      setCards(organizedResults[mediaType]);
+      setGenres(makeGenreArray(organizedResults[mediaType]));
+      return organizedResults[mediaType];
+    },
+    queryKey: ["groupMedia", { id: groupId }],
+    initialData: mediaData,
+  });
 
   useEffect(() => {
     const updatedMedia = cards.map(card => {
@@ -62,19 +65,6 @@ const CardGridFilter = ({ mediaData, groupId }: Props) => {
     setCards(updatedMedia);
   }, [genres]);
 
-  const removeMedia = async (entry_id: number, GroupId: number) => {
-    const response = await removeMediaFromGroup(entry_id, GroupId);
-    if (response.error) {
-      toast.error("There was an error, please try again!", { theme: "colored" });
-    } else {
-      const updatedCards = cards.filter(card => card.entry_id !== entry_id);
-      console.log(updatedCards);
-      setCards(updatedCards);
-      const newFilters = makeGenreArray(updatedCards);
-      setGenres(newFilters);
-    }
-  };
-
   const cardDisplay = cards.map(card => {
     if (card.enabled === true)
       return (
@@ -82,7 +72,6 @@ const CardGridFilter = ({ mediaData, groupId }: Props) => {
           media={card}
           key={card.media_id}
           groupId={groupId}
-          removeMedia={removeMedia}
         />
       );
   });

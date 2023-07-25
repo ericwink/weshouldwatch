@@ -6,6 +6,7 @@ import { redirect } from "next/navigation";
 import TabDisplay from "@/src/components/TabDisplay";
 import CardGridFilter from "@/src/components/Cards/CardGridFilter";
 
+import { reorganizeGroupMedia } from "@/src/lib/reorganizeGroupMedia";
 import { CondensedMedia } from "@/src/lib/interface";
 
 interface Props {
@@ -14,7 +15,7 @@ interface Props {
   };
 }
 
-interface GroupMedia {
+export interface GroupMedia {
   id: number;
   created_at: string;
   added_by: string;
@@ -36,35 +37,10 @@ interface GroupMedia {
   };
 }
 
-interface Sorted {
+export interface Sorted {
   movies: CondensedMedia[];
   tv: CondensedMedia[];
 }
-
-const manipulateData = (data: GroupMedia[] | null) => {
-  const sorted: Sorted = { movies: [], tv: [] };
-  if (data === null) return sorted;
-  for (let entry of data) {
-    let newEntry = {
-      entry_id: entry.id,
-      media_id: entry.media_id,
-      watched: entry.watched,
-      added_reason: entry.added_reason,
-      added_by: entry.user_public_profile ? { user_id: entry.added_by, ...entry.user_public_profile } : { user_id: "not provided", user_name: "not provided", profile_pic: "not provided" },
-      genres: entry.media!.genres,
-      media_type: entry.media!.media_type,
-      poster_path: entry.media!.poster_path,
-      title: entry.media!.title,
-      enabled: true,
-    };
-    if (newEntry.media_type === "movie") {
-      sorted.movies.push(newEntry);
-    } else {
-      sorted.tv.push(newEntry);
-    }
-  }
-  return sorted;
-};
 
 const groupPageById = async ({ params: { id } }: Props) => {
   const supabase = createServerComponentClient<Database>({ cookies });
@@ -85,7 +61,7 @@ const groupPageById = async ({ params: { id } }: Props) => {
   };
 
   const data = await fetchMediaCollection(parseInt(id));
-  const sortedData = manipulateData(data);
+  const sortedData = reorganizeGroupMedia(data);
   // console.log(JSON.stringify(sortedData, null, 2));
 
   const { data: session } = await supabase.auth.getSession();
@@ -98,10 +74,12 @@ const groupPageById = async ({ params: { id } }: Props) => {
         <CardGridFilter
           mediaData={sortedData.movies}
           groupId={parseInt(id)}
+          mediaType="movies"
         />
         <CardGridFilter
           mediaData={sortedData.tv}
           groupId={parseInt(id)}
+          mediaType="tv"
         />
       </TabDisplay>
     </main>
