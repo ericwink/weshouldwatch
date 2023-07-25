@@ -199,5 +199,4 @@ export interface CondensedMedia {
   media_type: string;
   poster_path: string;
   title: string;
-  enabled: boolean;
 }

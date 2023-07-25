@@ -12,20 +12,10 @@ import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import { toast } from "react-toastify";
 import { updateWatched } from "@/src/lib/supabaseClientHelper";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { CondensedMedia } from "@/src/lib/interface";
 
 interface Props {
-  media: {
-    entry_id: number;
-    media_id: number;
-    watched: boolean;
-    added_reason: string;
-    added_by: { user_id: string; user_name: string; profile_pic: string };
-    genres: string[];
-    media_type: string;
-    poster_path: string;
-    title: string;
-    enabled: boolean;
-  };
+  media: CondensedMedia;
   groupId: number;
   setChatIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
   setShowReasonModal: React.Dispatch<React.SetStateAction<boolean>>;

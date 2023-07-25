@@ -10,19 +10,10 @@ import Slide from "@mui/material/Slide";
 import { TransitionProps } from "@mui/material/transitions";
 import ChatWindow from "./ChatWindow";
 import ChatTextbox from "./ChatTextbox";
+import { CondensedMedia } from "@/src/lib/interface";
 
 interface Props {
-  media: {
-    media_id: number;
-    watched: boolean;
-    added_reason: string;
-    added_by: { user_name: string; profile_pic: string };
-    genres: string[];
-    media_type: string;
-    poster_path: string;
-    title: string;
-    enabled: boolean;
-  };
+  media: CondensedMedia;
   groupId: number;
   chatIsOpen: boolean;
   setChatIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
