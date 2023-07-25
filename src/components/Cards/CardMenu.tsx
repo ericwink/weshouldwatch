@@ -10,20 +10,12 @@ import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import { toast } from "react-toastify";
+import { updateWatched } from "@/src/lib/supabaseClientHelper";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { CondensedMedia } from "@/src/lib/interface";
 
 interface Props {
-  media: {
-    entry_id: number;
-    media_id: number;
-    watched: boolean;
-    added_reason: string;
-    added_by: { user_id: string; user_name: string; profile_pic: string };
-    genres: string[];
-    media_type: string;
-    poster_path: string;
-    title: string;
-    enabled: boolean;
-  };
+  media: CondensedMedia;
   groupId: number;
   setChatIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
   setShowReasonModal: React.Dispatch<React.SetStateAction<boolean>>;
@@ -33,6 +25,7 @@ interface Props {
 const CardMenu = ({ media, groupId, setChatIsOpen, setShowReasonModal, setShowDeleteModal }: Props) => {
   const [state, setState] = React.useState(false);
   const user = useUserStore(state => state.user);
+  const queryClient = useQueryClient();
 
   const chatToggle = () => {
     if (!user?.is_subscribed) return toast.warning("Get Premium to access this feature!", { theme: "colored" });
@@ -46,6 +39,12 @@ const CardMenu = ({ media, groupId, setChatIsOpen, setShowReasonModal, setShowDe
 
     setState(open);
   };
+
+  const { mutate: toggleWatched } = useMutation({
+    mutationFn: async () => await updateWatched(media.entry_id, groupId, !media.watched),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["groupMedia", { id: groupId }, { type: media.media_type }] }),
+    onError: () => toast.error("There was an error, please try again!", { theme: "colored" }),
+  });
 
   const list = (
     <Box
@@ -98,7 +97,7 @@ const CardMenu = ({ media, groupId, setChatIsOpen, setShowReasonModal, setShowDe
         </ListItem>
 
         <ListItem disablePadding>
-          <ListItemButton>
+          <ListItemButton onClick={() => toggleWatched()}>
             <ListItemIcon>{!media.watched ? <VisibilityIcon /> : <VisibilityOffIcon />}</ListItemIcon>
             <ListItemText primary={!media.watched ? "Mark as Watched" : "Mark as Not Watched"} />
           </ListItemButton>

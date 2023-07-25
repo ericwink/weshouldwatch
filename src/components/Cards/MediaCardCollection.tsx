@@ -11,9 +11,8 @@ import ReasonModal from "../GroupControl/AddMedia/ReasonModal";
 import ConfirmDelete from "../ConfirmDelete";
 import { toast } from "react-toastify";
 import { CondensedMedia } from "@/src/lib/interface";
-import { editReason } from "@/src/lib/serverActions";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { removeMediaFromGroup } from "@/src/lib/supabaseClientHelper";
+import { removeMediaFromGroup, editReason } from "@/src/lib/supabaseClientHelper";
 
 interface Props {
   media: CondensedMedia;
@@ -32,10 +31,10 @@ const MediaCardCollection = ({ media, groupId }: Props) => {
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ["groupMedia", { id: groupId }, { type: media.media_type }] }),
     onError: () => toast.error("There was an error, please try again!", { theme: "colored" }),
   });
+
   const { mutate: updateReason } = useMutation({
-    mutationFn: async () => await editReason(newReason, media.entry_id, groupId),
+    mutationFn: async () => await editReason(newReason, media.entry_id),
     onSuccess: () => {
-      console.log(`groupMedia, ${groupId} ${media.media_type}`);
       queryClient.invalidateQueries({ queryKey: ["groupMedia", { id: groupId }, { type: media.media_type }] });
       setShowReasonModal(false);
       setNewReason("");
