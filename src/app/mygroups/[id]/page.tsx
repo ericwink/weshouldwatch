@@ -1,3 +1,6 @@
+// tell nextJS not to cache fetch request on this page
+export const revalidate = 0;
+
 import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
 import { Database } from "@/src/lib/database.types";
 import { cookies } from "next/headers";
@@ -5,6 +8,7 @@ import { redirect } from "next/navigation";
 
 import TabDisplay from "@/src/components/TabDisplay";
 import CardGridFilter from "@/src/components/Cards/CardGridFilter";
+import DeleteGroup from "@/src/components/GroupControl/DeleteGroup";
 
 import { reorganizeGroupMedia } from "@/src/lib/reorganizeGroupMedia";
 import { CondensedMedia } from "@/src/lib/interface";
@@ -70,8 +74,7 @@ const groupPageById = async ({ params: { id } }: Props) => {
 
   return (
     <main>
-      <TabDisplay tabNames={["Group Info", "Movies", "TV Shows"]}>
-        <h1>This is where the group info will be</h1>
+      <TabDisplay tabNames={["Movies", "TV Shows", "Group Info"]}>
         <CardGridFilter
           mediaData={sortedData.movie}
           groupId={parseInt(id)}
@@ -82,6 +85,7 @@ const groupPageById = async ({ params: { id } }: Props) => {
           groupId={parseInt(id)}
           mediaType="tv"
         />
+        <h1>More data here soon...</h1>
       </TabDisplay>
     </main>
   );

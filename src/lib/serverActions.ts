@@ -56,11 +56,14 @@ export async function inviteToGroup(group_id: number, email: string) {
   return { error: false, message: "Invitation Sent!" };
 }
 
-// haven't done anything wiht this one yet
 export async function deleteGroup(id: number) {
   const { data, error } = await supabase.from("group").delete().eq("id", id);
+  if (error) {
+    console.log(error);
+    return { error: true, message: "An error occurred. Please try again." };
+  }
   revalidatePath("/mygroups");
-  if (error) console.log({ error });
+  return { error: false, message: "Group Deleted!" };
 }
 
 export async function addMedia(mediaPayload: MediaPayload) {

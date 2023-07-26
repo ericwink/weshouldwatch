@@ -5,14 +5,19 @@ import Grid from "@mui/material/Unstable_Grid2"; // Grid version 2
 import GroupIcon from "@mui/icons-material/Group";
 import MovieIcon from "@mui/icons-material/Movie";
 import Link from "next/link";
+import DeleteGroup from "./DeleteGroup";
+import { useUserStore } from "@/src/lib/store";
 
 interface Props {
   created_at: string | null;
   group_name: string | null;
   id: number;
+  created_by: string;
 }
 
-const GroupCard = ({ group_name, id }: Props) => {
+const GroupCard = ({ group_name, id, created_by }: Props) => {
+  const user = useUserStore(state => state.user);
+
   return (
     <Grid>
       <Paper
@@ -42,6 +47,12 @@ const GroupCard = ({ group_name, id }: Props) => {
             >
               <Button>View Details</Button>
             </Link>
+            {user?.id === created_by && (
+              <DeleteGroup
+                group_name={group_name}
+                id={id}
+              />
+            )}
           </Box>
         </Box>
       </Paper>
