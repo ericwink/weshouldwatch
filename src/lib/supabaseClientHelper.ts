@@ -95,30 +95,3 @@ export async function removeMediaFromGroup(rowId: number, groupId: number) {
   if (error) throw new Error(error.message);
   return "Media removed successfully!";
 }
-
-export async function editReason(newReason: string, rowId: number) {
-  //get current session from jwt
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-  if (!user) throw new Error("Please sign in and try again");
-
-  const { data, error } = await supabase.from("group_media").update({ added_reason: newReason }).eq("id", rowId).select();
-
-  if (error) throw new Error(error.message);
-  return "Reason updated successfully!";
-}
-
-export async function updateWatched(rowId: number, groupId: number, watched: boolean) {
-  //get current session from jwt
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-  if (!user) throw new Error("Please sign in and try again");
-
-  const { data, error } = await supabase.from("group_media").update({ watched: watched }).eq("id", rowId).select();
-
-  if (error) throw new Error(error.message);
-
-  return "Media updated successfully!";
-}
