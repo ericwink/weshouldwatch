@@ -47,6 +47,15 @@ export async function createGroup(groupName: string) {
   return { error: false, message: "Group created successfully" };
 }
 
+export async function inviteToGroup(group_id: number, email: string) {
+  const { data, error } = await supabase.from("invite_to_group").insert([{ group_id: group_id, email: email }]);
+  if (error) {
+    console.log(error);
+    return { error: true, message: "An error occurred. Please try again." };
+  }
+  return { error: false, message: "Invitation Sent!" };
+}
+
 // haven't done anything wiht this one yet
 export async function deleteGroup(id: number) {
   const { data, error } = await supabase.from("group").delete().eq("id", id);
@@ -73,15 +82,6 @@ export async function addMediaToGroup(mediaPayload: MediaPayload, groupId: numbe
   }
   revalidatePath(`/media/${mediaPayload.tmdb_id}?media_type=${mediaPayload.media_type}`);
   return { error: false, message: "Successfully added to group!" };
-}
-
-export async function inviteToGroup(group_id: number, email: string) {
-  const { data, error } = await supabase.from("invite_to_group").insert([{ group_id: group_id, email: email }]);
-  if (error) {
-    console.log(error);
-    return { error: true, message: "An error occurred. Please try again." };
-  }
-  return { error: false, message: "Invitation Sent!" };
 }
 
 export async function acceptInvite(group_id: number) {
