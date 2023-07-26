@@ -22,6 +22,31 @@ export async function addGroup(name: string) {
   return { error: false, message: "succes!" };
 }
 
+// create a group, here rather than API becuase revalidatePath doesn't work there for some reason
+export async function createGroup(groupName: string) {
+  //check that user exists
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (!user) return { error: true, message: "You are not authorized to make this request" };
+
+  //pull list of groups created
+  let { data: groups, error: groupsError } = await supabase.from("group").select("*").eq("created_by", user.id);
+  if (groupsError) return { error: true, message: "There was an error please try again" };
+
+  //pull user subscription status
+  let { data: userData, error: usersError } = await supabase.from("users").select("is_subscribed").single();
+  if (usersError) return { error: true, message: "There was an error please try again" };
+
+  if (!userData?.is_subscribed && groups!.length >= 1) return { error: true, message: "You must be a Premium member to make multiple groups" };
+
+  const { data, error } = await supabase.from("group").insert([{ group_name: groupName }]);
+  if (error) return { error: true, message: "There was an error please try again" };
+
+  revalidatePath("/mygroups");
+  return { error: false, message: "Group created successfully" };
+}
+
 // haven't done anything wiht this one yet
 export async function deleteGroup(id: number) {
   const { data, error } = await supabase.from("group").delete().eq("id", id);
