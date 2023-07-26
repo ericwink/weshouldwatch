@@ -12,7 +12,8 @@ import ConfirmDelete from "../ConfirmDelete";
 import { toast } from "react-toastify";
 import { CondensedMedia } from "@/src/lib/interface";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { removeMediaFromGroup, editReason } from "@/src/lib/supabaseClientHelper";
+import { removeMediaFromGroup } from "@/src/lib/supabaseClientHelper";
+import axios from "axios";
 
 interface Props {
   media: CondensedMedia;
@@ -33,7 +34,7 @@ const MediaCardCollection = ({ media, groupId }: Props) => {
   });
 
   const { mutate: updateReason } = useMutation({
-    mutationFn: async () => await editReason(newReason, media.entry_id),
+    mutationFn: async () => await axios.post("/api/editGroupMedia", { columnToUpdate: "added_reason", newValue: newReason, rowId: media.entry_id }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["groupMedia", { id: groupId }, { type: media.media_type }] });
       setShowReasonModal(false);

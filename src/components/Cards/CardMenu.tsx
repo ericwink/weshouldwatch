@@ -10,9 +10,9 @@ import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import { toast } from "react-toastify";
-import { updateWatched } from "@/src/lib/supabaseClientHelper";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { CondensedMedia } from "@/src/lib/interface";
+import axios from "axios";
 
 interface Props {
   media: CondensedMedia;
@@ -41,7 +41,7 @@ const CardMenu = ({ media, groupId, setChatIsOpen, setShowReasonModal, setShowDe
   };
 
   const { mutate: toggleWatched } = useMutation({
-    mutationFn: async () => await updateWatched(media.entry_id, groupId, !media.watched),
+    mutationFn: async () => await axios.post("/api/editGroupMedia", { columnToUpdate: "watched", newValue: !media.watched, rowId: media.entry_id }),
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ["groupMedia", { id: groupId }, { type: media.media_type }] }),
     onError: () => toast.error("There was an error, please try again!", { theme: "colored" }),
   });
@@ -99,7 +99,7 @@ const CardMenu = ({ media, groupId, setChatIsOpen, setShowReasonModal, setShowDe
         <ListItem disablePadding>
           <ListItemButton onClick={() => toggleWatched()}>
             <ListItemIcon>{!media.watched ? <VisibilityIcon /> : <VisibilityOffIcon />}</ListItemIcon>
-            <ListItemText primary={!media.watched ? "Mark as Watched" : "Mark as Not Watched"} />
+            <ListItemText primary={!media.watched ? "Mark as Watched by Group" : "Mark as Not Watched by Group"} />
           </ListItemButton>
         </ListItem>
 
