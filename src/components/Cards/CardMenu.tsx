@@ -41,7 +41,7 @@ const CardMenu = ({ media, groupId, setChatIsOpen, setShowReasonModal, setShowDe
   };
 
   const { mutate: toggleWatched } = useMutation({
-    mutationFn: async () => await axios.post("/api/editGroupMedia", { columnToUpdate: "watched", newValue: !media.watched, rowId: media.entry_id }),
+    mutationFn: async () => await axios.post("/api/group/editMedia", { columnToUpdate: "watched", newValue: !media.watched, rowId: media.entry_id }),
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ["groupMedia", { id: groupId }, { type: media.media_type }] }),
     onError: () => toast.error("There was an error, please try again!", { theme: "colored" }),
   });

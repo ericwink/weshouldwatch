@@ -34,7 +34,7 @@ const MediaCardCollection = ({ media, groupId }: Props) => {
   });
 
   const { mutate: updateReason } = useMutation({
-    mutationFn: async () => await axios.post("/api/editGroupMedia", { columnToUpdate: "added_reason", newValue: newReason, rowId: media.entry_id }),
+    mutationFn: async () => await axios.post("/api/group/editMedia", { columnToUpdate: "added_reason", newValue: newReason, rowId: media.entry_id }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["groupMedia", { id: groupId }, { type: media.media_type }] });
       setShowReasonModal(false);
