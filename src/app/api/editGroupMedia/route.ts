@@ -12,22 +12,27 @@ export async function POST(req: Request) {
   const supabase = createRouteHandlerClient<Database>({ cookies });
   const { columnToUpdate, newValue, rowId }: Body = await req.json();
 
+  //check that user exists
   const {
     data: { user },
   } = await supabase.auth.getUser();
   if (!user) return new Response("You are not authorized to make this request", { status: 401 });
 
-  //check user auth requirement
-  let { data: group_media, error: fetchError } = await supabase.from("group_media").select("*").eq("id", rowId).single();
-  if (group_media?.added_by !== user.id && columnToUpdate === "added_reason") return new Response("You are not authorized to make this request", { status: 401 });
+  try {
+    let { data: group_media, error: fetchError } = await supabase.from("group_media").select("*").eq("id", rowId).single();
+    if (fetchError) throw new Error(fetchError.message);
 
-  const { data, error } = await supabase
-    .from("group_media")
-    .update({ [columnToUpdate]: newValue })
-    .eq("id", rowId)
-    .select();
+    //check user auth requirement
+    if (columnToUpdate === "added_reason" && group_media?.added_by !== user.id) return new Response("You are not authorized to make this request", { status: 401 });
 
-  if (error) return new Response(error.message, { status: 500 });
-
-  return new Response("Update Successful", { status: 200 });
+    const { data, error } = await supabase
+      .from("group_media")
+      .update({ [columnToUpdate]: newValue })
+      .eq("id", rowId)
+      .select();
+    if (error) throw new Error(error.message);
+    return new Response("Update Successful", { status: 200 });
+  } catch (error: any) {
+    return new Response(error.message, { status: 500 });
+  }
 }
