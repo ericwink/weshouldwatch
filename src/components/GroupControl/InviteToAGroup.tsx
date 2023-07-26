@@ -19,19 +19,11 @@ export default function InviteToAGroup({ groups }: Props) {
   const [error, setError] = useState({ error: false, message: "" });
   const [email, setEmail] = useState("");
 
-  if (!user) return <h1>Pending user data</h1>;
-  if (!groups)
-    return (
-      <Box sx={{ minWidth: 120, display: "flex", flexDirection: "column", gap: 2 }}>
-        <Typography textAlign="center">{`You haven't created any groups yet!`}</Typography>
-      </Box>
-    );
-
   const emailRegex = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
   const isDisabled = group === null || email === "";
 
-  const menuItems = groups.map(group => {
-    if (group.created_by === user.id) return <MenuItem value={group.id}>{group.group_name}</MenuItem>;
+  const menuItems = groups?.map(group => {
+    if (group.created_by === user?.id) return <MenuItem value={group.id}>{group.group_name}</MenuItem>;
   });
 
   const handleChange = (event: SelectChangeEvent) => {
@@ -64,6 +56,14 @@ export default function InviteToAGroup({ groups }: Props) {
       setError({ error: true, message: "Please set valid email and group selection" });
     }
   };
+
+  if (!user) return <h1>Pending user data</h1>;
+  if (!groups)
+    return (
+      <Box sx={{ minWidth: 120, display: "flex", flexDirection: "column", gap: 2 }}>
+        <Typography textAlign="center">{`You haven't created any groups yet!`}</Typography>
+      </Box>
+    );
 
   return (
     <form
