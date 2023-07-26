@@ -20,7 +20,12 @@ export default function InviteToAGroup({ groups }: Props) {
   const [email, setEmail] = useState("");
 
   if (!user) return <h1>Pending user data</h1>;
-  if (!groups) return <h1>Create a group first!</h1>;
+  if (!groups)
+    return (
+      <Box sx={{ minWidth: 120, display: "flex", flexDirection: "column", gap: 2 }}>
+        <Typography textAlign="center">{`You haven't created any groups yet!`}</Typography>
+      </Box>
+    );
 
   const emailRegex = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
   const isDisabled = group === null || email === "";
@@ -59,13 +64,6 @@ export default function InviteToAGroup({ groups }: Props) {
       setError({ error: true, message: "Please set valid email and group selection" });
     }
   };
-
-  if (!groups)
-    return (
-      <Box sx={{ minWidth: 120, display: "flex", flexDirection: "column", gap: 2 }}>
-        <Typography textAlign="center">{`You haven't created any groups yet!`}</Typography>
-      </Box>
-    );
 
   return (
     <form
