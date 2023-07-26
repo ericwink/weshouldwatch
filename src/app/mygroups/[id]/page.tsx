@@ -8,7 +8,6 @@ import { redirect } from "next/navigation";
 
 import TabDisplay from "@/src/components/TabDisplay";
 import CardGridFilter from "@/src/components/Cards/CardGridFilter";
-import DeleteGroup from "@/src/components/GroupControl/DeleteGroup";
 
 import { reorganizeGroupMedia } from "@/src/lib/reorganizeGroupMedia";
 import { CondensedMedia } from "@/src/lib/interface";

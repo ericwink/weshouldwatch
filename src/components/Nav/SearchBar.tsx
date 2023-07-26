@@ -15,9 +15,7 @@ const Search = styled("div")(({ theme }) => ({
   },
   marginLeft: 0,
   width: "100%",
-  display: "flex",
-  justifyContent: "space-between",
-  marginRight: `${theme.spacing(1)}`,
+  marginRight: `${theme.spacing(2)}`,
 }));
 
 const StyledInputBase = styled(InputBase)(({ theme }) => ({
@@ -27,6 +25,8 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
     // vertical padding + font size from searchIcon
     paddingLeft: `calc(1em)`,
     width: "100%",
+    position: "relative",
+    zIndex: 1,
   },
 }));
 
@@ -35,25 +35,31 @@ const SearchBar = () => {
   const router = useRouter();
 
   return (
-    <>
-      <Search>
+    <Search>
+      <form
+        action=""
+        onSubmit={e => {
+          e.preventDefault();
+          router.push(`/search/${searchTerm}`);
+        }}
+      >
         <StyledInputBase
           placeholder="We Should Watch..."
           inputProps={{ "aria-label": "search" }}
           value={searchTerm}
           onChange={e => setSearchTerm(e.target.value)}
+          fullWidth
         />
         <IconButton
           color="inherit"
           disabled={!searchTerm}
-          onClick={() => {
-            router.push(`/search/${searchTerm}`);
-          }}
+          sx={{ position: "absolute", right: 0, zIndex: 9 }}
+          type="submit"
         >
           <SearchIcon />
         </IconButton>
-      </Search>
-    </>
+      </form>
+    </Search>
   );
 };
 
