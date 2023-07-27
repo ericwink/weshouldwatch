@@ -81,7 +81,7 @@ export default function TabDisplay({ children, tabNames }: Props) {
           {mappedTabNames}
         </Tabs>
       </Box>
-      {mappedChildren}
+      <Box sx={{ width: "100%" }}>{mappedChildren}</Box>
     </Box>
   );
 }

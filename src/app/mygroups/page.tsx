@@ -10,6 +10,8 @@ import CardGrid from "@/src/components/Cards/CardGrid";
 import { Database } from "@/src/lib/database.types";
 import TabDisplay from "@/src/components/TabDisplay";
 import InviteToAGroup from "@/src/components/GroupControl/InviteToAGroup";
+import { Container } from "@mui/material";
+import Grid from "@mui/material/Unstable_Grid2"; // Grid version 2
 
 const groupsPage = async () => {
   const supabase = createServerComponentClient<Database>({ cookies });
@@ -22,24 +24,30 @@ const groupsPage = async () => {
   const usersGroups = () => {
     if (groups?.length! < 1) return <div>No Groups Yet!</div>;
     return (
-      <CardGrid>
+      <Grid
+        container
+        spacing={1}
+        justifyContent="center"
+      >
         {groups?.map(group => (
           <GroupCard
             key={group.id}
             {...group}
           />
         ))}
-      </CardGrid>
+      </Grid>
     );
   };
 
   return (
     <main>
-      <TabDisplay tabNames={["My Groups", "Create A Group", "Invite To A Group"]}>
-        {usersGroups()}
-        <MakeGroup />
-        <InviteToAGroup groups={groups} />
-      </TabDisplay>
+      <Container maxWidth="md">
+        <TabDisplay tabNames={["My Groups", "Create A Group", "Invite To A Group"]}>
+          {usersGroups()}
+          <MakeGroup />
+          <InviteToAGroup groups={groups} />
+        </TabDisplay>
+      </Container>
     </main>
   );
 };

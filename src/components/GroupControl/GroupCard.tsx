@@ -1,9 +1,10 @@
 "use client";
 
-import { Paper, Box, Typography, Button } from "@mui/material";
+import { Paper, Typography, Button, Box } from "@mui/material";
 import Grid from "@mui/material/Unstable_Grid2"; // Grid version 2
 import GroupIcon from "@mui/icons-material/Group";
 import MovieIcon from "@mui/icons-material/Movie";
+import TvIcon from "@mui/icons-material/Tv";
 import Link from "next/link";
 import DeleteGroup from "./DeleteGroup";
 import { useUserStore } from "@/src/lib/store";
@@ -19,7 +20,7 @@ const GroupCard = ({ group_name, id, created_by }: Props) => {
   const user = useUserStore(state => state.user);
 
   return (
-    <Grid>
+    <Grid xs={12}>
       <Paper
         elevation={3}
         sx={{ p: 1, minWidth: "160px" }}
@@ -31,21 +32,41 @@ const GroupCard = ({ group_name, id, created_by }: Props) => {
         >
           {group_name}
         </Typography>
-        <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
-          <Box sx={{ display: "flex", gap: 2 }}>
+        <Grid container>
+          <Grid
+            sm={4}
+            gap={2}
+            container
+          >
             <GroupIcon />
-            <Typography># Members</Typography>
-          </Box>
-          <Box sx={{ display: "flex", gap: 2 }}>
+            <Typography>#</Typography>
+          </Grid>
+          <Grid
+            sm={4}
+            gap={2}
+            container
+          >
             <MovieIcon />
-            <Typography># Media</Typography>
-          </Box>
-          <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+            <Typography>#</Typography>
+          </Grid>
+          <Grid
+            sm={4}
+            gap={2}
+            container
+          >
+            <TvIcon />
+            <Typography>#</Typography>
+          </Grid>
+          <Grid
+            sm={12}
+            container
+            justifyContent="space-between"
+          >
             <Link
               className="flex"
               href={`/mygroups/${id}`}
             >
-              <Button>View Details</Button>
+              <Button variant="contained">View Details</Button>
             </Link>
             {user?.id === created_by && (
               <DeleteGroup
@@ -53,8 +74,8 @@ const GroupCard = ({ group_name, id, created_by }: Props) => {
                 id={id}
               />
             )}
-          </Box>
-        </Box>
+          </Grid>
+        </Grid>
       </Paper>
     </Grid>
   );
