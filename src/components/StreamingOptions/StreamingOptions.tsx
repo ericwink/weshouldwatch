@@ -1,7 +1,8 @@
 import getPoster from "@/src/lib/getPoster";
 import { Props, AvailabilityData, StreamOptions } from "./interfaces";
-import styles from "./streamingOptions.module.css";
 import Image from "next/image";
+import { Paper, Typography, Divider, Box } from "@mui/material";
+import Grid from "@mui/material/Unstable_Grid2"; // Grid version 2
 
 const fetchStreamingOptions = async (mediaType: string, id: string) => {
   const tmdbKey = process.env.MOVIE_DB_API;
@@ -32,46 +33,63 @@ const reorderData = (obj: AvailabilityData) => {
 const StreamingOptions = async ({ media_type, id, title }: Props) => {
   const streamingOptions = await fetchStreamingOptions(media_type, id);
 
-  if (!streamingOptions) return;
+  if (!streamingOptions) return <Typography>Not available for online streaming</Typography>;
 
   const streamInfo = (provider: string) => {
     const providerData = streamingOptions[provider];
     return (
-      <div
-        key={provider}
-        className={styles.container}
-      >
-        <Image
-          src={getPoster(providerData.logo_path, "200")}
-          alt={`logo for ${provider}`}
-          height={200}
-          width={200}
-          className="w-10"
-        />
-        <p>{provider}</p>
-        <div className={styles.options}>
-          {providerData.watchOption.map(option => {
-            return buyPurchaseRent(option);
-          })}
-        </div>
-      </div>
+      <Paper>
+        <Box sx={{ display: "grid", alignItems: "center", gridTemplateColumns: "1fr 4fr 3fr" }}>
+          <Image
+            src={getPoster(providerData.logo_path, "200")}
+            alt={`logo for ${provider}`}
+            height={200}
+            width={200}
+            className="w-10"
+          />
+          <Box>
+            <Typography>{provider}</Typography>
+          </Box>
+          <Grid
+            container
+            gap={1}
+            justifyContent="right"
+            mr={0.5}
+          >
+            {providerData.watchOption.map((option, index) => {
+              return (
+                <>
+                  {buyPurchaseRent(option)}
+                  {index < providerData.watchOption.length - 1 ? (
+                    <Divider
+                      orientation="vertical"
+                      flexItem
+                    />
+                  ) : null}
+                </>
+              );
+            })}
+          </Grid>
+        </Box>
+      </Paper>
     );
   };
 
   const buyPurchaseRent = (option: string) => {
     const map: { [key: string]: string } = { buy: "Buy", rent: "Rent", flatrate: "Streaming" };
-    if (map[option]) return <p>{map[option]}</p>;
-    return <p>{option}</p>;
+    if (map[option]) return <Typography>{map[option]}</Typography>;
+    return <Typography>{option}</Typography>;
   };
 
   return (
-    <>
-      <h2 className="text-lg">Watch {title}:</h2>
-
-      {Object.keys(streamingOptions).map(provider => {
-        return streamInfo(provider);
-      })}
-    </>
+    <div>
+      <Typography variant="h5">Watch {title}:</Typography>
+      <Box sx={{ display: "flex", flexDirection: "column", gap: 0.5 }}>
+        {Object.keys(streamingOptions).map(provider => {
+          return streamInfo(provider);
+        })}
+      </Box>
+    </div>
   );
 };
 

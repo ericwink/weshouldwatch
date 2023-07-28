@@ -20,7 +20,7 @@ const mediaPage = async ({ params, searchParams }: Props) => {
 
   const createTabTitles = () => {
     const tabTitles = [];
-    if (mediaData) tabTitles.push("Media Data");
+    if (mediaData) tabTitles.push("Summary");
     if (cast.length > 0) tabTitles.push("Cast");
     if (crew.length > 0) tabTitles.push("Crew");
     if (recommmendations.length > 0) tabTitles.push("Recommended");
