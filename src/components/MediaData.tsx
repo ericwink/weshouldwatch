@@ -9,6 +9,7 @@ import FetchVideo from "@/src/components/FetchVideo";
 import noBackground from "../../public/We Should Watch.png";
 import type { MediaData } from "../lib/interface";
 import { Suspense } from "react";
+import Typography from "@mui/material/Typography";
 
 interface Props {
   media_id: string;
@@ -72,7 +73,7 @@ const MediaData = ({ mediaData, media_id, media_type }: Props) => {
             runTime={runTime}
           />
 
-          <p>{mediaData.overview}</p>
+          <Typography>{mediaData.overview}</Typography>
 
           <Suspense fallback={<p>Loading Video...</p>}>
             {/* @ts-expect-error Server Component */}
