@@ -1,46 +1,75 @@
 "use client";
 
-import { Paper, Box, Typography, Button } from "@mui/material";
+import { Paper, Typography, Button, Box } from "@mui/material";
 import Grid from "@mui/material/Unstable_Grid2"; // Grid version 2
 import GroupIcon from "@mui/icons-material/Group";
 import MovieIcon from "@mui/icons-material/Movie";
+import TvIcon from "@mui/icons-material/Tv";
 import Link from "next/link";
 import DeleteGroup from "./DeleteGroup";
 import { useUserStore } from "@/src/lib/store";
 
 interface Props {
-  created_at: string | null;
-  group_name: string | null;
   id: number;
+  group_name: string;
   created_by: string;
+  group_media: { movie: number; tv: number };
+  members: number;
 }
 
-const GroupCard = ({ group_name, id, created_by }: Props) => {
+const GroupCard = ({ group_name, id, created_by, group_media, members }: Props) => {
   const user = useUserStore(state => state.user);
 
   return (
-    <Grid>
+    <Grid xs={12}>
       <Paper
         elevation={3}
         sx={{ p: 1, minWidth: "160px" }}
       >
         <Typography
-          gutterBottom
           variant="h5"
           component="div"
+          mb={2}
         >
           {group_name}
         </Typography>
-        <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
-          <Box sx={{ display: "flex", gap: 2 }}>
+        <Grid container>
+          <Grid
+            xs={4}
+            gap={2}
+            container
+            justifyContent="center"
+          >
             <GroupIcon />
-            <Typography># Members</Typography>
-          </Box>
-          <Box sx={{ display: "flex", gap: 2 }}>
+            <Typography>{members}</Typography>
+            <Typography sx={{ display: { xs: "none", sm: "block" } }}>Members</Typography>
+          </Grid>
+          <Grid
+            xs={4}
+            gap={2}
+            container
+            justifyContent="center"
+          >
             <MovieIcon />
-            <Typography># Media</Typography>
-          </Box>
-          <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+            <Typography>{group_media.movie}</Typography>
+            <Typography sx={{ display: { xs: "none", sm: "block" } }}>Movies</Typography>
+          </Grid>
+          <Grid
+            xs={4}
+            gap={2}
+            container
+            justifyContent="center"
+          >
+            <TvIcon />
+            <Typography>{group_media.tv}</Typography>
+            <Typography sx={{ display: { xs: "none", sm: "block" } }}>TV Shows</Typography>
+          </Grid>
+          <Grid
+            xs={12}
+            container
+            justifyContent="space-between"
+            mt={1}
+          >
             <Link
               className="flex"
               href={`/mygroups/${id}`}
@@ -53,8 +82,8 @@ const GroupCard = ({ group_name, id, created_by }: Props) => {
                 id={id}
               />
             )}
-          </Box>
-        </Box>
+          </Grid>
+        </Grid>
       </Paper>
     </Grid>
   );
