@@ -10,13 +10,14 @@ import DeleteGroup from "./DeleteGroup";
 import { useUserStore } from "@/src/lib/store";
 
 interface Props {
-  created_at: string | null;
-  group_name: string | null;
   id: number;
+  group_name: string;
   created_by: string;
+  group_media: { movie: number; tv: number };
+  members: number;
 }
 
-const GroupCard = ({ group_name, id, created_by }: Props) => {
+const GroupCard = ({ group_name, id, created_by, group_media, members }: Props) => {
   const user = useUserStore(state => state.user);
 
   return (
@@ -26,47 +27,54 @@ const GroupCard = ({ group_name, id, created_by }: Props) => {
         sx={{ p: 1, minWidth: "160px" }}
       >
         <Typography
-          gutterBottom
           variant="h5"
           component="div"
+          mb={2}
         >
           {group_name}
         </Typography>
         <Grid container>
           <Grid
-            sm={4}
+            xs={4}
             gap={2}
             container
+            justifyContent="center"
           >
             <GroupIcon />
-            <Typography>#</Typography>
+            <Typography>{members}</Typography>
+            <Typography sx={{ display: { xs: "none", sm: "block" } }}>Members</Typography>
           </Grid>
           <Grid
-            sm={4}
+            xs={4}
             gap={2}
             container
+            justifyContent="center"
           >
             <MovieIcon />
-            <Typography>#</Typography>
+            <Typography>{group_media.movie}</Typography>
+            <Typography sx={{ display: { xs: "none", sm: "block" } }}>Movies</Typography>
           </Grid>
           <Grid
-            sm={4}
+            xs={4}
             gap={2}
             container
+            justifyContent="center"
           >
             <TvIcon />
-            <Typography>#</Typography>
+            <Typography>{group_media.tv}</Typography>
+            <Typography sx={{ display: { xs: "none", sm: "block" } }}>TV Shows</Typography>
           </Grid>
           <Grid
-            sm={12}
+            xs={12}
             container
             justifyContent="space-between"
+            mt={1}
           >
             <Link
               className="flex"
               href={`/mygroups/${id}`}
             >
-              <Button variant="contained">View Details</Button>
+              <Button>View Details</Button>
             </Link>
             {user?.id === created_by && (
               <DeleteGroup

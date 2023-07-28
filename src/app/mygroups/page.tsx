@@ -6,7 +6,6 @@ import { redirect } from "next/navigation";
 import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
 import MakeGroup from "../../components/GroupControl/MakeGroup";
 import GroupCard from "@/src/components/GroupControl/GroupCard";
-import CardGrid from "@/src/components/Cards/CardGrid";
 import { Database } from "@/src/lib/database.types";
 import TabDisplay from "@/src/components/TabDisplay";
 import InviteToAGroup from "@/src/components/GroupControl/InviteToAGroup";
@@ -18,8 +17,21 @@ const groupsPage = async () => {
   const { data: session } = await supabase.auth.getSession();
   if (!session) redirect("/login");
 
-  let { data: groups, error } = await supabase.from("group").select("*");
+  let { data: groups, error } = await supabase.from("group").select("*, group_media(media_id, media(media_type)), user_group_join(group_id, user_id)");
   if (error) console.log(error);
+
+  const groupsSummary = groups?.map(group => {
+    const groupSummary = {
+      id: group.id,
+      group_name: group.group_name,
+      created_by: group.created_by,
+      group_media: { movie: 0, tv: 0 },
+      members: group.user_group_join.length,
+    };
+
+    group.group_media.forEach(media => (media.media?.media_type === "tv" ? groupSummary.group_media.tv++ : groupSummary.group_media.movie++));
+    return groupSummary;
+  });
 
   const usersGroups = () => {
     if (groups?.length! < 1) return <div>No Groups Yet!</div>;
@@ -29,7 +41,7 @@ const groupsPage = async () => {
         spacing={1}
         justifyContent="center"
       >
-        {groups?.map(group => (
+        {groupsSummary?.map(group => (
           <GroupCard
             key={group.id}
             {...group}
