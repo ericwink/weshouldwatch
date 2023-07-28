@@ -18,6 +18,33 @@ const mediaPage = async ({ params, searchParams }: Props) => {
   const { results: recommmendations } = await fetchMediaData(media_type, media_id, "recommendations");
   const { cast, crew } = await fetchMediaData(media_type, media_id, "credits");
 
+  interface CrewMember {
+    adult: boolean;
+    gender: number;
+    id: number;
+    known_for_department: string;
+    name: string;
+    original_name: string;
+    popularity: number;
+    profile_path: string;
+    credit_id: string;
+    department: string;
+    jobs: string[];
+  }
+
+  const dedupeCrewAndJobs = (crew: any[]) => {
+    const dedupedCrew: { [key: number]: CrewMember } = {};
+
+    for (const person of crew) {
+      if (dedupedCrew[person.id]) {
+        dedupedCrew[person.id].jobs.push(person.job);
+      } else {
+        dedupedCrew[person.id] = { ...person, jobs: [person.job] };
+      }
+    }
+    return Object.values(dedupedCrew);
+  };
+
   const createTabTitles = () => {
     const tabTitles = [];
     if (mediaData) tabTitles.push("Summary");
@@ -44,7 +71,7 @@ const mediaPage = async ({ params, searchParams }: Props) => {
           ))}
         </CardGrid>
         <CardGrid>
-          {crew.map((person: any) => (
+          {dedupeCrewAndJobs(crew).map((person: any) => (
             <PeopleCard
               person={person}
               key={person.id}
