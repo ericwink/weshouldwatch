@@ -8,6 +8,7 @@ import { redirect } from "next/navigation";
 
 import TabDisplay from "@/src/components/TabDisplay";
 import CardGridFilter from "@/src/components/Cards/CardGridFilter";
+import GroupDetails from "@/src/components/GroupControl/AddMedia/GroupDetails";
 
 import { reorganizeGroupMedia } from "@/src/lib/reorganizeGroupMedia";
 import { CondensedMedia } from "@/src/lib/interface";
@@ -15,6 +16,14 @@ import { CondensedMedia } from "@/src/lib/interface";
 interface Props {
   params: {
     id: string;
+  };
+}
+
+export interface MemberData {
+  user_id: string;
+  user_public_profile: {
+    user_name: string;
+    profile_pic: string;
   };
 }
 
@@ -64,6 +73,9 @@ const groupPageById = async ({ params: { id } }: Props) => {
     return group_media as GroupMedia[];
   };
 
+  let { data: members, error } = await supabase.from("user_group_join").select("user_id, user_public_profile(user_name, profile_pic)").eq("group_id", id);
+  // console.log(members);
+
   const data = await fetchMediaCollection(parseInt(id));
   const sortedData = reorganizeGroupMedia(data);
   // console.log(JSON.stringify(sortedData, null, 2));
@@ -84,7 +96,10 @@ const groupPageById = async ({ params: { id } }: Props) => {
           groupId={parseInt(id)}
           mediaType="tv"
         />
-        <h1>More data here soon...</h1>
+        <GroupDetails
+          groupId={parseInt(id)}
+          members={members as MemberData[]}
+        />
       </TabDisplay>
     </main>
   );

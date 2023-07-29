@@ -7,9 +7,7 @@ import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
 import MakeGroup from "../../components/GroupControl/MakeGroup";
 import GroupCard from "@/src/components/GroupControl/GroupCard";
 import { Database } from "@/src/lib/database.types";
-import TabDisplay from "@/src/components/TabDisplay";
-import InviteToAGroup from "@/src/components/GroupControl/InviteToAGroup";
-import { Container, Box, Typography } from "@mui/material";
+import { Container, Typography } from "@mui/material";
 import Grid from "@mui/material/Unstable_Grid2"; // Grid version 2
 
 const groupsPage = async () => {
@@ -66,7 +64,6 @@ const groupsPage = async () => {
         </Typography>
         {usersGroups()}
         <MakeGroup />
-        <InviteToAGroup groups={groups} />
       </Container>
     </main>
   );
