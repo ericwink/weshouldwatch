@@ -9,7 +9,7 @@ import GroupCard from "@/src/components/GroupControl/GroupCard";
 import { Database } from "@/src/lib/database.types";
 import TabDisplay from "@/src/components/TabDisplay";
 import InviteToAGroup from "@/src/components/GroupControl/InviteToAGroup";
-import { Container } from "@mui/material";
+import { Container, Box, Typography } from "@mui/material";
 import Grid from "@mui/material/Unstable_Grid2"; // Grid version 2
 
 const groupsPage = async () => {
@@ -53,10 +53,20 @@ const groupsPage = async () => {
 
   return (
     <main>
-      <Container maxWidth="md">
-        <TabDisplay tabNames={["My Groups", "Create A Group", "Invite To A Group"]}>
-          {usersGroups()}
-          <MakeGroup />
+      <Container
+        maxWidth="md"
+        sx={{ display: "flex", flexDirection: "column", gap: 2, justifyContent: "center", alignItems: "center" }}
+      >
+        <Typography
+          variant="h4"
+          component="h2"
+          m={1}
+        >
+          My Groups
+        </Typography>
+        {usersGroups()}
+        <MakeGroup />
+        <TabDisplay tabNames={["Invite To A Group"]}>
           <InviteToAGroup groups={groups} />
         </TabDisplay>
       </Container>

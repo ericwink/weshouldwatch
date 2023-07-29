@@ -1,12 +1,23 @@
 "use client";
-import { TextField, Button, CircularProgress, Box } from "@mui/material";
+import { TextField, Button, CircularProgress, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from "@mui/material";
 import { useState } from "react";
 import { createGroup } from "../../lib/serverActions";
 import { useMutation } from "@tanstack/react-query";
 import { toast } from "react-toastify";
+import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 
 const MakeGroup = () => {
   const [name, setName] = useState("");
+  const [open, setOpen] = useState(false);
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+    setName("");
+  };
 
   const { mutate: handleCreate, isLoading } = useMutation({
     mutationFn: async () => {
@@ -15,7 +26,7 @@ const MakeGroup = () => {
     },
     onSuccess: () => {
       toast.success("Group created successfully!", { theme: "colored" });
-      setName("");
+      handleClose();
     },
     onError: (error: any) => {
       console.log(error);
@@ -24,29 +35,47 @@ const MakeGroup = () => {
   });
 
   return (
-    <form
-      action=""
-      onSubmit={e => e.preventDefault()}
-    >
-      <Box
-        display="flex"
-        flexDirection="column"
-        gap={1}
+    <div>
+      <Button
+        onClick={handleClickOpen}
+        sx={{ display: "flex", gap: 1 }}
       >
-        <TextField
-          label="Group name..."
-          value={name}
-          onChange={e => setName(e.target.value)}
-        />
-        <Button
-          disabled={isLoading || !name}
-          onClick={() => handleCreate()}
-          type="submit"
-        >
-          {isLoading ? <CircularProgress /> : "Create Group!"}
-        </Button>
-      </Box>
-    </form>
+        <AddCircleOutlineIcon />
+        Create A Group
+      </Button>
+      <Dialog
+        open={open}
+        onClose={handleClose}
+      >
+        <DialogTitle>Create a New Group</DialogTitle>
+        <DialogContent>
+          <DialogContentText>Enter a name for your group and hit submit!</DialogContentText>
+          <TextField
+            label="Group name..."
+            value={name}
+            onChange={e => setName(e.target.value)}
+            fullWidth
+            sx={{ mt: 1 }}
+          />
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClose}>Cancel</Button>
+          <Button
+            onClick={() => handleCreate()}
+            disabled={isLoading || !name}
+            sx={{ position: "relative" }}
+          >
+            {isLoading && (
+              <CircularProgress
+                size={24}
+                sx={{ position: "absolute", zIndex: 1, top: "50%", left: "50%", marginTop: "-12px", marginLeft: "-12px" }}
+              />
+            )}
+            Submit
+          </Button>
+        </DialogActions>
+      </Dialog>
+    </div>
   );
 };
 

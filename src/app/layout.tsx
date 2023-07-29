@@ -24,7 +24,7 @@ export default function RootLayout({ children }: Props) {
       <body>
         <TanstackProvider>
           <MuiSetup>
-            <ToastContainer />
+            <ToastContainer position="bottom-right" />
             <NavBar />
             {/* {authModal} */}
             {children}
