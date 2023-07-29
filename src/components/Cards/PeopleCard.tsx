@@ -1,10 +1,9 @@
 "use client";
 
 import getPoster from "@/src/lib/getPoster";
-import { Paper, Typography, Box, IconButton } from "@mui/material";
+import { Paper, Typography, Box } from "@mui/material";
 import Grid from "@mui/material/Unstable_Grid2"; // Grid version 2
 import Image from "next/image";
-import InfoIcon from "@mui/icons-material/Info";
 import Link from "next/link";
 
 interface Props {
@@ -12,7 +11,6 @@ interface Props {
     profile_path: string;
     name: string;
     id: number;
-    media_type: string;
   };
 }
 

@@ -10,14 +10,7 @@ interface Props {
   searchParams: { media_type: string };
 }
 
-const mediaPage = async ({ params, searchParams }: Props) => {
-  const { media_type } = searchParams;
-  const { media_id } = params;
-
-  const mediaData = await fetchMediaData(media_type, media_id);
-  const { results: recommmendations } = await fetchMediaData(media_type, media_id, "recommendations");
-  const { cast, crew } = await fetchMediaData(media_type, media_id, "credits");
-
+const dedupeCrewAndJobs = (crew: any[]) => {
   interface CrewMember {
     adult: boolean;
     gender: number;
@@ -32,18 +25,25 @@ const mediaPage = async ({ params, searchParams }: Props) => {
     jobs: string[];
   }
 
-  const dedupeCrewAndJobs = (crew: any[]) => {
-    const dedupedCrew: { [key: number]: CrewMember } = {};
+  const dedupedCrew: { [key: number]: CrewMember } = {};
 
-    for (const person of crew) {
-      if (dedupedCrew[person.id]) {
-        dedupedCrew[person.id].jobs.push(person.job);
-      } else {
-        dedupedCrew[person.id] = { ...person, jobs: [person.job] };
-      }
+  for (const person of crew) {
+    if (dedupedCrew[person.id]) {
+      dedupedCrew[person.id].jobs.push(person.job);
+    } else {
+      dedupedCrew[person.id] = { ...person, jobs: [person.job] };
     }
-    return Object.values(dedupedCrew);
-  };
+  }
+  return Object.values(dedupedCrew);
+};
+
+const mediaPage = async ({ params, searchParams }: Props) => {
+  const { media_type } = searchParams;
+  const { media_id } = params;
+
+  const mediaData = await fetchMediaData(media_type, media_id);
+  const { results: recommmendations } = await fetchMediaData(media_type, media_id, "recommendations");
+  const { cast, crew } = await fetchMediaData(media_type, media_id, "credits");
 
   const createTabTitles = () => {
     const tabTitles = [];
