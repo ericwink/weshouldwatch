@@ -66,9 +66,7 @@ const groupsPage = async () => {
         </Typography>
         {usersGroups()}
         <MakeGroup />
-        <TabDisplay tabNames={["Invite To A Group"]}>
-          <InviteToAGroup groups={groups} />
-        </TabDisplay>
+        <InviteToAGroup groups={groups} />
       </Container>
     </main>
   );

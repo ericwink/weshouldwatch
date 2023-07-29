@@ -71,6 +71,7 @@ export default function InviteToAGroup({ groups }: Props) {
       onSubmit={e => e.preventDefault()}
     >
       <Box sx={{ minWidth: 120, display: "flex", flexDirection: "column", gap: 2 }}>
+        <Typography textAlign="center">Invite to a Group (only here temporarily!)</Typography>
         <FormControl fullWidth>
           <InputLabel id="select-group-label">Group</InputLabel>
           <Select
