@@ -4,6 +4,7 @@ import NavBar from "../components/Nav/NavBar";
 import TanstackProvider from "../context/tanstack";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import ActiveDevModal from "../components/ActiveDevModal";
 
 export const metadata = {
   title: "We Should Watch...",
@@ -28,6 +29,7 @@ export default function RootLayout({ children }: Props) {
             <NavBar />
             {/* {authModal} */}
             {children}
+            <ActiveDevModal />
           </MuiSetup>
         </TanstackProvider>
       </body>
