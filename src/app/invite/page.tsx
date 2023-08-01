@@ -3,6 +3,7 @@ import { cookies } from "next/headers";
 import { Database } from "@/src/lib/database.types";
 import AcceptInvite from "@/src/components/AcceptInvite";
 import { redirect } from "next/navigation";
+import { Typography, Paper, Avatar } from "@mui/material";
 
 interface Props {
   searchParams: { token: string };
@@ -24,7 +25,7 @@ interface Invite {
 }
 
 export default async function invitePage({ searchParams }: Props) {
-  const supabase = createServerComponentClient<Database>({ cookies });
+  const supabase = createServerComponentClient({ cookies });
 
   const {
     data: { session },
@@ -33,18 +34,27 @@ export default async function invitePage({ searchParams }: Props) {
   if (!session) redirect("/login");
 
   const { token } = searchParams;
-  let { data: invitations, error } = await supabase.from("invite_to_group").select("*, user_public_profile ( * )").eq("id", token);
+  let { data, error } = await supabase.from("invite_to_group").select("*, user_public_profile ( * )").eq("id", token).single();
 
-  if (!invitations) return <h1>{`No invitations found for your email address`}</h1>;
+  const invitation: Invite = data;
+
+  if (!invitation) return <h1>{`No invitation found for your email address`}</h1>;
 
   return (
     <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
-      {invitations.map(invitation => (
+      <Paper sx={{ minWidth: "300px", display: "flex", flexDirection: "column", alignItems: "center", gap: 2, p: 2 }}>
+        <Typography>You have been invited to a group by</Typography>
+        <Typography variant="h6">{invitation.user_public_profile.user_name}</Typography>
+        <Avatar
+          src={invitation.user_public_profile.profile_pic ?? ""}
+          alt={invitation.user_public_profile.user_name}
+          sx={{ height: 100, width: 100 }}
+        />
         <AcceptInvite
           invite={invitation as Invite}
           key={invitation.id}
         />
-      ))}
+      </Paper>
     </div>
   );
 }

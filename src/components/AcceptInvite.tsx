@@ -1,8 +1,11 @@
 "use client";
 
-import { Typography, Paper, Button, Avatar } from "@mui/material";
+import { Typography, Button, CircularProgress } from "@mui/material";
 import { acceptInvite } from "../lib/serverActions";
 import { useState } from "react";
+import { useMutation } from "@tanstack/react-query";
+import { toast } from "react-toastify";
+import Link from "next/link";
 
 interface Props {
   invite: {
@@ -21,52 +24,45 @@ interface Props {
 }
 
 export default function AcceptInvite({ invite }: Props) {
-  const [isLoading, setIsLoading] = useState(false);
-  const [message, setMessage] = useState("");
-  const [error, setError] = useState(false);
   const [accepted, setAccepted] = useState(false);
 
-  const handleClick = async () => {
-    setIsLoading(true);
-    const result = await acceptInvite(invite.group_id);
-    if (result.error) {
-      setError(true);
-      setMessage(result.message);
-    } else {
+  const { mutate: handleAcceptInvite, isLoading } = useMutation({
+    mutationFn: async () => {
+      const result = await acceptInvite(invite.group_id);
+      if (result.error) throw new Error(result.message);
+    },
+    onError: (error: any) => toast.error(`${error.message}`, { theme: "colored" }),
+    onSuccess: () => {
       setAccepted(true);
-    }
-    setIsLoading(false);
-  };
+      toast.success(`Success! You're in!`, { theme: "colored" });
+    },
+  });
 
-  const pendingAccept = (
-    <>
-      <Typography>Do you want to join?</Typography>
-      <Button
-        disabled={isLoading}
-        onClick={handleClick}
-      >
-        Join Group!
-      </Button>
-    </>
-  );
-
-  const confirmation = (
-    <>
-      <Typography>Invite Accpted</Typography>
-      <Typography>Go to MY GROUPS to see your new group</Typography>
-    </>
-  );
+  if (!accepted)
+    return (
+      <>
+        <Typography>Do you want to join?</Typography>
+        <Button
+          disabled={isLoading}
+          onClick={() => handleAcceptInvite()}
+        >
+          Join Group!
+          {isLoading && (
+            <CircularProgress
+              size={24}
+              sx={{ position: "absolute", zIndex: 1, top: "50%", left: "50%", marginTop: "-12px", marginLeft: "-12px" }}
+            />
+          )}
+        </Button>
+      </>
+    );
 
   return (
-    <Paper sx={{ minWidth: "300px", display: "flex", flexDirection: "column", alignItems: "center", gap: 2, p: 2 }}>
-      <Typography>You have been invited to a group by</Typography>
-      <Typography variant="h6">{invite.user_public_profile.user_name}</Typography>
-      <Avatar
-        src={invite.user_public_profile.profile_pic ?? ""}
-        alt={invite.user_public_profile.user_name}
-        sx={{ height: 100, width: 100 }}
-      />
-      {accepted ? confirmation : pendingAccept}
-    </Paper>
+    <>
+      <Typography>Invite Accpted</Typography>
+      <Typography>
+        Go to <Link href={"/mygroups"}>MY GROUPS</Link> to see your new group
+      </Typography>
+    </>
   );
 }
