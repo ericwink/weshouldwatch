@@ -7,7 +7,7 @@ export default function Error({ error, reset }: { error: Error; reset: () => voi
     <main>
       <Container
         maxWidth="md"
-        sx={{ display: "flex", flexDirection: "column", gap: 2, justifyContent: "center", alignItems: "center" }}
+        sx={{ display: "flex", flexDirection: "column", gap: 2 }}
       >
         <Typography
           variant="h4"

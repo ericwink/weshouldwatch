@@ -1,7 +1,7 @@
 "use client";
 
 import TabDisplay from "@/src/components/TabDisplay";
-import CardGrid from "../components/Cards/CardGrid";
+import CardGrid from "./Cards/CardGrid";
 import CardSkeleton from "@/src/components/Cards/CardSkeleton";
 
 const mainPageLoading = () => {

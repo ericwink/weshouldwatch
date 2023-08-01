@@ -93,6 +93,24 @@ export async function acceptInvite(group_id: number) {
   } = await supabase.auth.getUser();
   if (!user) return { error: true, message: "An error occurred. Please sign in and try again." };
 
+  //pull list of groups user has access to
+  let { data: groups, error: groupsError } = await supabase.from("group").select("*");
+  if (groupsError) return { error: true, message: "There was an error please try again" };
+  if (groups === null) groups = [];
+
+  let groupsJoined = 0;
+  for (let group of groups) {
+    if (group.id === group_id) return { error: true, message: "You are already a member of this group" };
+    if (group.created_by !== user.id) groupsJoined++;
+  }
+
+  //pull user subscription status
+  let { data: userData, error: usersError } = await supabase.from("users").select("is_subscribed").single();
+  if (usersError) return { error: true, message: "There was an error please try again" };
+  const isSubscribed = userData?.is_subscribed;
+
+  if (!isSubscribed && groupsJoined >= 1) return { error: true, message: "Sign up for Premium to join more than one group" };
+
   const { data, error } = await supabase.from("user_group_join").insert([{ group_id: group_id, user_id: user.id }]);
   if (error) {
     console.log(error);
