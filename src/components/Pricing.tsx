@@ -1,5 +1,5 @@
 "use client";
-import { Paper, Typography, Button } from "@mui/material";
+import { Paper, Typography, Button, Divider } from "@mui/material";
 import { useUserStore } from "../lib/store";
 import Link from "next/link";
 import { stripeCheckout } from "../lib/serverActions";
@@ -32,26 +32,54 @@ const Pricing = ({ id, name, price, interval, currency }: Props) => {
   };
 
   return (
-    <Paper sx={{ display: "flex", flexDirection: "column", gap: 2, p: 2, alignItems: "center", width: "250px" }}>
+    <Paper sx={{ display: "flex", flexDirection: "column", gap: 1.5, p: 2, alignItems: "center", width: "250px" }}>
       <Typography
-        variant="h5"
         textAlign="center"
+        mb={1}
       >
         {`${displayName[0]}`}
         <br />
         {`(${displayName[1]})`}
       </Typography>
-      <Typography>{`$${price / 100}/${interval}`}</Typography>
-      <Typography>{`Unlimited Groups`}</Typography>
-      <Typography>{`Journal/Live Chat`}</Typography>
+      <Typography
+        variant="h4"
+        mb={1}
+      >{`$${price / 100}/${interval}`}</Typography>
+      <Divider
+        orientation="horizontal"
+        flexItem
+      />
+      <Typography>{`Create Unlimited Groups`}</Typography>
+      <Divider
+        orientation="horizontal"
+        flexItem
+      />
+      <Typography>{`Join Unlimited Groups`}</Typography>
+      <Divider
+        orientation="horizontal"
+        flexItem
+      />
+      <Typography>{`Access to Journal/Live Chat`}</Typography>
+      <Divider
+        orientation="horizontal"
+        flexItem
+        sx={{ marginBottom: 1 }}
+      />
       {loginButton && (
-        <Button>
+        <Button variant="contained">
           <Link href={"/login"}>Login</Link>
         </Button>
       )}
-      {selectPlan && <Button onClick={handleCheckout}>Select Plan</Button>}
+      {selectPlan && (
+        <Button
+          variant="contained"
+          onClick={handleCheckout}
+        >
+          Select Plan
+        </Button>
+      )}
       {managePlan && (
-        <Button>
+        <Button variant="contained">
           <Link href={"/account"}>Manage Subscription</Link>
         </Button>
       )}
