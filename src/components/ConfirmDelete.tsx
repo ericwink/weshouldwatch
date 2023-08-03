@@ -1,4 +1,4 @@
-import { ReactNode, useState } from "react";
+import { useState } from "react";
 import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
@@ -36,12 +36,12 @@ export default function ConfirmDelete({ showDeleteModal, setShowDeleteModal, war
       aria-labelledby="alert-dialog-title"
       aria-describedby="alert-dialog-description"
     >
-      <DialogTitle id="alert-dialog-title">{"Are you sure you want to delete?"}</DialogTitle>
+      <DialogTitle id="alert-dialog-title">{"WARNING!"}</DialogTitle>
       <DialogContent sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
-        <DialogContentText id="alert-dialog-description">{`${warningMessage} Are you sure you want to delete?`}</DialogContentText>
+        <DialogContentText id="alert-dialog-description">{`${warningMessage}`}</DialogContentText>
         {extraSecure && (
           <>
-            <DialogContentText>{`Enter the name of the group "${extraSecureCheck}" to proceed with deletion`}</DialogContentText>
+            <DialogContentText>{`Enter the name of the group "${extraSecureCheck}" to proceed.`}</DialogContentText>
             <TextField
               onChange={e => setInput(e.target.value)}
               value={input}

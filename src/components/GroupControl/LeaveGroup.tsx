@@ -1,0 +1,52 @@
+"use client";
+
+import { IconButton } from "@mui/material";
+import ConfirmDelete from "../ConfirmDelete";
+import { useState } from "react";
+import { useMutation } from "@tanstack/react-query";
+import { toast } from "react-toastify";
+import { leaveGroup } from "@/src/lib/serverActions";
+import LogoutIcon from "@mui/icons-material/Logout";
+
+interface Props {
+  group_name: string | null;
+  id: number;
+}
+
+const LeaveGroup = ({ id, group_name }: Props) => {
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+
+  const { mutate: leaveTheGroup } = useMutation({
+    mutationFn: async () => {
+      const result = await leaveGroup(id);
+      if (result.error) throw new Error(result.message);
+    },
+    onSuccess: () => {
+      toast.success("You've left the group!", { theme: "colored" });
+    },
+    onError: (error: any) => {
+      toast.error(error.message, { theme: "colored" });
+    },
+  });
+
+  return (
+    <div>
+      <IconButton
+        color="error"
+        onClick={() => setShowDeleteModal(true)}
+      >
+        <LogoutIcon />
+      </IconButton>
+      <ConfirmDelete
+        confirmDelete={() => leaveTheGroup()}
+        showDeleteModal={showDeleteModal}
+        setShowDeleteModal={setShowDeleteModal}
+        warningMessage="This action will remove you from the group! Are you sure you want to proceed?"
+        extraSecure={true}
+        extraSecureCheck={group_name as string}
+      />
+    </div>
+  );
+};
+
+export default LeaveGroup;

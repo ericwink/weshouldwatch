@@ -48,6 +48,17 @@ export async function createGroup(groupName: string) {
 }
 
 export async function inviteToGroup(group_id: number, email: string) {
+  //check that user exists
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (!user) return { error: true, message: "You are not authorized to make this request" };
+
+  let { data: group, error: groupFindError } = await supabase.from("group").select("created_by").eq("id", group_id).single();
+  if (groupFindError) return { error: true, message: "There was an error please try again" };
+
+  if (group?.created_by !== user.id) return { error: true, message: "Only the group owner can invite others" };
+
   const { data, error } = await supabase.from("invite_to_group").insert([{ group_id: group_id, email: email }]);
   if (error) {
     console.log(error);
@@ -57,6 +68,11 @@ export async function inviteToGroup(group_id: number, email: string) {
 }
 
 export async function deleteGroup(id: number) {
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (!user) return { error: true, message: "You are not authorized to make this request" };
+
   const { data, error } = await supabase.from("group").delete().eq("id", id);
   if (error) {
     console.log(error);
@@ -64,6 +80,23 @@ export async function deleteGroup(id: number) {
   }
   revalidatePath("/mygroups");
   return { error: false, message: "Group Deleted!" };
+}
+
+export async function leaveGroup(id: number) {
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (!user) return { error: true, message: "You are not authorized to make this request" };
+
+  let { error: userExitError } = await supabase.from("user_group_join").delete().eq("user_id", user.id).eq("group_id", id);
+  if (userExitError) return { error: true, message: "An error occurred. Please try again." };
+
+  // do we want to remove all contributions?
+  // const { error: removeMediaError } = await supabase.from("group_media").delete().eq("added_by", user.id).eq("group_id", id);
+  // if (removeMediaError) return { error: true, message: "An error occurred. Please try again." };
+
+  revalidatePath("/mygroups");
+  return { error: false, message: "You have successfully left the group!" };
 }
 
 export async function addMedia(mediaPayload: MediaPayload) {

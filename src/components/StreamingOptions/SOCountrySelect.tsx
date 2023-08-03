@@ -52,14 +52,14 @@ const SOCountrySelect = ({ codeList, country, setCountry }: Props) => {
         <DialogTitle>Select your location</DialogTitle>
         <DialogContent>
           <FormControl sx={{ m: 1, minWidth: 80 }}>
-            <InputLabel id="demo-simple-select-autowidth-label">Country</InputLabel>
+            <InputLabel id="select-location-label">Location</InputLabel>
             <Select
-              labelId="demo-simple-select-autowidth-label"
-              id="demo-simple-select-autowidth"
+              labelId="select-location-label"
+              id="select-location"
               value={country}
               onChange={handleChange}
               autoWidth
-              label="Age"
+              label="Location"
             >
               {codeList.map(each => (
                 <MenuItem

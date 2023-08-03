@@ -27,7 +27,7 @@ export interface Props {
 const StreamingOptions = async ({ media_type, id, title }: Props) => {
   const streamingOptions = await fetchStreamingOptions(media_type, id);
 
-  if (!streamingOptions) return <Typography>Not available for online streaming</Typography>;
+  if (Object.keys(streamingOptions).length === 0) return <Typography>Not available for online streaming</Typography>;
 
   return (
     <div>
