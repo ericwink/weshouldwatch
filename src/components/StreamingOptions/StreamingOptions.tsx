@@ -34,7 +34,6 @@ const StreamingOptions = async ({ media_type, id, title }: Props) => {
       <SOClient
         codeList={createCountrySelection(streamingOptions)}
         streamingData={streamingOptions}
-        title={title}
       />
     </div>
   );

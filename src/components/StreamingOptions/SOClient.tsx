@@ -8,7 +8,6 @@ import { Typography, Box, Paper } from "@mui/material";
 interface Props {
   codeList: CountryCode[];
   streamingData: any;
-  title: string;
 }
 
 export const reorderData = (obj: AvailabilityData) => {
@@ -31,7 +30,7 @@ export const reorderData = (obj: AvailabilityData) => {
   return dataArray;
 };
 
-const SOClient = ({ codeList, streamingData, title }: Props) => {
+const SOClient = ({ codeList, streamingData }: Props) => {
   const initialCountry = streamingData.US ? "US" : Object.keys(streamingData)[0];
   const [country, setCountry] = useState(initialCountry);
 

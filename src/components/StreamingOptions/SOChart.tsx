@@ -56,7 +56,7 @@ const SOChart = ({ streamOptions }: Props) => {
               })}
             </Grid>
           </Box>
-          {index < streamOptions.length ? <Divider /> : null}
+          <Divider />
         </>
       ))}
       <Typography
