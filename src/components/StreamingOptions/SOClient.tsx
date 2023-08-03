@@ -3,7 +3,7 @@ import { useState } from "react";
 import SOChart from "./SOChart";
 import SOCountrySelect, { CountryCode } from "./SOCountrySelect";
 import { AvailabilityData, StreamOptions, ExtendedStreamOptions } from "./interfaces";
-import { Typography, Box } from "@mui/material";
+import { Typography, Box, Paper } from "@mui/material";
 
 interface Props {
   codeList: CountryCode[];
@@ -37,8 +37,8 @@ const SOClient = ({ codeList, streamingData, title }: Props) => {
 
   return (
     <>
-      <Box sx={{ display: "flex", width: "100%", justifyContent: "space-between", alignItems: "flex-end" }}>
-        <Typography variant="h5">Watch {title}:</Typography>
+      <Box sx={{ display: "flex", justifyContent: "space-between", alignContent: "center" }}>
+        <Typography variant="h5">Where to watch:</Typography>
         <SOCountrySelect
           codeList={codeList}
           country={country}

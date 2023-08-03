@@ -1,7 +1,7 @@
 "use client";
 
 import getPoster from "@/src/lib/getPoster";
-import { Paper, Box, Typography, Divider } from "@mui/material";
+import { Box, Typography, Divider } from "@mui/material";
 import Grid from "@mui/material/Unstable_Grid2"; // Grid version 2
 import Image from "next/image";
 import { ExtendedStreamOptions } from "./interfaces";
@@ -19,9 +19,12 @@ const SOChart = ({ streamOptions }: Props) => {
 
   return (
     <Box sx={{ display: "flex", flexDirection: "column", gap: 0.5 }}>
-      {streamOptions.map(provider => (
-        <Paper key={provider.provider}>
-          <Box sx={{ display: "grid", alignItems: "center", gridTemplateColumns: "1fr 4fr 3fr" }}>
+      {streamOptions.map((provider, index) => (
+        <>
+          <Box
+            key={provider.provider}
+            sx={{ display: "grid", alignItems: "center", gridTemplateColumns: "1fr 4fr 3fr" }}
+          >
             <Image
               src={getPoster(provider.logo_path, "200")}
               alt={`logo for ${provider}`}
@@ -53,7 +56,8 @@ const SOChart = ({ streamOptions }: Props) => {
               })}
             </Grid>
           </Box>
-        </Paper>
+          {index < streamOptions.length ? <Divider /> : null}
+        </>
       ))}
       <Typography
         variant="caption"
