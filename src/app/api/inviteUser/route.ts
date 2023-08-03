@@ -10,6 +10,7 @@ interface Invitation {
 
 export async function POST(req: Request) {
   //  check params sent with Supabase request to ensure it has the secret key
+  return console.log("WHY IS THIS HAPPENING");
   const { searchParams } = new URL(req.url);
   const secret = searchParams.get("secret");
   if (secret !== process.env.API_ROUTE_SECRET) {
