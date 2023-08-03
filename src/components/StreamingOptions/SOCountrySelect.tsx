@@ -34,7 +34,12 @@ const SOCountrySelect = ({ codeList, country, setCountry }: Props) => {
           label="Age"
         >
           {codeList.map(each => (
-            <MenuItem value={each.code}>{each.name}</MenuItem>
+            <MenuItem
+              value={each.code}
+              key={each.code}
+            >
+              {each.name}
+            </MenuItem>
           ))}
         </Select>
       </FormControl>

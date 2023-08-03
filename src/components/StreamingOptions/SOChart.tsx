@@ -20,7 +20,7 @@ const SOChart = ({ streamOptions }: Props) => {
   return (
     <Box sx={{ display: "flex", flexDirection: "column", gap: 0.5 }}>
       {streamOptions.map(provider => (
-        <Paper>
+        <Paper key={provider.provider}>
           <Box sx={{ display: "grid", alignItems: "center", gridTemplateColumns: "1fr 4fr 3fr" }}>
             <Image
               src={getPoster(provider.logo_path, "200")}
