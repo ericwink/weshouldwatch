@@ -7,6 +7,7 @@ import MovieIcon from "@mui/icons-material/Movie";
 import TvIcon from "@mui/icons-material/Tv";
 import Link from "next/link";
 import DeleteGroup from "./DeleteGroup";
+import LeaveGroup from "./LeaveGroup";
 import { useUserStore } from "@/src/lib/store";
 
 interface Props {
@@ -78,6 +79,12 @@ const GroupCard = ({ group_name, id, created_by, group_media, members }: Props) 
             </Link>
             {user?.id === created_by && (
               <DeleteGroup
+                group_name={group_name}
+                id={id}
+              />
+            )}
+            {user?.id !== created_by && (
+              <LeaveGroup
                 group_name={group_name}
                 id={id}
               />
