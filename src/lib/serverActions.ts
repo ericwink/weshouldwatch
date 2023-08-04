@@ -6,6 +6,7 @@ import { Database } from "@/src/lib/database.types";
 import { revalidatePath } from "next/cache";
 import type { MediaPayload } from "./interface";
 import Stripe from "stripe";
+import axios from "axios";
 
 const supabase = createServerComponentClient<Database>({ cookies });
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
@@ -45,26 +46,6 @@ export async function createGroup(groupName: string) {
 
   revalidatePath("/mygroups");
   return { error: false, message: "Group created successfully" };
-}
-
-export async function inviteToGroup(group_id: number, email: string) {
-  //check that user exists
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-  if (!user) return { error: true, message: "You are not authorized to make this request" };
-
-  let { data: group, error: groupFindError } = await supabase.from("group").select("created_by").eq("id", group_id).single();
-  if (groupFindError) return { error: true, message: "There was an error please try again" };
-
-  if (group?.created_by !== user.id) return { error: true, message: "Only the group owner can invite others" };
-
-  const { data, error } = await supabase.from("invite_to_group").insert([{ group_id: group_id, email: email }]);
-  if (error) {
-    console.log(error);
-    return { error: true, message: "An error occurred. Please try again." };
-  }
-  return { error: false, message: "Invitation Sent!" };
 }
 
 export async function deleteGroup(id: number) {

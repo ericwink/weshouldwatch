@@ -34,8 +34,8 @@ export default async function invitePage({ searchParams }: Props) {
   if (!session) redirect("/login");
 
   const { token } = searchParams;
-  let { data, error } = await supabase.from("invite_to_group").select("*, user_public_profile ( * )").eq("id", token).single();
-
+  let { data, error } = await supabase.from("invite_user_to_group").select("*, user_public_profile ( * )").eq("id", token).single();
+  console.log(data);
   const invitation: Invite = data;
 
   if (!invitation) return <h1>{`No invitation found for your email address`}</h1>;

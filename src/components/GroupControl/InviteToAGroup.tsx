@@ -2,10 +2,10 @@
 
 import { TextField, Button, CircularProgress, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from "@mui/material";
 import { useState } from "react";
-import { inviteToGroup } from "../../lib/serverActions";
 import { toast } from "react-toastify";
 import { useMutation } from "@tanstack/react-query";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
+import axios from "axios";
 
 export default function InviteToAGroup({ groupId }: { groupId: number }) {
   const [email, setEmail] = useState("");
@@ -26,14 +26,14 @@ export default function InviteToAGroup({ groupId }: { groupId: number }) {
     mutationFn: async () => {
       const isValidEmail = emailRegex.test(email);
       if (!isValidEmail) throw new Error("Please enter a valid email address");
-      const result = await inviteToGroup(groupId, email);
-      if (result.error) throw new Error(result.message);
+      const result = await axios.post("/api/group/inviteUser", { group_id: groupId, email: email });
+      console.log(result);
     },
     onSuccess: () => {
       toast.success("Invitation sent successfully!", { theme: "colored" });
       handleClose();
     },
-    onError: (error: any) => toast.error(error.message, { theme: "colored" }),
+    onError: (error: any) => toast.error(error.response?.data || error.message, { theme: "colored" }),
   });
 
   return (
