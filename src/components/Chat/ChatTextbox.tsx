@@ -5,7 +5,7 @@ import { ChangeEvent, useState } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 interface Props {
-  groupId: number;
+  groupId: string;
   mediaId: number;
 }
 

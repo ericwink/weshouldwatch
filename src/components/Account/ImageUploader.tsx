@@ -49,7 +49,7 @@ const ImageUploader = ({ user }: Props) => {
       }
     },
     onSuccess: async data => {
-      const fullPath = `https://zojrocbtklqjgxfijsje.supabase.co/storage/v1/object/public/avatars/${data!.path}`;
+      const fullPath = `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/avatars/${data!.path}`;
       await updateProfilePath(fullPath);
       const userData = await getUserAccount();
       setUser(userData);

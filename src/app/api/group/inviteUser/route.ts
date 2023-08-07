@@ -6,12 +6,12 @@ import sgMail from "@sendgrid/mail";
 interface InviteDetails {
   email: string;
   id: string;
-  group_id: number;
+  group_id: string;
   created_by: string;
 }
 
 interface Body {
-  group_id: number;
+  group_id: string;
   email: string;
 }
 
@@ -27,6 +27,7 @@ export async function POST(req: Request) {
 
   try {
     let { data: group, error: groupFindError } = await supabase.from("group").select("created_by").eq("id", group_id).single();
+    if (groupFindError) console.log(groupFindError);
     if (groupFindError) throw new Error("Group not found, please try again");
 
     if (group?.created_by !== user.id) return new Response("Only the group owner can invite others", { status: 401 });
@@ -40,8 +41,8 @@ export async function POST(req: Request) {
       console.log(error);
       throw new Error("An error occurred. Please try again.");
     }
+
     const inviteDetails: InviteDetails = data;
-    console.log({ inviteDetails });
 
     //setup SendGrid
     sgMail.setApiKey(process.env.SENDGRID_API_KEY!);
@@ -59,9 +60,7 @@ export async function POST(req: Request) {
     };
 
     // send the email
-    // await sgMail.send(message);
-
-    console.log(message);
+    await sgMail.send(message);
 
     return new Response("Invitation Sent!", { status: 200 });
   } catch (error: any) {

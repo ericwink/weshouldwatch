@@ -17,7 +17,7 @@ import axios from "axios";
 
 interface Props {
   media: CondensedMedia;
-  groupId: number;
+  groupId: string;
 }
 
 const MediaCardCollection = ({ media, groupId }: Props) => {

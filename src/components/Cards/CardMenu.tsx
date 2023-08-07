@@ -16,7 +16,7 @@ import axios from "axios";
 
 interface Props {
   media: CondensedMedia;
-  groupId: number;
+  groupId: string;
   setChatIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
   setShowReasonModal: React.Dispatch<React.SetStateAction<boolean>>;
   setShowDeleteModal: React.Dispatch<React.SetStateAction<boolean>>;

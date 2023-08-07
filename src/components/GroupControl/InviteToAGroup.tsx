@@ -7,7 +7,7 @@ import { useMutation } from "@tanstack/react-query";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import axios from "axios";
 
-export default function InviteToAGroup({ groupId }: { groupId: number }) {
+export default function InviteToAGroup({ groupId }: { groupId: string }) {
   const [email, setEmail] = useState("");
   const [open, setOpen] = useState(false);
 
