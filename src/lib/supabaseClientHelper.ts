@@ -66,7 +66,7 @@ export async function login(email: string, password: string) {
   return userData;
 }
 
-export async function fetchMediaCollection(id: number) {
+export async function fetchMediaCollection(id: string) {
   let { data: group_media, error } = await supabase
     .from("group_media")
     .select(
@@ -83,7 +83,7 @@ export async function fetchMediaCollection(id: number) {
   return group_media as GroupMedia[];
 }
 
-export async function removeMediaFromGroup(rowId: number, groupId: number) {
+export async function removeMediaFromGroup(rowId: number, groupId: string) {
   //get current session from jwt
   const {
     data: { user },

@@ -33,16 +33,25 @@ export async function createGroup(groupName: string) {
 
   //pull list of groups created
   let { data: groups, error: groupsError } = await supabase.from("group").select("*").eq("created_by", user.id);
-  if (groupsError) return { error: true, message: "There was an error please try again" };
+  if (groupsError) {
+    console.log(groupsError);
+    return { error: true, message: "There was an error please try again" };
+  }
 
   //pull user subscription status
   let { data: userData, error: usersError } = await supabase.from("users").select("is_subscribed").single();
-  if (usersError) return { error: true, message: "There was an error please try again" };
+  if (usersError) {
+    console.log(usersError);
+    return { error: true, message: "There was an error please try again" };
+  }
 
   if (!userData?.is_subscribed && groups!.length >= 1) return { error: true, message: "You must be a Premium member to make multiple groups" };
 
   const { data, error } = await supabase.from("group").insert([{ group_name: groupName }]);
-  if (error) return { error: true, message: "There was an error please try again" };
+  if (error) {
+    console.log(error);
+    return { error: true, message: "There was an error please try again" };
+  }
 
   revalidatePath("/mygroups");
   return { error: false, message: "Group created successfully" };

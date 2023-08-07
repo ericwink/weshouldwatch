@@ -5,7 +5,7 @@ import InviteToAGroup from "../InviteToAGroup";
 import { MemberData } from "@/src/app/mygroups/[id]/page";
 
 interface Props {
-  groupId: number;
+  groupId: string;
   members: MemberData[];
 }
 

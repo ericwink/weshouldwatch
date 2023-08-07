@@ -14,7 +14,7 @@ import { CondensedMedia } from "@/src/lib/interface";
 
 interface Props {
   media: CondensedMedia;
-  groupId: number;
+  groupId: string;
   chatIsOpen: boolean;
   setChatIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }

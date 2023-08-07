@@ -57,7 +57,7 @@ export interface Sorted {
 const groupPageById = async ({ params: { id } }: Props) => {
   const supabase = createServerComponentClient<Database>({ cookies });
 
-  const fetchMediaCollection = async (id: number) => {
+  const fetchMediaCollection = async (id: string) => {
     let { data: group_media, error } = await supabase
       .from("group_media")
       .select(
@@ -76,7 +76,7 @@ const groupPageById = async ({ params: { id } }: Props) => {
   let { data: members, error } = await supabase.from("user_group_join").select("user_id, user_public_profile(user_name, profile_pic)").eq("group_id", id);
   // console.log(members);
 
-  const data = await fetchMediaCollection(parseInt(id));
+  const data = await fetchMediaCollection(id);
   const sortedData = reorganizeGroupMedia(data);
   // console.log(JSON.stringify(sortedData, null, 2));
 
@@ -88,16 +88,16 @@ const groupPageById = async ({ params: { id } }: Props) => {
       <TabDisplay tabNames={["Movies", "TV Shows", "Group Info"]}>
         <CardGridFilter
           mediaData={sortedData.movie}
-          groupId={parseInt(id)}
+          groupId={id}
           mediaType="movie"
         />
         <CardGridFilter
           mediaData={sortedData.tv}
-          groupId={parseInt(id)}
+          groupId={id}
           mediaType="tv"
         />
         <GroupDetails
-          groupId={parseInt(id)}
+          groupId={id}
           members={members as MemberData[]}
         />
       </TabDisplay>

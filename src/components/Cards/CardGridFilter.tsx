@@ -18,7 +18,7 @@ interface GenreFilter {
 
 interface Props {
   mediaData: CondensedMedia[];
-  groupId: number;
+  groupId: string;
   mediaType: "movie" | "tv";
 }
 

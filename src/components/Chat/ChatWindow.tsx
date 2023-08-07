@@ -55,7 +55,7 @@ const aggregateComments = (commentData: CommentData[] | null) => {
 };
 
 interface Props {
-  groupId: number;
+  groupId: string;
   mediaId: number;
 }
 
