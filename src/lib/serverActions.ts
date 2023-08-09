@@ -6,7 +6,6 @@ import { Database } from "@/src/lib/database.types";
 import { revalidatePath } from "next/cache";
 import type { MediaPayload } from "./interface";
 import Stripe from "stripe";
-import axios from "axios";
 
 const supabase = createServerComponentClient<Database>({ cookies });
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
@@ -57,7 +56,7 @@ export async function createGroup(groupName: string) {
   return { error: false, message: "Group created successfully" };
 }
 
-export async function deleteGroup(id: number) {
+export async function deleteGroup(id: string) {
   const {
     data: { user },
   } = await supabase.auth.getUser();
@@ -72,7 +71,7 @@ export async function deleteGroup(id: number) {
   return { error: false, message: "Group Deleted!" };
 }
 
-export async function leaveGroup(id: number) {
+export async function leaveGroup(id: string) {
   const {
     data: { user },
   } = await supabase.auth.getUser();
@@ -98,7 +97,7 @@ export async function addMedia(mediaPayload: MediaPayload) {
   return { message: "succes!" };
 }
 
-export async function addMediaToGroup(mediaPayload: MediaPayload, groupId: number, reason: string) {
+export async function addMediaToGroup(mediaPayload: MediaPayload, groupId: string, reason: string) {
   const result = await addMedia(mediaPayload);
   if (result.error) return result;
   const { data, error } = await supabase.from("group_media").insert([{ group_id: groupId, added_reason: reason, watched: false, media_id: mediaPayload.tmdb_id }]);
@@ -110,7 +109,7 @@ export async function addMediaToGroup(mediaPayload: MediaPayload, groupId: numbe
   return { error: false, message: "Successfully added to group!" };
 }
 
-export async function acceptInvite(group_id: number) {
+export async function acceptInvite(group_id: string) {
   const {
     data: { user },
   } = await supabase.auth.getUser();
@@ -193,4 +192,30 @@ export async function stripeCustomerPortal() {
     return_url: `${process.env.HOST_URL}/account`,
   });
   return { error: false, sessionUrl: session.url };
+}
+
+export async function updatePrimary(columnName: "primary_created" | "primary_joined", groupId: string) {
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (!user) return { error: true, message: "An error occurred. Please sign in and try again." };
+
+  const dateColumnName = `${columnName}_update`;
+
+  let { data: lastUpdated, error: dateError } = await supabase.from("users").select("primary_created_update").single();
+  if (lastUpdated) {
+    const lastUpdate = new Date(lastUpdated.primary_created_update as string);
+    const currentDate = new Date();
+    const millisecondsDiff = currentDate.getTime() - lastUpdate.getTime();
+    const daysDifference = Math.floor(millisecondsDiff / (1000 * 60 * 60 * 24));
+    if (daysDifference < 30) return { error: true, message: "Primary group can only be updated once every 30 days" };
+  }
+
+  const { data, error } = await supabase
+    .from("users")
+    .update({ [columnName]: groupId, [dateColumnName]: new Date().toISOString() })
+    .eq("id", user.id)
+    .select();
+  if (error) return { error: true, message: "There was an error, please try again." };
+  return { error: false, message: "Primary group updated!" };
 }

@@ -47,12 +47,7 @@ const ActiveDevModal = () => {
         </DialogContentText>
       </DialogContent>
       <DialogActions>
-        <Button
-          onClick={handleClose}
-          autoFocus
-        >
-          I Understand!
-        </Button>
+        <Button onClick={handleClose}>I Understand!</Button>
       </DialogActions>
     </Dialog>
   );

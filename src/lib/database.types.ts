@@ -38,7 +38,7 @@ export interface Database {
         Row: {
           comment: string
           created_at: string
-          group_id: number
+          group_id: string
           id: number
           media_id: number
           user_id: string
@@ -46,7 +46,7 @@ export interface Database {
         Insert: {
           comment: string
           created_at?: string
-          group_id: number
+          group_id: string
           id?: number
           media_id: number
           user_id?: string
@@ -54,7 +54,7 @@ export interface Database {
         Update: {
           comment?: string
           created_at?: string
-          group_id?: number
+          group_id?: string
           id?: number
           media_id?: number
           user_id?: string
@@ -85,19 +85,19 @@ export interface Database {
           created_at: string
           created_by: string
           group_name: string
-          id: number
+          id: string
         }
         Insert: {
           created_at?: string
           created_by?: string
-          group_name: string
-          id?: number
+          group_name?: string
+          id?: string
         }
         Update: {
           created_at?: string
           created_by?: string
           group_name?: string
-          id?: number
+          id?: string
         }
         Relationships: [
           {
@@ -113,16 +113,16 @@ export interface Database {
           added_by: string
           added_reason: string
           created_at: string
-          group_id: number
+          group_id: string
           id: number
           media_id: number
           watched: boolean
         }
         Insert: {
           added_by?: string
-          added_reason: string
+          added_reason?: string
           created_at?: string
-          group_id: number
+          group_id: string
           id?: number
           media_id: number
           watched?: boolean
@@ -131,7 +131,7 @@ export interface Database {
           added_by?: string
           added_reason?: string
           created_at?: string
-          group_id?: number
+          group_id?: string
           id?: number
           media_id?: number
           watched?: boolean
@@ -157,37 +157,37 @@ export interface Database {
           }
         ]
       }
-      invite_to_group: {
+      invite_user_to_group: {
         Row: {
-          created_at: string
+          created_at: string | null
           created_by: string
           email: string
-          group_id: number
+          group_id: string
           id: string
         }
         Insert: {
-          created_at?: string
+          created_at?: string | null
           created_by?: string
-          email: string
-          group_id: number
+          email?: string
+          group_id: string
           id?: string
         }
         Update: {
-          created_at?: string
+          created_at?: string | null
           created_by?: string
           email?: string
-          group_id?: number
+          group_id?: string
           id?: string
         }
         Relationships: [
           {
-            foreignKeyName: "invite_to_group_created_by_fkey"
+            foreignKeyName: "invite_user_to_group_created_by_fkey"
             columns: ["created_by"]
             referencedRelation: "user_public_profile"
             referencedColumns: ["user_id"]
           },
           {
-            foreignKeyName: "invite_to_group_group_id_fkey"
+            foreignKeyName: "invite_user_to_group_group_id_fkey"
             columns: ["group_id"]
             referencedRelation: "group"
             referencedColumns: ["id"]
@@ -206,9 +206,9 @@ export interface Database {
         Insert: {
           created_at?: string
           genres: string[]
-          media_type: string
-          poster_path: string
-          title: string
+          media_type?: string
+          poster_path?: string
+          title?: string
           tmdb_id: number
         }
         Update: {
@@ -224,19 +224,19 @@ export interface Database {
       user_group_join: {
         Row: {
           created_at: string | null
-          group_id: number | null
+          group_id: string
           id: number
           user_id: string
         }
         Insert: {
           created_at?: string | null
-          group_id?: number | null
+          group_id: string
           id?: number
           user_id: string
         }
         Update: {
           created_at?: string | null
-          group_id?: number | null
+          group_id?: string
           id?: number
           user_id?: string
         }
@@ -257,19 +257,19 @@ export interface Database {
       }
       user_public_profile: {
         Row: {
-          created_at: string | null
+          created_at: string
           profile_pic: string | null
           user_id: string
           user_name: string
         }
         Insert: {
-          created_at?: string | null
+          created_at?: string
           profile_pic?: string | null
           user_id: string
-          user_name: string
+          user_name?: string
         }
         Update: {
-          created_at?: string | null
+          created_at?: string
           profile_pic?: string | null
           user_id?: string
           user_name?: string
@@ -285,27 +285,39 @@ export interface Database {
       }
       users: {
         Row: {
-          created_at: string | null
-          email: string | null
+          created_at: string
+          email: string
           id: string
           interval: string | null
           is_subscribed: boolean
+          primary_created: string | null
+          primary_created_update: string | null
+          primary_joined: string | null
+          primary_joined_update: string | null
           stripe_customer: string | null
         }
         Insert: {
-          created_at?: string | null
-          email?: string | null
+          created_at?: string
+          email?: string
           id: string
           interval?: string | null
           is_subscribed?: boolean
+          primary_created?: string | null
+          primary_created_update?: string | null
+          primary_joined?: string | null
+          primary_joined_update?: string | null
           stripe_customer?: string | null
         }
         Update: {
-          created_at?: string | null
-          email?: string | null
+          created_at?: string
+          email?: string
           id?: string
           interval?: string | null
           is_subscribed?: boolean
+          primary_created?: string | null
+          primary_created_update?: string | null
+          primary_joined?: string | null
+          primary_joined_update?: string | null
           stripe_customer?: string | null
         }
         Relationships: [
@@ -313,6 +325,18 @@ export interface Database {
             foreignKeyName: "users_id_fkey"
             columns: ["id"]
             referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "users_primary_created_fkey"
+            columns: ["primary_created"]
+            referencedRelation: "group"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "users_primary_joined_fkey"
+            columns: ["primary_joined"]
+            referencedRelation: "group"
             referencedColumns: ["id"]
           }
         ]
@@ -436,7 +460,7 @@ export interface Database {
         }
         Relationships: [
           {
-            foreignKeyName: "objects_bucket_id_fkey"
+            foreignKeyName: "objects_bucketId_fkey"
             columns: ["bucket_id"]
             referencedRelation: "buckets"
             referencedColumns: ["id"]

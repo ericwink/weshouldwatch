@@ -10,7 +10,7 @@ import LogoutIcon from "@mui/icons-material/Logout";
 
 interface Props {
   group_name: string | null;
-  id: number;
+  id: string;
 }
 
 const LeaveGroup = ({ id, group_name }: Props) => {

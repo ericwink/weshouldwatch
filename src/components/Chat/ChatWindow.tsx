@@ -15,7 +15,7 @@ interface UserComments {
 interface CommentData {
   comment: string;
   created_at: string;
-  group_id: number;
+  group_id: string;
   id: number;
   media_id: number;
   user_id: string;
