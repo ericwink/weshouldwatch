@@ -11,7 +11,7 @@ import { toast } from "react-toastify";
 
 interface Props {
   media_id: number;
-  id: number;
+  id: string;
   group_name: string;
   group_media: { media_id: number | null }[];
   mediaPayload: MediaPayload;

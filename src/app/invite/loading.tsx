@@ -1,6 +1,6 @@
 "use client";
 
-import { CircularProgress, Typography, Paper, Skeleton } from "@mui/material";
+import { Typography, Paper, Skeleton } from "@mui/material";
 
 const groupsLoadingPage = () => {
   return (

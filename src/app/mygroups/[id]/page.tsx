@@ -33,7 +33,7 @@ export interface GroupMedia {
   added_by: string;
   added_reason: string;
   watched: boolean;
-  group_id: number;
+  group_id: string;
   media_id: number;
   media: {
     created_at: string;
@@ -56,6 +56,16 @@ export interface Sorted {
 
 const groupPageById = async ({ params: { id } }: Props) => {
   const supabase = createServerComponentClient<Database>({ cookies });
+
+  const { data: session } = await supabase.auth.getSession();
+  if (!session.session) redirect("/login");
+
+  //if user isn't subscribed, check the primary groups. If this isn't one of the primary groups, block access
+  let { data: user, error: userError } = await supabase.from("users").select("*").single();
+  let block = false;
+  if (!user?.is_subscribed) {
+    if (user?.primary_created !== id && user?.primary_joined !== id) block = true;
+  }
 
   const fetchMediaCollection = async (id: string) => {
     let { data: group_media, error } = await supabase
@@ -80,9 +90,7 @@ const groupPageById = async ({ params: { id } }: Props) => {
   const sortedData = reorganizeGroupMedia(data);
   // console.log(JSON.stringify(sortedData, null, 2));
 
-  const { data: session } = await supabase.auth.getSession();
-  if (!session.session) redirect("/login");
-
+  if (block) return <h1>Either buy premium, or change this group to your primary group</h1>;
   return (
     <main>
       <TabDisplay tabNames={["Movies", "TV Shows", "Group Info"]}>

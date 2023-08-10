@@ -1,6 +1,5 @@
 import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
 import { cookies } from "next/headers";
-import { Database } from "@/src/lib/database.types";
 import AcceptInvite from "@/src/components/AcceptInvite";
 import { redirect } from "next/navigation";
 import { Typography, Paper, Avatar } from "@mui/material";
@@ -14,7 +13,7 @@ interface Invite {
   created_at: string;
   created_by: string;
   email: string;
-  group_id: number;
+  group_id: string;
   id: string;
   user_public_profile: {
     created_at: string | null;

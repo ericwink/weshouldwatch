@@ -18,6 +18,8 @@ const groupsPage = async () => {
   let { data: groups, error } = await supabase.from("group").select("*, group_media(media_id, media(media_type)), user_group_join(group_id, user_id)");
   if (error) console.log(error);
 
+  let createdGroups = 0;
+  let joinedGroups = 0;
   const groupsSummary = groups?.map(group => {
     const groupSummary = {
       id: group.id,
@@ -28,8 +30,17 @@ const groupsPage = async () => {
     };
 
     group.group_media.forEach(media => (media.media?.media_type === "tv" ? groupSummary.group_media.tv++ : groupSummary.group_media.movie++));
+    if (group.created_by === session.session?.user.id) {
+      createdGroups++;
+    } else {
+      joinedGroups++;
+    }
     return groupSummary;
   });
+
+  let { data: user, error: userError } = await supabase.from("users").select("is_subscribed").single();
+
+  const showLocks = (!user?.is_subscribed && createdGroups > 1) || (!user?.is_subscribed && joinedGroups > 1);
 
   const usersGroups = () => {
     if (groups?.length! < 1) return <div>No Groups Yet!</div>;
@@ -42,6 +53,7 @@ const groupsPage = async () => {
         {groupsSummary?.map(group => (
           <GroupCard
             key={group.id}
+            showLock={showLocks}
             {...group}
           />
         ))}

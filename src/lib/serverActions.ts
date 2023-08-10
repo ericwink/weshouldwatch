@@ -6,22 +6,11 @@ import { Database } from "@/src/lib/database.types";
 import { revalidatePath } from "next/cache";
 import type { MediaPayload } from "./interface";
 import Stripe from "stripe";
-import axios from "axios";
 
 const supabase = createServerComponentClient<Database>({ cookies });
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
   apiVersion: "2022-11-15",
 });
-
-export async function addGroup(name: string) {
-  const { data, error } = await supabase.from("group").insert([{ group_name: name }]);
-  if (error) {
-    console.log(error);
-    return { error: true, message: "An error occurred. Please try again." };
-  }
-  revalidatePath("/mygroups");
-  return { error: false, message: "succes!" };
-}
 
 // create a group, here rather than API becuase revalidatePath doesn't work there for some reason
 export async function createGroup(groupName: string) {
@@ -48,16 +37,20 @@ export async function createGroup(groupName: string) {
   if (!userData?.is_subscribed && groups!.length >= 1) return { error: true, message: "You must be a Premium member to make multiple groups" };
 
   const { data, error } = await supabase.from("group").insert([{ group_name: groupName }]);
+  // .select()
+  // .single();
   if (error) {
     console.log(error);
     return { error: true, message: "There was an error please try again" };
   }
 
+  // const { data: userUpdate, error: userUpdateError } = await supabase.from("users").update({ primary_created: data.id, primary_created_update: null }).eq("id", user.id);
+
   revalidatePath("/mygroups");
   return { error: false, message: "Group created successfully" };
 }
 
-export async function deleteGroup(id: number) {
+export async function deleteGroup(id: string) {
   const {
     data: { user },
   } = await supabase.auth.getUser();
@@ -72,7 +65,7 @@ export async function deleteGroup(id: number) {
   return { error: false, message: "Group Deleted!" };
 }
 
-export async function leaveGroup(id: number) {
+export async function leaveGroup(id: string) {
   const {
     data: { user },
   } = await supabase.auth.getUser();
@@ -84,6 +77,14 @@ export async function leaveGroup(id: number) {
   // do we want to remove all contributions?
   // const { error: removeMediaError } = await supabase.from("group_media").delete().eq("added_by", user.id).eq("group_id", id);
   // if (removeMediaError) return { error: true, message: "An error occurred. Please try again." };
+
+  //if user has this group as their selected primary, remove it and null the date
+  let { data: checkPrimaryJoined, error: priaryJoinedError } = await supabase.from("users").select("primary_joined").single();
+
+  if (checkPrimaryJoined?.primary_joined === id) {
+    const { data: updatePrimaryJoined, error: PrimaryJoinedError } = await supabase.from("users").update({ primary_joined: null, primary_joined_update: null }).eq("id", user.id);
+    if (PrimaryJoinedError) return { error: true, message: "There was an error, please try again." };
+  }
 
   revalidatePath("/mygroups");
   return { error: false, message: "You have successfully left the group!" };
@@ -98,7 +99,7 @@ export async function addMedia(mediaPayload: MediaPayload) {
   return { message: "succes!" };
 }
 
-export async function addMediaToGroup(mediaPayload: MediaPayload, groupId: number, reason: string) {
+export async function addMediaToGroup(mediaPayload: MediaPayload, groupId: string, reason: string) {
   const result = await addMedia(mediaPayload);
   if (result.error) return result;
   const { data, error } = await supabase.from("group_media").insert([{ group_id: groupId, added_reason: reason, watched: false, media_id: mediaPayload.tmdb_id }]);
@@ -110,7 +111,7 @@ export async function addMediaToGroup(mediaPayload: MediaPayload, groupId: numbe
   return { error: false, message: "Successfully added to group!" };
 }
 
-export async function acceptInvite(group_id: number) {
+export async function acceptInvite(group_id: string) {
   const {
     data: { user },
   } = await supabase.auth.getUser();
@@ -139,6 +140,14 @@ export async function acceptInvite(group_id: number) {
     console.log(error);
     return { error: true, message: "An error occurred. Please try again." };
   }
+
+  //update user record
+  const { data: userUpdate, error: userUpdateError } = await supabase.from("users").update({ primary_joined: group_id, primary_joined_update: null }).eq("id", user.id);
+  if (userUpdateError) {
+    console.log(userUpdateError);
+    return { error: true, message: "An error occurred. Please try again." };
+  }
+
   return { error: false, message: "Invitation accepted!" };
 }
 
@@ -193,4 +202,35 @@ export async function stripeCustomerPortal() {
     return_url: `${process.env.HOST_URL}/account`,
   });
   return { error: false, sessionUrl: session.url };
+}
+
+export async function updatePrimary(columnName: "primary_created" | "primary_joined", groupId: string) {
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (!user) return { error: true, message: "An error occurred. Please sign in and try again." };
+
+  const dateColumnName: "primary_created_update" | "primary_joined_update" = `${columnName}_update`;
+
+  let { data: lastUpdatedData, error: dateError } = await supabase.from("users").select(dateColumnName).single();
+
+  type LastUpdatedData = {
+    [key in "primary_created_update" | "primary_joined_update"]: string | null;
+  };
+
+  if (lastUpdatedData) {
+    const storedDate = (lastUpdatedData as LastUpdatedData)[dateColumnName];
+    const lastUpdate = new Date(storedDate as string);
+    const currentDate = new Date();
+    const millisecondsDiff = currentDate.getTime() - lastUpdate.getTime();
+    const daysDifference = Math.floor(millisecondsDiff / (1000 * 60 * 60 * 24));
+    if (daysDifference < 30) return { error: true, message: `Primary group can only be updated once every 30 days. Last updated ${storedDate}` };
+  }
+
+  const { data, error } = await supabase
+    .from("users")
+    .update({ [columnName]: groupId, [dateColumnName]: new Date().toISOString() })
+    .eq("id", user.id);
+  if (error) return { error: true, message: "There was an error, please try again." };
+  return { error: false, message: "Primary group updated!" };
 }

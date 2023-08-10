@@ -10,7 +10,7 @@ import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 
 interface Props {
   group_name: string | null;
-  id: number;
+  id: string;
 }
 
 const DeleteGroup = ({ id, group_name }: Props) => {

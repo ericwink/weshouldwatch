@@ -9,16 +9,18 @@ import Link from "next/link";
 import DeleteGroup from "./DeleteGroup";
 import LeaveGroup from "./LeaveGroup";
 import { useUserStore } from "@/src/lib/store";
+import GroupLock from "./GroupLock";
 
 interface Props {
-  id: number;
+  id: string;
   group_name: string;
   created_by: string;
   group_media: { movie: number; tv: number };
   members: number;
+  showLock: boolean;
 }
 
-const GroupCard = ({ group_name, id, created_by, group_media, members }: Props) => {
+const GroupCard = ({ group_name, id, created_by, group_media, members, showLock }: Props) => {
   const user = useUserStore(state => state.user);
 
   return (
@@ -27,13 +29,21 @@ const GroupCard = ({ group_name, id, created_by, group_media, members }: Props) 
         elevation={3}
         sx={{ p: 1, minWidth: "160px" }}
       >
-        <Typography
-          variant="h5"
-          component="div"
-          mb={2}
-        >
-          {group_name}
-        </Typography>
+        <Box sx={{ display: "flex", gap: 1, alignItems: "center" }}>
+          <Typography
+            variant="h5"
+            component="div"
+            mb={2}
+          >
+            {group_name}
+          </Typography>
+          {showLock && (
+            <GroupLock
+              groupId={id}
+              created_by={created_by}
+            />
+          )}
+        </Box>
         <Grid container>
           <Grid
             xs={4}
@@ -77,13 +87,12 @@ const GroupCard = ({ group_name, id, created_by, group_media, members }: Props) 
             >
               <Button>View Details</Button>
             </Link>
-            {user?.id === created_by && (
+            {user?.id === created_by ? (
               <DeleteGroup
                 group_name={group_name}
                 id={id}
               />
-            )}
-            {user?.id !== created_by && (
+            ) : (
               <LeaveGroup
                 group_name={group_name}
                 id={id}
