@@ -13,7 +13,7 @@ interface Invite {
   created_at: string;
   created_by: string;
   email: string;
-  group_id: number;
+  group_id: string;
   id: string;
   user_public_profile: {
     created_at: string | null;

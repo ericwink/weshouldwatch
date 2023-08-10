@@ -61,7 +61,6 @@ const groupPageById = async ({ params: { id } }: Props) => {
   if (!session.session) redirect("/login");
 
   //if user isn't subscribed, check the primary groups. If this isn't one of the primary groups, block access
-  //this logic needs to be adjusted unless we set a primary by default somehow
   let { data: user, error: userError } = await supabase.from("users").select("*").single();
   let block = false;
   if (!user?.is_subscribed) {
