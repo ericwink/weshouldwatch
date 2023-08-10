@@ -16,13 +16,14 @@ interface Props {
 const LeaveGroup = ({ id, group_name }: Props) => {
   const [showDeleteModal, setShowDeleteModal] = useState(false);
 
-  const { mutate: leaveTheGroup } = useMutation({
+  const { mutate: leaveTheGroup, isLoading } = useMutation({
     mutationFn: async () => {
       const result = await leaveGroup(id);
       if (result.error) throw new Error(result.message);
     },
     onSuccess: () => {
       toast.success("You've left the group!", { theme: "colored" });
+      setShowDeleteModal(false);
     },
     onError: (error: any) => {
       toast.error(error.message, { theme: "colored" });
@@ -44,6 +45,7 @@ const LeaveGroup = ({ id, group_name }: Props) => {
         warningMessage="This action will remove you from the group! Are you sure you want to proceed?"
         extraSecure={true}
         extraSecureCheck={group_name as string}
+        isLoading={isLoading}
       />
     </div>
   );
