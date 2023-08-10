@@ -27,9 +27,12 @@ const MediaCardCollection = ({ media, groupId }: Props) => {
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const queryClient = useQueryClient();
 
-  const { mutate: removeMedia } = useMutation({
+  const { mutate: removeMedia, isLoading } = useMutation({
     mutationFn: async () => await removeMediaFromGroup(media.entry_id, groupId),
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["groupMedia", { id: groupId }, { type: media.media_type }] }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["groupMedia", { id: groupId }, { type: media.media_type }] });
+      setShowDeleteModal(false);
+    },
     onError: () => toast.error("There was an error, please try again!", { theme: "colored" }),
   });
 
@@ -62,6 +65,7 @@ const MediaCardCollection = ({ media, groupId }: Props) => {
         setShowDeleteModal={setShowDeleteModal}
         confirmDelete={() => removeMedia()}
         warningMessage="This media and all associated chats will be removed forever."
+        isLoading={isLoading}
       />
       <Grid>
         <Paper
