@@ -5,7 +5,7 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
-import { TextField } from "@mui/material";
+import { TextField, CircularProgress } from "@mui/material";
 
 interface Props {
   confirmDelete: () => void;
@@ -14,9 +14,10 @@ interface Props {
   setShowDeleteModal: React.Dispatch<React.SetStateAction<boolean>>;
   extraSecure?: boolean;
   extraSecureCheck?: string;
+  isLoading: boolean;
 }
 
-export default function ConfirmDelete({ showDeleteModal, setShowDeleteModal, warningMessage, confirmDelete, extraSecure = false, extraSecureCheck }: Props) {
+export default function ConfirmDelete({ showDeleteModal, setShowDeleteModal, warningMessage, confirmDelete, extraSecure = false, extraSecureCheck, isLoading }: Props) {
   const [input, setInput] = useState("");
 
   const handleClose = () => {
@@ -25,7 +26,6 @@ export default function ConfirmDelete({ showDeleteModal, setShowDeleteModal, war
   };
 
   const handleConfirm = () => {
-    handleClose();
     confirmDelete();
   };
 
@@ -54,6 +54,12 @@ export default function ConfirmDelete({ showDeleteModal, setShowDeleteModal, war
           onClick={handleConfirm}
           disabled={extraSecure && input !== extraSecureCheck}
         >
+          {isLoading && (
+            <CircularProgress
+              size={24}
+              sx={{ position: "absolute", zIndex: 1, top: "50%", left: "50%", marginTop: "-12px", marginLeft: "-12px" }}
+            />
+          )}
           Delete
         </Button>
         <Button

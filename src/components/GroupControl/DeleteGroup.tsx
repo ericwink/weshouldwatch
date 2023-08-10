@@ -16,13 +16,14 @@ interface Props {
 const DeleteGroup = ({ id, group_name }: Props) => {
   const [showDeleteModal, setShowDeleteModal] = useState(false);
 
-  const { mutate: deleteThisGroup } = useMutation({
+  const { mutate: deleteThisGroup, isLoading } = useMutation({
     mutationFn: async () => {
       const result = await deleteGroup(id);
       if (result.error) throw new Error(result.message);
     },
     onSuccess: () => {
       toast.success("Group deleted successfully", { theme: "colored" });
+      setShowDeleteModal(false);
     },
     onError: (error: any) => {
       toast.error(error.message, { theme: "colored" });
@@ -44,6 +45,7 @@ const DeleteGroup = ({ id, group_name }: Props) => {
         warningMessage="This action will delete ALL group data and cannot be undone."
         extraSecure={true}
         extraSecureCheck={group_name as string}
+        isLoading={isLoading}
       />
     </div>
   );

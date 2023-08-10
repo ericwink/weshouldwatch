@@ -1,14 +1,14 @@
 "use client";
 
-import { IconButton } from "@mui/material";
+import { IconButton, Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, CircularProgress } from "@mui/material";
 import LockIcon from "@mui/icons-material/Lock";
 import LockOpenIcon from "@mui/icons-material/LockOpen";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
-import { CircularProgress } from "@mui/material";
 import { useUserStore } from "@/src/lib/store";
 import { updatePrimary } from "@/src/lib/serverActions";
 import { toast } from "react-toastify";
+import { useState } from "react";
 
 interface Props {
   groupId: string;
@@ -19,8 +19,14 @@ const GroupLock = ({ groupId, created_by }: Props) => {
   const supabase = createClientComponentClient();
   const user = useUserStore(state => state.user);
   const queryClient = useQueryClient();
+  const [showModal, setShowModal] = useState(false);
+
+  const handleClose = () => {
+    setShowModal(false);
+  };
 
   const groupType = created_by === user?.id ? "primary_created" : "primary_joined";
+  const groupTypeModal = created_by === user?.id ? "Created" : "Joined";
 
   const { data: primaryGroups, isLoading } = useQuery({
     queryKey: ["primaryGroups"],
@@ -30,7 +36,7 @@ const GroupLock = ({ groupId, created_by }: Props) => {
     },
   });
 
-  const { mutate: updateGroup } = useMutation({
+  const { mutate: updateGroup, isLoading: updateLoading } = useMutation({
     mutationFn: async () => {
       const response = await updatePrimary(groupType, groupId);
       if (response.error) throw new Error(response.message);
@@ -38,6 +44,7 @@ const GroupLock = ({ groupId, created_by }: Props) => {
     onSuccess: () => {
       queryClient.invalidateQueries(["primaryGroups"]);
       toast.success("Group updated successfully", { theme: "colored" });
+      setShowModal(false);
     },
     onError: (error: any) => toast.error(error.message, { theme: "colored" }),
   });
@@ -53,7 +60,7 @@ const GroupLock = ({ groupId, created_by }: Props) => {
 
   const locked = (
     <IconButton
-      onClick={() => updateGroup()}
+      onClick={() => setShowModal(true)}
       sx={{ mt: -2 }}
     >
       <LockIcon />
@@ -67,7 +74,40 @@ const GroupLock = ({ groupId, created_by }: Props) => {
         sx={{ mt: -2 }}
       />
     );
-  return <div>{groupId === primaryGroups?.primary_created || groupId === primaryGroups?.primary_joined ? unlocked : locked}</div>;
+  return (
+    <div>
+      {groupId === primaryGroups?.primary_created || groupId === primaryGroups?.primary_joined ? unlocked : locked}
+
+      <Dialog
+        open={showModal}
+        onClose={handleClose}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">{`Unlock ${groupTypeModal} Group`}</DialogTitle>
+        <DialogContent sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
+          <DialogContentText id="alert-dialog-description">{`Since you are no longer a Premium member, you are only allowed one Created Group and one Joined Group. Since you belong to numerous groups, once every 30 days you are permitted to update which group you would like to access. Would you like to proceed?`}</DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => updateGroup()}>
+            {updateLoading && (
+              <CircularProgress
+                size={24}
+                sx={{ position: "absolute", zIndex: 1, top: "50%", left: "50%", marginTop: "-12px", marginLeft: "-12px" }}
+              />
+            )}
+            {`Unlock ${groupTypeModal} Group`}
+          </Button>
+          <Button
+            onClick={handleClose}
+            autoFocus
+          >
+            Cancel
+          </Button>
+        </DialogActions>
+      </Dialog>
+    </div>
+  );
 };
 
 export default GroupLock;
