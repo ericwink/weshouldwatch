@@ -35,6 +35,8 @@ const LogInSignUp = ({ type }: Props) => {
     </Typography>
   );
 
+  const policies = <></>;
+
   const { mutate: handleLogin, isLoading: loading } = useMutation({
     mutationFn: async () => await login(email, password),
     onSuccess: data => {
@@ -129,6 +131,33 @@ const LogInSignUp = ({ type }: Props) => {
       </Typography>
       {submitted ? emailSent : loginForm}
       {!submitted && authRedirect}
+      <Box sx={{ display: "flex", flexDirection: "column", gap: 2, p: 2 }}>
+        <Typography
+          variant="caption"
+          textAlign="center"
+        >
+          Use of the service indicates agreement to our policies:
+        </Typography>
+        <Box sx={{ display: "flex", gap: 1, justifyContent: "center" }}>
+          <Typography variant="caption">
+            <Link href="/terms">Terms</Link>
+          </Typography>
+          <Divider
+            orientation="vertical"
+            flexItem
+          />
+          <Typography variant="caption">
+            <Link href="/privacy">Privacy</Link>
+          </Typography>
+          <Divider
+            orientation="vertical"
+            flexItem
+          />
+          <Typography variant="caption">
+            <Link href="/cookies">Cookies</Link>
+          </Typography>
+        </Box>
+      </Box>
     </Box>
   );
 };

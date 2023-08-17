@@ -3,6 +3,8 @@ export const revalidate = 0;
 import Stripe from "stripe";
 import Pricing from "@/src/components/Pricing";
 import FreeTier from "@/src/components/FreeTier";
+import { Container, Typography, Box } from "@mui/material";
+import Link from "next/link";
 
 interface PriceInfo {
   id: string;
@@ -37,18 +39,27 @@ const PricingPage = async () => {
   const sortedPlans = plans.sort((a, b) => a.price - b.price);
 
   return (
-    <div className="flex justify-center items-center flex-col gap-4 pt-10 lg:flex-row lg:h-[calc(100vh-65px)] lg:pt-0">
-      <FreeTier />
-      {sortedPlans.map(plan => {
-        if (plan.active === true)
-          return (
-            <Pricing
-              key={plan.id}
-              {...plan}
-            />
-          );
-      })}
-    </div>
+    <Container sx={{ display: "flex", flexDirection: "column", gap: 4, alignItems: "center", p: 2, minHeight: { xs: "100vh", md: "calc(100vh - 65px)" }, justifyContent: "center" }}>
+      <Box sx={{ display: "flex", flexDirection: { xs: "column", md: "row" }, gap: 4 }}>
+        <FreeTier />
+        {sortedPlans.map(plan => {
+          if (plan.active === true)
+            return (
+              <Pricing
+                key={plan.id}
+                {...plan}
+              />
+            );
+        })}
+      </Box>
+      <Typography>
+        Please review our{" "}
+        <Link href="/refund">
+          <b>Refund Policy</b>
+        </Link>{" "}
+        prior to purchase
+      </Typography>
+    </Container>
   );
 };
 
