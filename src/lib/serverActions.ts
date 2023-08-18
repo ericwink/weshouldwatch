@@ -6,6 +6,7 @@ import { Database } from "@/src/lib/database.types";
 import { revalidatePath } from "next/cache";
 import type { MediaPayload } from "./interface";
 import Stripe from "stripe";
+import sgMail from "@sendgrid/mail";
 
 const supabase = createServerComponentClient<Database>({ cookies });
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
@@ -239,5 +240,36 @@ export async function updatePrimary(columnName: "primary_created" | "primary_joi
   } catch (error: any) {
     console.log(error);
     return { error: true, message: "There was an error, please try again." };
+  }
+}
+
+export async function handleFormSubmit(formData: FormData) {
+  try {
+    const request = {
+      name: formData.get("name"),
+      email: formData.get("email"),
+      onBehalfOf: formData.get("on-behalf-of"),
+      reason: formData.get("reason"),
+      allAccurate: formData.get("all-accurate"),
+      consumerOrAgent: formData.get("consumer-or-agent"),
+      understandDeletion: formData.get("understand-deletion"),
+      agreeToPrivacyPolicy: formData.get("agree-to-privacy-policy"),
+    };
+
+    sgMail.setApiKey(process.env.SENDGRID_API_KEY!);
+
+    const message = {
+      from: process.env.EMAIL_FROM!,
+      to: "weshouldwatchmailer@gmail.com",
+      subject: "IMPORTANT - DSAR FORM SUBMISSION",
+      html: JSON.stringify(request),
+    };
+
+    // send the email
+    await sgMail.send(message);
+    return { error: false, message: "success" };
+  } catch (error) {
+    console.log(error);
+    return { error: true, message: "there was an error" };
   }
 }
