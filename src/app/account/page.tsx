@@ -8,6 +8,7 @@ import ImageUploader from "@/src/components/Account/ImageUploader";
 import SubscriptionDetails from "@/src/components/Account/SubscriptionDetails";
 import ManagePlan from "@/src/components/Account/ManagePlan";
 import UpdateUsername from "@/src/components/Account/UpdateUsername";
+import DeleteAccount from "@/src/components/Account/DeleteAccount";
 
 const AccountPage = async () => {
   const supabase = createServerComponentClient({ cookies });
@@ -48,6 +49,7 @@ const AccountPage = async () => {
             <ManagePlan />
           </>
         )}
+        <DeleteAccount user={user} />
       </Paper>
     </div>
   );
