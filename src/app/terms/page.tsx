@@ -1,4 +1,4 @@
-import { Container, Box, Typography } from "@mui/material";
+import { Container, Box, Typography, Link } from "@mui/material";
 
 const TermsPage = () => {
   return (
@@ -232,7 +232,7 @@ const TermsPage = () => {
         Contacting us
       </Typography>
       <Typography>If you have any questions, concerns, or complaints regarding this Agreement, we encourage you to contact us using the details below:</Typography>
-      <Typography>WeShouldWatchMailer@gmail.com</Typography>
+      <Link href="mailto:weshouldwatchmailer@gmail.com">WeShouldWatchMailer@gmail.com</Link>
       <Typography>This document was last updated on August 18, 2023</Typography>
     </Container>
   );
