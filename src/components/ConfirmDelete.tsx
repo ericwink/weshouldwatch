@@ -41,7 +41,7 @@ export default function ConfirmDelete({ showDeleteModal, setShowDeleteModal, war
         <DialogContentText id="alert-dialog-description">{`${warningMessage}`}</DialogContentText>
         {extraSecure && (
           <>
-            <DialogContentText>{`Enter the name of the group "${extraSecureCheck}" to proceed.`}</DialogContentText>
+            <DialogContentText>{`Enter "${extraSecureCheck}" below to proceed.`}</DialogContentText>
             <TextField
               onChange={e => setInput(e.target.value)}
               value={input}

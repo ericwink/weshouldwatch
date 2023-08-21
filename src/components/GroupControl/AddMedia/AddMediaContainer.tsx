@@ -17,7 +17,7 @@ const AddMediaContainer = async ({ media_id, mediaPayload }: Props) => {
     data: { session },
     error,
   } = await supabase.auth.getSession();
-  if (!session) return <p>Log in to add movies to a group!</p>;
+  if (!session) return <p>Log in to add media to a group!</p>;
 
   const fetchGroupsAndMovies = async () => {
     let { data: group, error } = await supabase.from("group").select(`
