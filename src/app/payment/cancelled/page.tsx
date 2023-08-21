@@ -4,7 +4,7 @@ import { Container, Typography, Link } from "@mui/material";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 
-const paymentSuccessPage = () => {
+const PaymentCancelledPage = () => {
   const router = useRouter();
 
   useEffect(() => {
@@ -32,4 +32,4 @@ const paymentSuccessPage = () => {
   );
 };
 
-export default paymentSuccessPage;
+export default PaymentCancelledPage;

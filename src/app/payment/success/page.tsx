@@ -35,7 +35,7 @@ const paymentSuccessPage = () => {
       >
         Journal/Live Chat!
       </Typography>
-      <Typography>Want to write your thoughts about the media you've seen? Want to have a space to chat about the movie with friends live as you're watching it? Now you've got it! </Typography>
+      <Typography>{`Want to write your thoughts about the media you've seen? Want to have a space to chat about the movie with friends live as you're watching it? Now you've got it!`}</Typography>
       <Typography
         variant="h5"
         component="h2"
