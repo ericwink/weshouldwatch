@@ -1,5 +1,4 @@
-import { Container, Typography } from "@mui/material";
-import Link from "next/link";
+import { Container, Typography, Link } from "@mui/material";
 
 const CookiesPage = () => {
   return (
@@ -72,12 +71,13 @@ const CookiesPage = () => {
       </Typography>
       <Typography>
         If you don’t like the idea of cookies or certain types of cookies, you can change your browser’s settings to delete cookies that have already been set and to not accept new cookies. Visit{" "}
-        <a
-          className="underline"
+        <Link
           href="https://www.internetcookies.com/"
+          target="_blank"
+          rel="noopener"
         >
           internetcookies.com
-        </a>{" "}
+        </Link>{" "}
         to learn more about how to do this.
       </Typography>
       <Typography>Please note, however, that if you delete cookies or do not accept them, you might not be able to use all of the features the Website and Services offer.</Typography>

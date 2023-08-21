@@ -1,5 +1,4 @@
-import { Container, Box, Typography } from "@mui/material";
-import Link from "next/link";
+import { Container, Box, Typography, Link } from "@mui/material";
 
 const PrivacyPage = () => {
   return (
@@ -15,8 +14,15 @@ const PrivacyPage = () => {
       </Typography>
       <Typography>
         We respect your privacy and are committed to protecting it through our compliance with this privacy policy (“Policy”). This Policy describes the types of information we may collect from you or that you may provide (“Personal Information”) on
-        the weshouldwatch.app website (“Website” or “Service”) and any of its related products and services (collectively, “Services”), and our practices for collecting, using, maintaining, protecting, and disclosing that Personal Information. It
-        also describes the choices available to you regarding our use of your Personal Information and how you can access and update it.
+        the{" "}
+        <Link
+          href="https://www.weshouldwatch.app/"
+          target="_blank"
+        >
+          weshouldwatch.app
+        </Link>{" "}
+        website (“Website” or “Service”) and any of its related products and services (collectively, “Services”), and our practices for collecting, using, maintaining, protecting, and disclosing that Personal Information. It also describes the
+        choices available to you regarding our use of your Personal Information and how you can access and update it.
       </Typography>
       <Typography>
         This Policy is a legally binding agreement between you (“User”, “you” or “your”) and this Website operator (“Operator”, “we”, “us” or “our”). If you are entering into this Policy on behalf of a business or other legal entity, you represent
@@ -334,13 +340,7 @@ const PrivacyPage = () => {
         Some browsers incorporate a Do Not Track feature that signals to websites you visit that you do not want to have your online activity tracked. Tracking is not the same as using or collecting information in connection with a website. For these
         purposes, tracking refers to collecting personally identifiable information from consumers who use or visit a website or online service as they move across different websites over time. How browsers communicate the Do Not Track signal is not
         yet uniform. As a result, the Website and Services are not yet set up to interpret or respond to Do Not Track signals communicated by your browser. Even so, as described in more detail throughout this Policy, we limit our use and collection
-        of your Personal Information. For a description of Do Not Track protocols for browsers and mobile devices or to learn more about the choices available to you, visit{" "}
-        <a
-          className="underline"
-          href="https://www.internetcookies.com/"
-        >
-          internetcookies.com
-        </a>
+        of your Personal Information. For a description of Do Not Track protocols for browsers and mobile devices or to learn more about the choices available to you, visit <Link href="https://www.internetcookies.com/">internetcookies.com</Link>
       </Typography>
       <Typography
         variant="h5"
@@ -414,12 +414,10 @@ const PrivacyPage = () => {
       </Typography>
 
       <Typography>If you have any questions regarding the information we may hold about you or if you wish to exercise your rights, you may use the following data subject request form to submit your request:</Typography>
-      <Typography>
-        <Link href="/dsar-form">Submit a data access request</Link>
-      </Typography>
+      <Link href="/dsar-form">Submit a data access request</Link>
       <Typography>If you have any other questions, concerns, or complaints regarding this Policy, we encourage you to contact us using the details below:</Typography>
 
-      <Typography>WeShouldWatchMailer@gmail.com</Typography>
+      <Link href="mailto:weshouldwatchmailer@gmail.com">WeShouldWatchMailer@gmail.com</Link>
       <Typography>
         We will attempt to resolve complaints and disputes and make every reasonable effort to honor your wish to exercise your rights as quickly as possible and in any event, within the timescales provided by applicable data protection laws.
       </Typography>
