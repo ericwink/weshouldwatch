@@ -2,12 +2,12 @@
 
 import { TextField, Button, Box, Typography, Divider, CircularProgress } from "@mui/material";
 import { useState, ChangeEvent } from "react";
-import Link from "next/link";
 import { signup, login, gmailLogin } from "../lib/supabaseClientHelper";
 import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
 import { useMutation } from "@tanstack/react-query";
 import { useUserStore } from "../lib/store";
+import { z } from "zod";
 
 interface Props {
   type: "login" | "signup";
@@ -22,20 +22,7 @@ const LogInSignUp = ({ type }: Props) => {
   const router = useRouter();
   const setUser = useUserStore(state => state.setUser);
 
-  const emailRegex = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
-
-  const authRedirect = (
-    <Typography textAlign="center">
-      {type === "login" && `Need an account? `}
-      {type === "signup" && `Already have an account? `}
-      <Button>
-        {type === "login" && <Link href={"/signup"}>Sign Up</Link>}
-        {type === "signup" && <Link href={"/login"}>Log In</Link>}
-      </Button>
-    </Typography>
-  );
-
-  const policies = <></>;
+  const mySchema = z.string().email({ message: "Please enter a valid email address" });
 
   const { mutate: handleLogin, isLoading: loading } = useMutation({
     mutationFn: async () => await login(email, password),
@@ -50,18 +37,18 @@ const LogInSignUp = ({ type }: Props) => {
 
   const { mutate: handleSignup, isLoading } = useMutation({
     mutationFn: async () => {
-      const isValidEmail = emailRegex.test(email);
-      if (!isValidEmail) {
-        setError(true);
-        throw new Error("Please enter a valid email address");
-      }
+      mySchema.parse(email);
       await signup(email, password);
     },
     onSuccess: () => {
       setSubmitted(true);
     },
-    onError: (error: any) => {
-      toast.error(`${error.message}`, { theme: "colored" });
+    onError: (error: any | z.ZodError) => {
+      if (error instanceof z.ZodError) {
+        toast.error(`${error.issues[0].message}`, { theme: "colored" });
+      } else {
+        toast.error(`${error.message}`, { theme: "colored" });
+      }
     },
   });
 
@@ -126,38 +113,8 @@ const LogInSignUp = ({ type }: Props) => {
         component="h2"
         mb={1}
         textAlign="center"
-      >
-        {type === "login" ? "Log In" : "Create An Account"}
-      </Typography>
+      ></Typography>
       {submitted ? emailSent : loginForm}
-      {!submitted && authRedirect}
-      <Box sx={{ display: "flex", flexDirection: "column", gap: 2, p: 2 }}>
-        <Typography
-          variant="caption"
-          textAlign="center"
-        >
-          Use of the service indicates agreement to our policies:
-        </Typography>
-        <Box sx={{ display: "flex", gap: 1, justifyContent: "center" }}>
-          <Typography variant="caption">
-            <Link href="/terms">Terms</Link>
-          </Typography>
-          <Divider
-            orientation="vertical"
-            flexItem
-          />
-          <Typography variant="caption">
-            <Link href="/privacy">Privacy</Link>
-          </Typography>
-          <Divider
-            orientation="vertical"
-            flexItem
-          />
-          <Typography variant="caption">
-            <Link href="/cookies">Cookies</Link>
-          </Typography>
-        </Box>
-      </Box>
     </Box>
   );
 };

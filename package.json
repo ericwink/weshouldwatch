@@ -42,6 +42,7 @@
     "tailwindcss-animate": "^1.0.5",
     "tss-react": "^4.8.6",
     "typescript": "4.9.5",
+    "zod": "^3.22.2",
     "zustand": "^4.3.9"
   },
   "devDependencies": {

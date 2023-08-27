@@ -11,8 +11,6 @@ export async function POST(req: Request, res: NextApiResponse) {
   const { userId, stripeId }: { userId: string; stripeId: string } = await req.json();
 
   try {
-    console.log(userId, stripeId);
-
     //check that user exists
     const {
       data: { user },
