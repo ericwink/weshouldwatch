@@ -5,7 +5,7 @@ import PeopleCard from "@/src/components/Cards/PeopleCard";
 const getData = async (mediaType: string) => {
   const tmdbKey = process.env.MOVIE_DB_API;
   const url = `https://api.themoviedb.org/3/trending/${mediaType}/day?include_adult=false&api_key=${tmdbKey}`;
-  const result = await fetch(url, { next: { revalidate: 86400 } });
+  const result = await fetch(url, { next: { revalidate: 3600 } });
   const media = await result.json();
   // await new Promise(resolve => setTimeout(resolve, 10000));
   return media.results;
