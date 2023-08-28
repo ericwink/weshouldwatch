@@ -5,6 +5,7 @@ import { useState } from "react";
 import { toast } from "react-toastify";
 import { useMutation } from "@tanstack/react-query";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
+import SpinnerButton from "../SpinnerButton";
 import axios from "axios";
 import { z } from "zod";
 
@@ -68,19 +69,14 @@ export default function InviteToAGroup({ groupId }: { groupId: string }) {
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose}>Cancel</Button>
-          <Button
+
+          <SpinnerButton
             onClick={() => sendInvite()}
             disabled={isLoading || !email}
-            sx={{ position: "relative" }}
+            isLoading={isLoading}
           >
-            {isLoading && (
-              <CircularProgress
-                size={24}
-                sx={{ position: "absolute", zIndex: 1, top: "50%", left: "50%", marginTop: "-12px", marginLeft: "-12px" }}
-              />
-            )}
             Submit
-          </Button>
+          </SpinnerButton>
         </DialogActions>
       </Dialog>
     </div>

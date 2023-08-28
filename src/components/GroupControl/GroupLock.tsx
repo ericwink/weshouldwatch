@@ -9,6 +9,7 @@ import { useUserStore } from "@/src/lib/store";
 import { updatePrimary } from "@/src/lib/serverActions";
 import { toast } from "react-toastify";
 import { useState } from "react";
+import SpinnerButton from "../SpinnerButton";
 
 interface Props {
   groupId: string;
@@ -89,15 +90,13 @@ const GroupLock = ({ groupId, created_by }: Props) => {
           <DialogContentText id="alert-dialog-description">{`Since you are no longer a Premium member, you are only allowed one Created Group and one Joined Group. Since you belong to numerous groups, once every 30 days you are permitted to update which group you would like to access. Would you like to proceed?`}</DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={() => updateGroup()}>
-            {updateLoading && (
-              <CircularProgress
-                size={24}
-                sx={{ position: "absolute", zIndex: 1, top: "50%", left: "50%", marginTop: "-12px", marginLeft: "-12px" }}
-              />
-            )}
+          <SpinnerButton
+            onClick={() => updateGroup()}
+            isLoading={updateLoading}
+          >
             {`Unlock ${groupTypeModal} Group`}
-          </Button>
+          </SpinnerButton>
+
           <Button
             onClick={handleClose}
             autoFocus
