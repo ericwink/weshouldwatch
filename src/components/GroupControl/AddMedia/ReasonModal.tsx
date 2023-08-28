@@ -1,5 +1,6 @@
 import * as React from "react";
 import { TextField, Button, Modal, Typography, Box } from "@mui/material";
+import SpinnerButton from "../../SpinnerButton";
 
 const style = {
   position: "absolute" as "absolute",
@@ -18,9 +19,11 @@ interface Props {
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
   setReason: React.Dispatch<React.SetStateAction<string>>;
   handleSubmit: () => Promise<void>;
+  reason: string;
+  isLoading?: boolean;
 }
 
-export default function ReasonModal({ open, setOpen, setReason, handleSubmit }: Props) {
+export default function ReasonModal({ open, setOpen, reason, setReason, handleSubmit, isLoading = false }: Props) {
   const handleClose = () => setOpen(false);
 
   return (
@@ -49,7 +52,13 @@ export default function ReasonModal({ open, setOpen, setReason, handleSubmit }: 
             placeholder="I want to watch this because...."
             onChange={e => setReason(e.target.value)}
           />
-          <Button onClick={handleSubmit}>Submit</Button>
+          <SpinnerButton
+            onClick={() => handleSubmit()}
+            isLoading={isLoading}
+            disabled={!reason}
+          >
+            Submit
+          </SpinnerButton>
         </Box>
       </Modal>
     </div>

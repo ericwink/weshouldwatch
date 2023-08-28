@@ -36,12 +36,13 @@ const MediaCardCollection = ({ media, groupId }: Props) => {
     onError: () => toast.error("There was an error, please try again!", { theme: "colored" }),
   });
 
-  const { mutate: updateReason } = useMutation({
+  const { mutate: updateReason, isLoading: reasonLoading } = useMutation({
     mutationFn: async () => await axios.post("/api/group/editMedia", { columnToUpdate: "added_reason", newValue: newReason, rowId: media.entry_id }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["groupMedia", { id: groupId }, { type: media.media_type }] });
       setShowReasonModal(false);
       setNewReason("");
+      toast.success("Reason updated!", { theme: "colored" });
     },
     onError: () => toast.error("There was an error, please try again!", { theme: "colored" }),
   });
@@ -59,6 +60,8 @@ const MediaCardCollection = ({ media, groupId }: Props) => {
         setOpen={setShowReasonModal}
         handleSubmit={async () => await updateReason()}
         setReason={setNewReason}
+        reason={newReason}
+        isLoading={reasonLoading}
       />
       <ConfirmDelete
         showDeleteModal={showDeleteModal}

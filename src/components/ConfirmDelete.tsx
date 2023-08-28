@@ -5,7 +5,8 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
-import { TextField, CircularProgress } from "@mui/material";
+import { TextField } from "@mui/material";
+import SpinnerButton from "./SpinnerButton";
 
 interface Props {
   confirmDelete: () => void;
@@ -50,18 +51,14 @@ export default function ConfirmDelete({ showDeleteModal, setShowDeleteModal, war
         )}
       </DialogContent>
       <DialogActions>
-        <Button
-          onClick={handleConfirm}
+        <SpinnerButton
+          onClick={() => handleConfirm()}
           disabled={extraSecure && input !== extraSecureCheck}
+          isLoading={isLoading}
         >
-          {isLoading && (
-            <CircularProgress
-              size={24}
-              sx={{ position: "absolute", zIndex: 1, top: "50%", left: "50%", marginTop: "-12px", marginLeft: "-12px" }}
-            />
-          )}
           Delete
-        </Button>
+        </SpinnerButton>
+
         <Button
           onClick={handleClose}
           autoFocus

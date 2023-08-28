@@ -1,11 +1,12 @@
 "use client";
 
-import { Typography, Button, CircularProgress } from "@mui/material";
+import { Typography } from "@mui/material";
 import { acceptInvite } from "../lib/serverActions";
 import { useState } from "react";
 import { useMutation } from "@tanstack/react-query";
 import { toast } from "react-toastify";
 import Link from "next/link";
+import SpinnerButton from "./SpinnerButton";
 
 interface Props {
   invite: {
@@ -42,18 +43,13 @@ export default function AcceptInvite({ invite }: Props) {
     return (
       <>
         <Typography>Do you want to join?</Typography>
-        <Button
-          disabled={isLoading}
+        <SpinnerButton
           onClick={() => handleAcceptInvite()}
+          disabled={isLoading}
+          isLoading={isLoading}
         >
           Join Group!
-          {isLoading && (
-            <CircularProgress
-              size={24}
-              sx={{ position: "absolute", zIndex: 1, top: "50%", left: "50%", marginTop: "-12px", marginLeft: "-12px" }}
-            />
-          )}
-        </Button>
+        </SpinnerButton>
       </>
     );
 

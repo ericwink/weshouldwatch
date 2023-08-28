@@ -1,10 +1,11 @@
 "use client";
-import { TextField, Button, CircularProgress, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from "@mui/material";
+import { TextField, Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from "@mui/material";
 import { useState } from "react";
 import { createGroup } from "../../lib/serverActions";
 import { useMutation } from "@tanstack/react-query";
 import { toast } from "react-toastify";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
+import SpinnerButton from "../SpinnerButton";
 
 const MakeGroup = () => {
   const [name, setName] = useState("");
@@ -60,19 +61,13 @@ const MakeGroup = () => {
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose}>Cancel</Button>
-          <Button
+          <SpinnerButton
             onClick={() => handleCreate()}
             disabled={isLoading || !name}
-            sx={{ position: "relative" }}
+            isLoading={isLoading}
           >
-            {isLoading && (
-              <CircularProgress
-                size={24}
-                sx={{ position: "absolute", zIndex: 1, top: "50%", left: "50%", marginTop: "-12px", marginLeft: "-12px" }}
-              />
-            )}
             Submit
-          </Button>
+          </SpinnerButton>
         </DialogActions>
       </Dialog>
     </div>

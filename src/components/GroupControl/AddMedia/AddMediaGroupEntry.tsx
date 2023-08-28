@@ -63,6 +63,7 @@ export default function AddMediaGroupEntry({ id, media_id, group_name, group_med
       <ReasonModal
         open={open}
         setOpen={setOpen}
+        reason={reason}
         setReason={setReason}
         handleSubmit={() => handleSubmit()}
       />
