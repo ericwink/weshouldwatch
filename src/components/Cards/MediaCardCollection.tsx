@@ -73,7 +73,7 @@ const MediaCardCollection = ({ media, groupId }: Props) => {
       <Grid>
         <Paper
           elevation={3}
-          sx={{ width: "135px" }}
+          sx={{ width: "135px", height: "100%" }}
         >
           <Box sx={{ height: 200, position: "relative" }}>
             <Image

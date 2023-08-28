@@ -11,22 +11,36 @@ interface Props {
     profile_path: string;
     name: string;
     id: number;
+    character?: string;
+    jobs?: string[];
   };
 }
 
-// need to add character: string, department: string
+const credits = (credit: string) => (
+  <Grid
+    xs={12}
+    display="flex"
+    justifyContent="center"
+    alignItems="center"
+  >
+    <Typography variant="subtitle2">
+      <i>{credit}</i>
+    </Typography>
+  </Grid>
+);
 
 const PeopleCard = ({ person }: Props) => {
   return (
     <Grid>
-      <button>
+      <button style={{ height: "100%" }}>
         <Link
           className="flex"
           href={`/person/${person.id}`}
+          style={{ height: "100%" }}
         >
           <Paper
             elevation={3}
-            sx={{ width: "135px" }}
+            sx={{ width: "135px", height: "100%" }}
           >
             <Box sx={{ height: 200, position: "relative" }}>
               <Image
@@ -46,21 +60,8 @@ const PeopleCard = ({ person }: Props) => {
               >
                 <Typography variant="subtitle2">{person.name}</Typography>
               </Grid>
-              {/* <Grid
-            xs={3}
-            display="flex"
-            justifyContent="center"
-            alignItems="center"
-          >
-            <IconButton>
-              <Link
-                className="flex"
-                href={`/person/${person.id}`}
-              >
-                <InfoIcon />
-              </Link>
-            </IconButton>
-          </Grid> */}
+              {person.character && credits(person.character)}
+              {person.jobs && person.jobs.map(job => credits(job))}
             </Grid>
           </Paper>
         </Link>

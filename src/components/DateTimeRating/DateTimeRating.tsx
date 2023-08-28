@@ -16,7 +16,7 @@ const DateTimeRating = ({ releaseYear = "????", runTime = 0, rating = "N/A" }: P
 
       <div className="flex gap-1 items-center">
         <BsClock />
-        <p>{runTime} minutes</p>
+        {runTime > 0 ? <p>{runTime} minutes</p> : <p>unknown</p>}
       </div>
       <div className="flex gap-1 items-center">
         <BsHandThumbsUp />
