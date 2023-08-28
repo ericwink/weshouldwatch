@@ -17,8 +17,8 @@ const RefundPage = () => {
         subscription period through your Account page. The subscription will still be valid and benefits active through the expiration date, and once expired a renewal will not be automatically processed.
       </Typography>
       <Typography>
-        Please be aware that if your subscription is cancelled at any time, your service will drop back down to the Free Tier level at the end of the term period. At that time, you will be allowed access to only ONE Created Group and ONE Joined
-        Group. If you have addiitonal groups of each type, a Lock Icon will be displayed next to the group's name. You will be permitted once every 30 days to adjust which Created Group and which Joined Group you would like to have access to.
+        {`Please be aware that if your subscription is cancelled at any time, your service will drop back down to the Free Tier level at the end of the term period. At that time, you will be allowed access to only ONE Created Group and ONE Joined
+        Group. If you have addiitonal groups of each type, a Lock Icon will be displayed next to the group's name. You will be permitted once every 30 days to adjust which Created Group and which Joined Group you would like to have access to.`}
       </Typography>
       <Typography>Your understanding and support mean a lot to us as we continue to improve and enhance our service.</Typography>
     </Container>

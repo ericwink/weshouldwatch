@@ -43,7 +43,7 @@ const paymentSuccessPage = () => {
         And one more thing!
       </Typography>
       <Typography>
-        Since you signed up during the beta, if you have a feature suggestion please send it to <Link href="mailto:weshouldwatchmailer@gmail.com">WeShouldWatchMailer@gmail.com</Link> with "BETA MEMBER FR" in the subject line!
+        Since you signed up during the beta, if you have a feature suggestion please send it to <Link href="mailto:weshouldwatchmailer@gmail.com">WeShouldWatchMailer@gmail.com</Link> with <b>BETA MEMBER FR</b> in the subject line!
       </Typography>
 
       <Typography>
