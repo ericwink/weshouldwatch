@@ -9,12 +9,16 @@ const RefundPage = () => {
       <Typography variant="h3">Refund Policy</Typography>
       <Typography>Last updated: August 17, 2023</Typography>
       <Typography>
-        At WeShouldWatch.app, we are committed to providing a collaborative experience for you and your friends, family, loved ones, etc to search for, identify details for, and collaboratively save media data to groups for the purpose of tracking
-        content to watch together.
+        At WeShouldWatch.app, we are committed to providing a collaborative experience for you and your friends, family, loved ones, etc to search for, identify details for, and collaboratively save media to groups for the purpose of tracking content
+        to watch and enjoy together.
       </Typography>
       <Typography>
-        Due to the high costs and effort involved building and maintaining this application, we have made the decision at this time not to offer refunds once a subscription has been purchased. A subscription may be canceled at any time, and once
-        expired a renewal will not be automatically processed. We realize this may not be the ideal scenario for everyone, but this policy helps us to maintain a fair and sustainable service for all of our valued users.
+        Due to the costs and effort involved building and maintaining this application, we have made the decision at this time not to offer refunds once a subscription has been purchased. A cancellation may be processed at any time during the
+        subscription period through your Account page. The subscription will still be valid and benefits active through the expiration date, and once expired a renewal will not be automatically processed.
+      </Typography>
+      <Typography>
+        Please be aware that if your subscription is cancelled at any time, your service will drop back down to the Free Tier level at the end of the term period. At that time, you will be allowed access to only ONE Created Group and ONE Joined
+        Group. If you have addiitonal groups of each type, a Lock Icon will be displayed next to the group's name. You will be permitted once every 30 days to adjust which Created Group and which Joined Group you would like to have access to.
       </Typography>
       <Typography>Your understanding and support mean a lot to us as we continue to improve and enhance our service.</Typography>
     </Container>

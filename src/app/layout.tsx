@@ -5,6 +5,7 @@ import TanstackProvider from "../context/tanstack";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import ActiveDevModal from "../components/ActiveDevModal";
+import BetaBanner from "../components/BetaBanner";
 
 export const metadata = {
   title: "We Should Watch...",
@@ -28,8 +29,9 @@ export default function RootLayout({ children }: Props) {
             <ToastContainer position="bottom-right" />
             <NavBar />
             {/* {authModal} */}
+            <BetaBanner />
             {children}
-            <ActiveDevModal />
+            {/* <ActiveDevModal /> */}
           </MuiSetup>
         </TanstackProvider>
       </body>
