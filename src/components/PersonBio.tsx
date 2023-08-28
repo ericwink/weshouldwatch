@@ -1,6 +1,4 @@
-"use client";
-
-import { Typography, Box, Paper, Avatar, Container } from "@mui/material";
+import { Typography, Box, Avatar, Container } from "@mui/material";
 import getPoster from "../lib/getPoster";
 
 interface Bio {
@@ -41,9 +39,9 @@ const PersonBio = ({ person }: Props) => {
         >
           {person.name}
         </Typography>
-        <Typography>Born: {person.birthday}</Typography>
+        {person.biography && <Typography>Born: {person.birthday}</Typography>}
         {person.deathday && <Typography>Died: {person.deathday}</Typography>}
-        <Typography>Birthplace: {person.place_of_birth}</Typography>
+        {person.place_of_birth && <Typography>Birthplace: {person.place_of_birth}</Typography>}
       </Box>
       <Typography>{person.biography}</Typography>
     </Container>
