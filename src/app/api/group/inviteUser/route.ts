@@ -2,6 +2,8 @@ import { createRouteHandlerClient } from "@supabase/auth-helpers-nextjs";
 import { cookies } from "next/headers";
 import { Database } from "@/src/lib/database.types";
 import sgMail from "@sendgrid/mail";
+import { invitationValidator } from "@/src/lib/validators";
+import { z } from "zod";
 
 interface InviteDetails {
   email: string;
@@ -10,22 +12,19 @@ interface InviteDetails {
   created_by: string;
 }
 
-interface Body {
-  group_id: string;
-  email: string;
-}
-
 export async function POST(req: Request) {
   const supabase = createRouteHandlerClient<Database>({ cookies });
-  const { group_id, email }: Body = await req.json();
-
-  //check that user exists
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-  if (!user) return new Response("You are not authorized to make this request", { status: 401 });
+  const body = await req.json();
 
   try {
+    const { email, group_id } = invitationValidator.parse(body);
+
+    //check that user exists
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+    if (!user) return new Response("You are not authorized to make this request", { status: 401 });
+
     let { data: group, error: groupFindError } = await supabase.from("group").select("created_by").eq("id", group_id).single();
     if (groupFindError) console.log(groupFindError);
     if (groupFindError) throw new Error("Group not found, please try again");
@@ -64,6 +63,7 @@ export async function POST(req: Request) {
 
     return new Response("Invitation Sent!", { status: 200 });
   } catch (error: any) {
+    if (error instanceof z.ZodError) return new Response(error.issues[0].message, { status: 422 });
     return new Response(error.message, { status: 500 });
   }
 }

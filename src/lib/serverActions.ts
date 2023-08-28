@@ -7,6 +7,8 @@ import { revalidatePath } from "next/cache";
 import type { MediaPayload } from "./interface";
 import Stripe from "stripe";
 import sgMail from "@sendgrid/mail";
+import { z } from "zod";
+import { stringValidator, mediaPayloadValidator } from "./validators";
 
 const supabase = createServerComponentClient<Database>({ cookies });
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
@@ -21,6 +23,8 @@ export async function createGroup(groupName: string) {
       data: { user },
     } = await supabase.auth.getUser();
     if (!user) return { error: true, message: "You are not authorized to make this request" };
+
+    stringValidator.parse(groupName);
 
     //pull list of groups created
     let { data: groups, error: groupsError } = await supabase.from("group").select("*").eq("created_by", user.id);
@@ -38,24 +42,32 @@ export async function createGroup(groupName: string) {
     revalidatePath("/mygroups");
     return { error: false, message: "Group created successfully" };
   } catch (error: any) {
+    if (error instanceof z.ZodError) return { error: true, message: error.issues[0].message };
     console.log(error);
     return { error: true, message: "There was an error. Please try again" };
   }
 }
 
 export async function deleteGroup(id: string) {
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-  if (!user) return { error: true, message: "You are not authorized to make this request" };
+  try {
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+    if (!user) return { error: true, message: "You are not authorized to make this request" };
 
-  const { data, error } = await supabase.from("group").delete().eq("id", id);
-  if (error) {
+    stringValidator.parse(id);
+
+    const { data, error } = await supabase.from("group").delete().eq("id", id);
+    if (error) throw new Error(error.message);
+
+    revalidatePath("/mygroups");
+
+    return { error: false, message: "Group Deleted!" };
+  } catch (error) {
+    if (error instanceof z.ZodError) return { error: true, message: error.issues[0].message };
     console.log(error);
     return { error: true, message: "An error occurred. Please try again." };
   }
-  revalidatePath("/mygroups");
-  return { error: false, message: "Group Deleted!" };
 }
 
 export async function leaveGroup(id: string) {
@@ -64,6 +76,8 @@ export async function leaveGroup(id: string) {
       data: { user },
     } = await supabase.auth.getUser();
     if (!user) return { error: true, message: "You are not authorized to make this request" };
+
+    stringValidator.parse(id);
 
     let { error: userExitError } = await supabase.from("user_group_join").delete().eq("user_id", user.id).eq("group_id", id);
     if (userExitError) throw new Error(userExitError.message);
@@ -80,30 +94,45 @@ export async function leaveGroup(id: string) {
     revalidatePath("/mygroups");
     return { error: false, message: "You have successfully left the group!" };
   } catch (error: any) {
+    if (error instanceof z.ZodError) return { error: true, message: error.issues[0].message };
     console.log(error);
     return { error: true, message: "An error occurred. Please try again" };
   }
 }
 
 export async function addMedia(mediaPayload: MediaPayload) {
-  const { data, error } = await supabase.from("media").insert([{ ...mediaPayload }]);
-  if (error && error.code !== "23505") {
+  try {
+    mediaPayloadValidator.parse(mediaPayload);
+
+    const { data, error } = await supabase.from("media").insert([{ ...mediaPayload }]);
+    if (error) throw new Error(error.message);
+    return { message: "succes!" };
+  } catch (error) {
+    if (error instanceof z.ZodError) return { error: true, message: error.issues[0].message };
     console.log(error);
     return { error: true, message: "An error occurred. Please try again." };
   }
-  return { message: "succes!" };
 }
 
 export async function addMediaToGroup(mediaPayload: MediaPayload, groupId: string, reason: string) {
-  const result = await addMedia(mediaPayload);
-  if (result.error) return result;
-  const { data, error } = await supabase.from("group_media").insert([{ group_id: groupId, added_reason: reason, watched: false, media_id: mediaPayload.tmdb_id }]);
-  if (error) {
+  try {
+    mediaPayloadValidator.parse(mediaPayload);
+    stringValidator.parse(groupId);
+    stringValidator.parse(reason);
+
+    const result = await addMedia(mediaPayload);
+    if (result.error) throw new Error(result.message);
+
+    const { data, error } = await supabase.from("group_media").insert([{ group_id: groupId, added_reason: reason, watched: false, media_id: mediaPayload.tmdb_id }]);
+    if (error) throw new Error(error.message);
+
+    revalidatePath(`/media/${mediaPayload.tmdb_id}?media_type=${mediaPayload.media_type}`);
+    return { error: false, message: "Successfully added to group!" };
+  } catch (error) {
+    if (error instanceof z.ZodError) return { error: true, message: error.issues[0].message };
     console.log(error);
     return { error: true, message: "An error occurred. Please try again." };
   }
-  revalidatePath(`/media/${mediaPayload.tmdb_id}?media_type=${mediaPayload.media_type}`);
-  return { error: false, message: "Successfully added to group!" };
 }
 
 export async function acceptInvite(group_id: string) {
@@ -112,6 +141,8 @@ export async function acceptInvite(group_id: string) {
       data: { user },
     } = await supabase.auth.getUser();
     if (!user) return { error: true, message: "An error occurred. Please sign in and try again." };
+
+    stringValidator.parse(group_id);
 
     //pull list of groups user has access to
     let { data: groups, error: groupsError } = await supabase.from("group").select("*");
@@ -140,6 +171,7 @@ export async function acceptInvite(group_id: string) {
 
     return { error: false, message: "Invitation accepted!" };
   } catch (error: any) {
+    if (error instanceof z.ZodError) return { error: true, message: error.issues[0].message };
     console.log(error);
     return { error: true, message: "An error occurred. Please try again." };
   }
@@ -152,6 +184,8 @@ export async function stripeCheckout(priceId: string) {
       data: { user },
     } = await supabase.auth.getUser();
     if (!user) return { error: true, message: "An error occurred. Please sign in and try again." };
+
+    stringValidator.parse(priceId);
 
     //get stripe customer id based on above session
 
@@ -175,6 +209,7 @@ export async function stripeCheckout(priceId: string) {
 
     return { error: false, sessionId: session.id };
   } catch (error: any) {
+    if (error instanceof z.ZodError) return { error: true, message: error.issues[0].message };
     console.log(error);
     return { error: true, message: "There was an error. Please try again" };
   }
@@ -212,6 +247,9 @@ export async function updatePrimary(columnName: "primary_created" | "primary_joi
     } = await supabase.auth.getUser();
     if (!user) return { error: true, message: "An error occurred. Please sign in and try again." };
 
+    stringValidator.parse(columnName);
+    stringValidator.parse(groupId);
+
     const dateColumnName: "primary_created_update" | "primary_joined_update" = `${columnName}_update`;
 
     let { data: lastUpdatedData, error: dateError } = await supabase.from("users").select(dateColumnName).single();
@@ -238,6 +276,7 @@ export async function updatePrimary(columnName: "primary_created" | "primary_joi
 
     return { error: false, message: "Primary group updated!" };
   } catch (error: any) {
+    if (error instanceof z.ZodError) return { error: true, message: error.issues[0].message };
     console.log(error);
     return { error: true, message: "There was an error, please try again." };
   }

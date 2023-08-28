@@ -6,6 +6,7 @@ import { toast } from "react-toastify";
 import { useMutation } from "@tanstack/react-query";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import axios from "axios";
+import { z } from "zod";
 
 export default function InviteToAGroup({ groupId }: { groupId: string }) {
   const [email, setEmail] = useState("");
@@ -20,12 +21,11 @@ export default function InviteToAGroup({ groupId }: { groupId: string }) {
     setEmail("");
   };
 
-  const emailRegex = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
+  const userEmail = z.string().email({ message: "Please enter a valid email address" });
 
   const { mutate: sendInvite, isLoading } = useMutation({
     mutationFn: async () => {
-      const isValidEmail = emailRegex.test(email);
-      if (!isValidEmail) throw new Error("Please enter a valid email address");
+      userEmail.parse(email);
       const result = await axios.post("/api/group/inviteUser", { group_id: groupId, email: email });
       console.log(result);
     },
@@ -33,7 +33,13 @@ export default function InviteToAGroup({ groupId }: { groupId: string }) {
       toast.success("Invitation sent successfully!", { theme: "colored" });
       handleClose();
     },
-    onError: (error: any) => toast.error(error.response?.data || error.message, { theme: "colored" }),
+    onError: (error: any) => {
+      if (error instanceof z.ZodError) {
+        toast.error(error.issues[0].message, { theme: "colored" });
+      } else {
+        toast.error(error.response?.data || error.message, { theme: "colored" });
+      }
+    },
   });
 
   return (

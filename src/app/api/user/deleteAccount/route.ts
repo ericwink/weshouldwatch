@@ -4,13 +4,17 @@ import { cookies } from "next/headers";
 import { Database } from "@/src/lib/database.types";
 import { NextApiResponse } from "next";
 import Stripe from "stripe";
+import { z } from "zod";
+import { deleteAccountValidator } from "@/src/lib/validators";
 
 export async function POST(req: Request, res: NextApiResponse) {
   const supabaseRoute = createRouteHandlerClient<Database>({ cookies });
   const supabase = getServiceSupabase();
-  const { userId, stripeId }: { userId: string; stripeId: string } = await req.json();
+  const body = await req.json();
 
   try {
+    const { stripeId, userId } = deleteAccountValidator.parse(body);
+
     //check that user exists
     const {
       data: { user },
@@ -51,6 +55,7 @@ export async function POST(req: Request, res: NextApiResponse) {
 
     return new Response("Account Deleted", { status: 200 });
   } catch (error: any) {
+    if (error instanceof z.ZodError) return new Response(error.issues[0].message, { status: 422 });
     console.log(error);
     return new Response(error.message, { status: 500 });
   }

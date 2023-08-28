@@ -1,16 +1,13 @@
 import { createRouteHandlerClient } from "@supabase/auth-helpers-nextjs";
 import { cookies } from "next/headers";
 import { Database } from "@/src/lib/database.types";
-
-interface Body {
-  columnToUpdate: "added_reason" | "watched";
-  newValue: string | boolean;
-  rowId: number;
-}
+import { editMediaValidator } from "@/src/lib/validators";
+import { z } from "zod";
 
 export async function POST(req: Request) {
   const supabase = createRouteHandlerClient<Database>({ cookies });
-  const { columnToUpdate, newValue, rowId }: Body = await req.json();
+  const body = await req.json();
+  const { columnToUpdate, newValue, rowId } = editMediaValidator.parse(body);
 
   //check that user exists
   const {
@@ -33,6 +30,7 @@ export async function POST(req: Request) {
     if (error) throw new Error(error.message);
     return new Response("Update Successful", { status: 200 });
   } catch (error: any) {
+    if (error instanceof z.ZodError) new Response(error.issues[0].message, { status: 422 });
     return new Response(error.message, { status: 500 });
   }
 }
