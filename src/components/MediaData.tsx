@@ -44,56 +44,54 @@ const MediaData = ({ mediaData, media_id, media_type }: Props) => {
           objectFit="cover"
         />
       </div>
-      <div className="container max-w-4xl">
-        <div className="flex flex-col gap-8 mb-8 -mt-32">
-          <div className="flex gap-8 items-end justify-center">
-            <Image
-              src={poster}
-              alt={`movie poster for ${title}`}
-              height={300}
-              width={200}
-            />
-            <AddMediaModal
-              iconButton={false}
-              title={`Add ${media_type} to group`}
-            >
-              {/* @ts-expect-error Server Component */}
-              <AddMediaContainer
-                media_id={mediaData.id}
-                mediaPayload={mediaInfoPayload}
-              />
-            </AddMediaModal>
-          </div>
-
-          <Genres genre_ids={mediaData.genres} />
-
-          <DateTimeRating
-            rating={rating}
-            releaseYear={releaseYear(mediaData)}
-            runTime={runTime}
+      <div className="flex flex-col gap-8 mb-8 -mt-32">
+        <div className="flex gap-8 items-end justify-center">
+          <Image
+            src={poster}
+            alt={`movie poster for ${title}`}
+            height={300}
+            width={200}
           />
-
-          <Typography>{mediaData.overview}</Typography>
-
-          <Suspense fallback={<p>Loading Video...</p>}>
+          <AddMediaModal
+            iconButton={false}
+            title={`Add ${media_type} to group`}
+          >
             {/* @ts-expect-error Server Component */}
-            <FetchVideo
-              media_id={media_id}
-              media_type={media_type}
+            <AddMediaContainer
+              media_id={mediaData.id}
+              mediaPayload={mediaInfoPayload}
             />
-          </Suspense>
-
-          <section>
-            <div>
-              {/* @ts-expect-error Server Component */}
-              <StreamingOptions
-                media_type={media_type}
-                id={media_id}
-                title={title as string}
-              />
-            </div>
-          </section>
+          </AddMediaModal>
         </div>
+
+        <Genres genre_ids={mediaData.genres} />
+
+        <DateTimeRating
+          rating={rating}
+          releaseYear={releaseYear(mediaData)}
+          runTime={runTime}
+        />
+
+        <Typography>{mediaData.overview}</Typography>
+
+        <Suspense fallback={<p>Loading Video...</p>}>
+          {/* @ts-expect-error Server Component */}
+          <FetchVideo
+            media_id={media_id}
+            media_type={media_type}
+          />
+        </Suspense>
+
+        <section>
+          <div>
+            {/* @ts-expect-error Server Component */}
+            <StreamingOptions
+              media_type={media_type}
+              id={media_id}
+              title={title as string}
+            />
+          </div>
+        </section>
       </div>
     </div>
   );

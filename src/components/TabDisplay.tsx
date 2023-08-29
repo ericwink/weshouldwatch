@@ -77,6 +77,7 @@ export default function TabDisplay({ children, tabNames }: Props) {
           value={value}
           onChange={handleChange}
           aria-label="basic tabs example"
+          variant="scrollable"
         >
           {mappedTabNames}
         </Tabs>

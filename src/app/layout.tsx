@@ -4,7 +4,6 @@ import NavBar from "../components/Nav/NavBar";
 import TanstackProvider from "../context/tanstack";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import ActiveDevModal from "../components/ActiveDevModal";
 import BetaBanner from "../components/BetaBanner";
 
 export const metadata = {
@@ -31,7 +30,6 @@ export default function RootLayout({ children }: Props) {
             {/* {authModal} */}
             <BetaBanner />
             {children}
-            {/* <ActiveDevModal /> */}
           </MuiSetup>
         </TanstackProvider>
       </body>

@@ -4,6 +4,7 @@ import PeopleCard from "@/src/components/Cards/PeopleCard";
 import MediaCardMUI from "@/src/components/Cards/MediaCardMUI";
 import MediaData from "@/src/components/MediaData";
 import { fetchMediaData } from "@/src/lib/tmdbHelper";
+import { Container } from "@mui/material";
 
 interface Props {
   params: { media_id: string };
@@ -47,10 +48,10 @@ const mediaPage = async ({ params, searchParams }: Props) => {
 
   const createTabTitles = () => {
     const tabTitles = [];
-    if (mediaData) tabTitles.push("Summary");
+    if (mediaData) tabTitles.push("Info");
     if (cast.length > 0) tabTitles.push("Cast");
     if (crew.length > 0) tabTitles.push("Crew");
-    if (recommmendations.length > 0) tabTitles.push("Recommended");
+    if (recommmendations.length > 0) tabTitles.push("More");
     return tabTitles;
   };
 
