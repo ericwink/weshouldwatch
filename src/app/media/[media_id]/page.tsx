@@ -4,7 +4,7 @@ import PeopleCard from "@/src/components/Cards/PeopleCard";
 import MediaCardMUI from "@/src/components/Cards/MediaCardMUI";
 import MediaData from "@/src/components/MediaData";
 import { fetchMediaData } from "@/src/lib/tmdbHelper";
-import { Container } from "@mui/material";
+import BackButton from "@/src/components/BackButton";
 
 interface Props {
   params: { media_id: string };
@@ -56,7 +56,8 @@ const mediaPage = async ({ params, searchParams }: Props) => {
   };
 
   return (
-    <main>
+    <main className="relative">
+      <BackButton />
       <TabDisplay tabNames={createTabTitles()}>
         <MediaData
           media_type={media_type}
