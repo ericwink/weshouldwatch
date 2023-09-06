@@ -11,7 +11,7 @@ const BackButton = () => {
     <Button
       size="small"
       onClick={() => router.back()}
-      sx={{ display: "flex", gap: 1, position: { xs: "relative", sm: "absolute" }, top: { sm: 2 }, left: { sm: 2 } }}
+      sx={{ position: { xs: "relative", sm: "absolute" }, top: { sm: 2 }, left: { sm: 2 } }}
     >
       <ArrowBackIcon /> Back
     </Button>
