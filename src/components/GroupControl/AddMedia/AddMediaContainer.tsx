@@ -4,6 +4,7 @@ import { Database } from "@/src/lib/database.types";
 import AddMediaGroupEntry from "./AddMediaGroupEntry";
 import ListWrapper from "../../ListWrapper";
 import type { MediaPayload } from "../../../lib/interface";
+import { Typography } from "@mui/material";
 
 interface Props {
   media_id: number;
@@ -25,6 +26,8 @@ const AddMediaContainer = async ({ media_id, mediaPayload }: Props) => {
     return group;
   };
   const groupsAndMovies = await fetchGroupsAndMovies();
+
+  if (!groupsAndMovies || groupsAndMovies.length < 1) return <Typography>No groups yet!</Typography>;
 
   return (
     <ListWrapper>
