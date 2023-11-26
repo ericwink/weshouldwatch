@@ -5,12 +5,12 @@ import { Container, Button } from "@mui/material";
 import { useState } from "react";
 import GenreChipFilter from "../GenreChipFilter";
 import MediaCardCollection from "./MediaCardCollection";
-import AccordionChildren from "../../ui/AccordionChildren";
 import { CondensedMedia } from "@/src/lib/interface";
 import { useQuery } from "@tanstack/react-query";
 import { fetchMediaCollection } from "@/src/lib/supabaseClientHelper";
 import { reorganizeGroupMedia } from "@/src/lib/reorganizeGroupMedia";
 import WatchedFilterButtons from "../WatchedFilterButtons";
+import FilterDrawer from "../FilterDrawer";
 
 interface GenreFilter {
   genre: string;
@@ -66,17 +66,26 @@ const CardGridFilter = ({ mediaData, groupId, mediaType }: Props) => {
 
   return (
     <>
-      <WatchedFilterButtons
-        setWatchedFilter={setWatchedFilter}
-        watchedFilter={watchedFilter}
-      />
-      <Container maxWidth="md">
-        <AccordionChildren title="Filters">
+      <Grid
+        container
+        spacing={1}
+        mb={1}
+        mt={-2}
+        justifyContent="center"
+      >
+        <WatchedFilterButtons
+          setWatchedFilter={setWatchedFilter}
+          watchedFilter={watchedFilter}
+        />
+        <FilterDrawer>
           <GenreChipFilter
             genres={genres}
             setGenres={setGenres}
           />
-        </AccordionChildren>
+        </FilterDrawer>
+      </Grid>
+
+      <Container maxWidth="md">
         <Grid
           container
           spacing={1}

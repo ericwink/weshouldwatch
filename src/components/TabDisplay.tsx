@@ -72,7 +72,7 @@ export default function TabDisplay({ children, tabNames }: Props) {
       alignItems="center"
       sx={{ width: "100%" }}
     >
-      <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
+      <Box sx={{   borderBottom: 1, borderColor: "divider" }}>
         <Tabs
           value={value}
           onChange={handleChange}
