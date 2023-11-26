@@ -11,40 +11,32 @@ interface Props {
 export default function WatchedFilterButtons({ setWatchedFilter, watchedFilter }: Props) {
   return (
     <>
-      <Grid
-        container
-        spacing={1}
-        mb={1}
-        mt={-2}
-        justifyContent="center"
-      >
-        <Grid>
-          <Button
-            size="small"
-            variant={watchedFilter === "all" ? "contained" : "outlined"}
-            onClick={() => setWatchedFilter("all")}
-          >
-            All
-          </Button>
-        </Grid>
-        <Grid>
-          <Button
-            size="small"
-            variant={watchedFilter === "watched" ? "contained" : "outlined"}
-            onClick={() => setWatchedFilter("watched")}
-          >
-            Not Watched
-          </Button>
-        </Grid>
-        <Grid>
-          <Button
-            size="small"
-            variant={watchedFilter === "notWatched" ? "contained" : "outlined"}
-            onClick={() => setWatchedFilter("notWatched")}
-          >
-            Watched
-          </Button>
-        </Grid>
+      <Grid>
+        <Button
+          size="small"
+          variant={watchedFilter === "all" ? "contained" : "outlined"}
+          onClick={() => setWatchedFilter("all")}
+        >
+          All
+        </Button>
+      </Grid>
+      <Grid>
+        <Button
+          size="small"
+          variant={watchedFilter === "watched" ? "contained" : "outlined"}
+          onClick={() => setWatchedFilter("watched")}
+        >
+          Not Watched
+        </Button>
+      </Grid>
+      <Grid>
+        <Button
+          size="small"
+          variant={watchedFilter === "notWatched" ? "contained" : "outlined"}
+          onClick={() => setWatchedFilter("notWatched")}
+        >
+          Watched
+        </Button>
       </Grid>
     </>
   );

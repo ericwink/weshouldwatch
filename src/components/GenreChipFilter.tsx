@@ -61,7 +61,8 @@ export default function GenreChipFilter({ genres, setGenres }: Props) {
     <Grid
       container
       spacing={1}
-      mb={1}
+      mb={3}
+      mt={3}
       justifyContent="center"
     >
       {chips}
