@@ -29,7 +29,7 @@ const SubscriptionDetails = async ({ userAccount }: { userAccount: UserAccount }
   if (!unixEndDate)
     return (
       <div>
-        <Typography textAlign="center">Looks like you don't have a subscription end date... Please contact support...</Typography>
+        <Typography textAlign="center">{`Looks like you don't have a subscription end date... Please contact support...`}</Typography>
       </div>
     );
 
