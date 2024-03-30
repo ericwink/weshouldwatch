@@ -34,7 +34,7 @@ const AccountPage = async () => {
         >
           Account Details
         </Typography>
-        <Typography variant="h6">{user.email}</Typography>
+        <Typography variant="h6">{user?.email}</Typography>
         <UpdateUsername userInfo={user} />
 
         <UserAvatar
@@ -46,7 +46,7 @@ const AccountPage = async () => {
           <>
             {/* @ts-expect-error Server Component */}
             <SubscriptionDetails userAccount={user} />
-            <ManagePlan />
+            {user.interval !== "Test" && <ManagePlan userAccount={user} />}
           </>
         )}
         <DeleteAccount user={user} />

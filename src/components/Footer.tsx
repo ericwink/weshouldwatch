@@ -8,7 +8,8 @@ const Footer = () => {
   const year = new Date().getFullYear();
 
   return (
-    <div className="flex flex-col items-center p-0.5 opacity-50 mt-auto">
+    <div className="flex flex-col items-center p-0.5 opacity-50 mt-auto gap-1">
+      <Typography>We Should Watch is in Public Beta</Typography>
       <Typography
         variant="subtitle2"
         mb={0.5}
