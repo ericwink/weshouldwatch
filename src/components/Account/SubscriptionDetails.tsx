@@ -42,7 +42,7 @@ const SubscriptionDetails = async ({ userAccount }: { userAccount: UserAccount }
     <div>
       <Typography textAlign="center">Current Subscription: {canceled ? "Canceled" : "Active"}</Typography>
       <Typography textAlign="center">
-        {canceled ? "Premium Ends On:" : "Next Billing Date:"} {formattedDate}
+        {canceled ? "Premium Ends On:" : "Next Billing Date:"} {formattedDate || "Tester"}
       </Typography>
     </div>
   );
