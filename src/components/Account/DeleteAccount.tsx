@@ -1,6 +1,6 @@
 "use client";
 
-import { Button } from "@mui/material";
+import { Button, Box } from "@mui/material";
 import ConfirmDelete from "../ConfirmDelete";
 import { useState } from "react";
 import { useMutation } from "@tanstack/react-query";
@@ -37,8 +37,9 @@ const DeleteAccount = ({ user }: Props) => {
   });
 
   return (
-    <div>
+    <Box width="100%">
       <Button
+        fullWidth
         variant="outlined"
         color="error"
         sx={{ display: "flex", gap: 1 }}
@@ -56,7 +57,7 @@ const DeleteAccount = ({ user }: Props) => {
         extraSecureCheck={user.email as string}
         isLoading={isLoading}
       />
-    </div>
+    </Box>
   );
 };
 

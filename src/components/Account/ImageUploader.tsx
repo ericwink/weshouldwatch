@@ -58,8 +58,10 @@ const ImageUploader = ({ user }: Props) => {
 
   return (
     <Button
+      fullWidth
       variant="contained"
       component="label"
+      disabled={isLoading}
     >
       {isLoading ? <CircularProgress color="inherit" /> : "Update Avatar"}
       <input
