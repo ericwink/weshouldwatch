@@ -1,12 +1,14 @@
 "use client";
 
-import { TextField, Button, Box, Typography, Divider, CircularProgress } from "@mui/material";
+import { TextField, Button, Box, Typography, Divider, CircularProgress, InputAdornment } from "@mui/material";
 import { useState, ChangeEvent } from "react";
 import { signup, login, gmailLogin } from "../lib/supabaseClientHelper";
 import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
 import { useMutation } from "@tanstack/react-query";
 import { useUserStore } from "../lib/store";
+import Visibility from "@mui/icons-material/Visibility";
+import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import { z } from "zod";
 
 interface Props {
@@ -16,6 +18,7 @@ interface Props {
 const LogInSignUp = ({ type }: Props) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [passwordVisible, setPasswordVisible] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState(false);
   const disabled = !password || !email;
@@ -71,9 +74,19 @@ const LogInSignUp = ({ type }: Props) => {
       <TextField
         label="password"
         variant="outlined"
-        type="password"
+        type={passwordVisible ? "text" : "password"}
         onChange={e => setPassword(e.target.value)}
         fullWidth
+        InputProps={{
+          endAdornment: (
+            <InputAdornment
+              position="end"
+              onClick={() => setPasswordVisible(prev => !prev)}
+            >
+              {passwordVisible ? <VisibilityOff /> : <Visibility />}
+            </InputAdornment>
+          ),
+        }}
       />
 
       <Button
