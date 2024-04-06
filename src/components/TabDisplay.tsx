@@ -2,6 +2,7 @@
 
 import { ReactNode, useState, SyntheticEvent, Children } from "react";
 import { Tabs, Tab, Box } from "@mui/material";
+import SwipeableViews from "react-swipeable-views";
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -44,6 +45,12 @@ export default function TabDisplay({ children, tabNames }: Props) {
     setValue(newValue);
   };
 
+  const handleChangeIndex = (index: number) => {
+    setValue(index);
+  };
+
+  console.log("value: ", value);
+
   const mappedTabNames = tabNames.map((tabName, index) => {
     return (
       <Tab
@@ -72,7 +79,7 @@ export default function TabDisplay({ children, tabNames }: Props) {
       alignItems="center"
       sx={{ width: "100%" }}
     >
-      <Box sx={{   borderBottom: 1, borderColor: "divider" }}>
+      <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
         <Tabs
           value={value}
           onChange={handleChange}
@@ -82,7 +89,15 @@ export default function TabDisplay({ children, tabNames }: Props) {
           {mappedTabNames}
         </Tabs>
       </Box>
-      <Box sx={{ width: "100%" }}>{mappedChildren}</Box>
+      <Box sx={{ width: "100%" }}>
+        <SwipeableViews
+          index={value}
+          onChangeIndex={handleChangeIndex}
+          style={{ minHeight: "82vh" }}
+        >
+          {mappedChildren}
+        </SwipeableViews>
+      </Box>
     </Box>
   );
 }
