@@ -35,7 +35,8 @@ export async function gmailLogin() {
   let { data, error } = await supabase.auth.signInWithOAuth({
     provider: "google",
     options: {
-      redirectTo: `${location.origin}/auth/callback`,
+      // redirectTo: `${location.origin}/auth/callback`,
+      redirectTo: `${location.origin}/dashboard`,
     },
   });
   if (error) throw new Error(error.message);
@@ -48,7 +49,8 @@ export async function signup(email: string, password: string) {
     email: email,
     password: password,
     options: {
-      emailRedirectTo: `${location.origin}/auth/callback`,
+      // emailRedirectTo: `${location.origin}/auth/callback`,
+      emailRedirectTo: `${location.origin}/dashboard`,
     },
   });
 
