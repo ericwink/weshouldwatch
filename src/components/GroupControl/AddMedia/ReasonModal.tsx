@@ -51,11 +51,12 @@ export default function ReasonModal({ open, setOpen, reason, setReason, handleSu
           <TextField
             placeholder="I want to watch this because...."
             onChange={e => setReason(e.target.value)}
+            helperText={"Reason is optional"}
           />
           <SpinnerButton
             onClick={() => handleSubmit()}
             isLoading={isLoading}
-            disabled={!reason}
+            disabled={isLoading}
           >
             Submit
           </SpinnerButton>

@@ -71,7 +71,7 @@ const CardMenu = ({ media, groupId, setChatIsOpen, setShowReasonModal, setShowDe
           sx={{ height: 100, width: 100 }}
         />
         <Typography variant="caption">{media.added_by.user_name}</Typography>
-        <Typography variant="h6">{`"${media.added_reason}"`}</Typography>
+        {media?.added_reason && <Typography variant="h6">{`"${media?.added_reason}"`}</Typography>}
       </Box>
       <Divider />
 
