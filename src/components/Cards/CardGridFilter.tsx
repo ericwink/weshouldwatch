@@ -35,7 +35,7 @@ const makeGenreArray = (mediaData: CondensedMedia[]) => {
 
 const CardGridFilter = ({ mediaData, groupId, mediaType }: Props) => {
   const [genres, setGenres] = useState(makeGenreArray(mediaData));
-  const [watchedFilter, setWatchedFilter] = useState("all");
+  const [watchedFilter, setWatchedFilter] = useState("notWatched");
 
   //set a loading state to spin over the whole screen?
   const {
@@ -59,8 +59,8 @@ const CardGridFilter = ({ mediaData, groupId, mediaType }: Props) => {
   const cardDisplay = media
     .filter(each => each.genres.some(genre => enabledGenres.includes(genre))) //filder media list and return media if any of the genres assigned to it are included in the enabledGenres array.
     .filter(each => {
-      if (watchedFilter === "watched") return !each.watched;
-      if (watchedFilter === "notWatched") return each.watched;
+      if (watchedFilter === "watched") return each.watched;
+      if (watchedFilter === "notWatched") return !each.watched;
       return each;
     });
 
