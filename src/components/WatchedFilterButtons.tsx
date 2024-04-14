@@ -23,8 +23,8 @@ export default function WatchedFilterButtons({ setWatchedFilter, watchedFilter }
       <Grid>
         <Button
           size="small"
-          variant={watchedFilter === "watched" ? "contained" : "outlined"}
-          onClick={() => setWatchedFilter("watched")}
+          variant={watchedFilter === "notWatched" ? "contained" : "outlined"}
+          onClick={() => setWatchedFilter("notWatched")}
         >
           Not Watched
         </Button>
@@ -32,8 +32,8 @@ export default function WatchedFilterButtons({ setWatchedFilter, watchedFilter }
       <Grid>
         <Button
           size="small"
-          variant={watchedFilter === "notWatched" ? "contained" : "outlined"}
-          onClick={() => setWatchedFilter("notWatched")}
+          variant={watchedFilter === "watched" ? "contained" : "outlined"}
+          onClick={() => setWatchedFilter("watched")}
         >
           Watched
         </Button>
