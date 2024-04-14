@@ -25,7 +25,7 @@ const dashboard = async () => {
   if (data) user = data as unknown as UserAccount;
 
   const dashOption = (option: string, icon: ReactNode, path: string) => (
-    <Link href={`/${path}`}>
+    <Link href={`${path}`}>
       <Paper
         elevation={3}
         sx={{ p: 3, minWidth: "300px", display: "flex", alignContent: "center", justifyContent: "center" }}
