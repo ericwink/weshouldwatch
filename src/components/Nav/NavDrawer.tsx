@@ -10,6 +10,7 @@ import LogOut from "./LogOut";
 import { useRouter } from "next/navigation";
 import UserAvatar from "../Account/UserAvatar";
 import Footer from "../Footer";
+import MovieIcon from "@mui/icons-material/Movie";
 
 const NavDrawer = () => {
   const [state, setState] = useState(false);
@@ -44,8 +45,8 @@ const NavDrawer = () => {
       onKeyDown={toggleDrawer(false)}
     >
       <List>
-        {listItem("/", <HomeIcon />, "Home")}
         {listItem("/mygroups", <WorkspacesIcon />, "My Groups")}
+        {listItem("/", <MovieIcon />, "Trending")}
         {listItem("/account", <AccountCircleIcon />, "My Account")}
         {listItem("/pricing", <WorkspacePremiumIcon />, "Get Premium")}
       </List>
