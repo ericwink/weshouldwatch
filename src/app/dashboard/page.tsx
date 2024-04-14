@@ -76,7 +76,7 @@ const dashboard = async () => {
               textAlign="center"
               variant="caption"
             >
-              Tip: Access the <strong>quick menu</strong> from anywhere by clicking the user icon on the top right of your screen
+              Tip: Use the <strong>quick menu</strong> by clicking the user icon on the top right of your screen and access this menu from anywhere
             </Typography>
           </Grid>
         </Grid>

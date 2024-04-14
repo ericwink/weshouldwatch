@@ -30,7 +30,7 @@ const LogInSignUp = ({ type }: Props) => {
   const { mutate: handleLogin, isLoading: loading } = useMutation({
     mutationFn: async () => await login(email, password),
     onSuccess: data => {
-      router.push("/");
+      router.push("/dashboard");
       setUser(data);
     },
     onError: (error: any) => {
