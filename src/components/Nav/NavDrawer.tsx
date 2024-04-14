@@ -45,6 +45,7 @@ const NavDrawer = () => {
       onKeyDown={toggleDrawer(false)}
     >
       <List>
+        {listItem("/dashboard", <HomeIcon />, "Dashboard")}
         {listItem("/mygroups", <WorkspacesIcon />, "My Groups")}
         {listItem("/", <MovieIcon />, "Trending")}
         {listItem("/account", <AccountCircleIcon />, "My Account")}
