@@ -105,7 +105,12 @@ export async function addMedia(mediaPayload: MediaPayload) {
     mediaPayloadValidator.parse(mediaPayload);
 
     const { data, error } = await supabase.from("media").insert([{ ...mediaPayload }]);
-    if (error) throw new Error(error.message);
+    if (error) {
+      if (error.code !== "23505") {
+        // 23505 is duplicate key in media table. Ignore.
+        throw new Error(error.message);
+      }
+    }
     return { message: "succes!" };
   } catch (error) {
     if (error instanceof z.ZodError) return { error: true, message: error.issues[0].message };
