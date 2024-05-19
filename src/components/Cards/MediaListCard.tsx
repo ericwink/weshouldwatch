@@ -13,12 +13,6 @@ interface Props {
   setShowDeleteModal: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-// full width paper
-// not super tall
-// -------------------------
-// IMAGE  TITLE     button  |
-//--------------------------
-
 const MediaListCard = ({ media, groupId, setChatIsOpen, setShowDeleteModal, setShowReasonModal }: Props) => {
   return (
     <Grid xs={12}>
