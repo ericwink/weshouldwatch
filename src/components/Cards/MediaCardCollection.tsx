@@ -1,12 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Paper, Typography, Box, Avatar } from "@mui/material";
-import Grid from "@mui/material/Unstable_Grid2"; // Grid version 2
-import Image from "next/image";
-import getPoster from "@/src/lib/getPoster";
 import ChatModal from "../Chat/ChatModal";
-import CardMenu from "./CardMenu";
 import ReasonModal from "../GroupControl/AddMedia/ReasonModal";
 import ConfirmDelete from "../ConfirmDelete";
 import { toast } from "react-toastify";
@@ -14,13 +9,16 @@ import { CondensedMedia } from "@/src/lib/interface";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { removeMediaFromGroup } from "@/src/lib/supabaseClientHelper";
 import axios from "axios";
+import MediaBoxCard from "./MediaBoxCard";
+import MediaListCard from "./MediaListCard";
 
 interface Props {
   media: CondensedMedia;
   groupId: string;
+  listView: boolean;
 }
 
-const MediaCardCollection = ({ media, groupId }: Props) => {
+const MediaCardCollection = ({ media, groupId, listView }: Props) => {
   const [chatIsOpen, setChatIsOpen] = useState(false);
   const [showReasonModal, setShowReasonModal] = useState(false);
   const [newReason, setNewReason] = useState("");
@@ -32,6 +30,7 @@ const MediaCardCollection = ({ media, groupId }: Props) => {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["groupMedia", { id: groupId }, { type: media.media_type }] });
       setShowDeleteModal(false);
+      toast.success("Media removed from group!");
     },
     onError: () => toast.error("There was an error, please try again!", { theme: "colored" }),
   });
@@ -70,46 +69,23 @@ const MediaCardCollection = ({ media, groupId }: Props) => {
         warningMessage="This media and all associated chats will be removed forever."
         isLoading={isLoading}
       />
-      <Grid>
-        <Paper
-          elevation={3}
-          sx={{ width: "135px", height: "100%" }}
-        >
-          <Box sx={{ height: 200, position: "relative" }}>
-            <Image
-              src={getPoster(media.poster_path, "200")}
-              alt={media.title}
-              fill={true}
-              style={{ borderTopRightRadius: "4px", borderTopLeftRadius: "4px" }}
-            />
-            <Avatar
-              src={media.added_by.profile_pic}
-              sx={{ height: 45, width: 45, position: "absolute", left: "2px", top: "2px", border: "1px", borderColor: "white", borderStyle: "solid" }}
-            ></Avatar>
-            <Box
-              position="absolute"
-              bottom="2px"
-              right="2px"
-            >
-              <CardMenu
-                groupId={groupId}
-                media={media}
-                setChatIsOpen={setChatIsOpen}
-                setShowReasonModal={setShowReasonModal}
-                setShowDeleteModal={setShowDeleteModal}
-              />
-            </Box>
-          </Box>
-          <Grid
-            container
-            p={1}
-          >
-            <Grid xs={12}>
-              <Typography>{media.title}</Typography>
-            </Grid>
-          </Grid>
-        </Paper>
-      </Grid>
+      {listView ? (
+        <MediaListCard
+          groupId={groupId}
+          media={media}
+          setChatIsOpen={setChatIsOpen}
+          setShowDeleteModal={setShowDeleteModal}
+          setShowReasonModal={setShowReasonModal}
+        />
+      ) : (
+        <MediaBoxCard
+          groupId={groupId}
+          media={media}
+          setChatIsOpen={setChatIsOpen}
+          setShowDeleteModal={setShowDeleteModal}
+          setShowReasonModal={setShowReasonModal}
+        />
+      )}
     </>
   );
 };

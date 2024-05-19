@@ -1,7 +1,7 @@
 "use client";
 
 import Grid from "@mui/material/Unstable_Grid2"; // Grid version 2
-import { Container, Button } from "@mui/material";
+import { Container, Button, FormControlLabel, Switch, Box } from "@mui/material";
 import { useState } from "react";
 import GenreChipFilter from "../GenreChipFilter";
 import MediaCardCollection from "./MediaCardCollection";
@@ -12,7 +12,7 @@ import { reorganizeGroupMedia } from "@/src/lib/reorganizeGroupMedia";
 import WatchedFilterButtons from "../WatchedFilterButtons";
 import FilterDrawer from "../FilterDrawer";
 
-interface GenreFilter {
+export interface GenreFilter {
   genre: string;
   enabled: boolean;
 }
@@ -36,6 +36,7 @@ const makeGenreArray = (mediaData: CondensedMedia[]) => {
 const CardGridFilter = ({ mediaData, groupId, mediaType }: Props) => {
   const [genres, setGenres] = useState(makeGenreArray(mediaData));
   const [watchedFilter, setWatchedFilter] = useState("notWatched");
+  const [listView, setListView] = useState(false);
 
   //set a loading state to spin over the whole screen?
   const {
@@ -77,12 +78,12 @@ const CardGridFilter = ({ mediaData, groupId, mediaType }: Props) => {
           setWatchedFilter={setWatchedFilter}
           watchedFilter={watchedFilter}
         />
-        <FilterDrawer>
-          <GenreChipFilter
-            genres={genres}
-            setGenres={setGenres}
-          />
-        </FilterDrawer>
+        <FilterDrawer
+          genres={genres}
+          listView={listView}
+          setGenres={setGenres}
+          setListView={setListView}
+        />
       </Grid>
 
       <Container maxWidth="md">
@@ -94,6 +95,7 @@ const CardGridFilter = ({ mediaData, groupId, mediaType }: Props) => {
         >
           {cardDisplay.map(card => (
             <MediaCardCollection
+              listView={listView}
               media={card}
               key={card.media_id}
               groupId={groupId}
