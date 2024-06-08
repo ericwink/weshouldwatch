@@ -6,10 +6,10 @@ import Image from "next/image";
 import AddMediaModal from "./GroupControl/AddMedia/AddMediaModal";
 import AddMediaContainer from "./GroupControl/AddMedia/AddMediaContainer";
 import FetchVideo from "@/src/components/FetchVideo";
-import noBackground from "../../public/We Should Watch.png";
 import type { MediaData } from "../lib/interface";
 import { Suspense } from "react";
 import Typography from "@mui/material/Typography";
+import { parseMediaData } from "../lib";
 
 interface Props {
   media_id: string;
@@ -18,13 +18,7 @@ interface Props {
 }
 
 const MediaData = ({ mediaData, media_id, media_type }: Props) => {
-  const poster = getPoster(mediaData.poster_path, "200");
-  const title = mediaData.title ?? mediaData.name;
-  const backdrop = mediaData.backdrop_path ? `https://image.tmdb.org/t/p/w1280/${mediaData.backdrop_path}` : noBackground;
-  const rating = `${Math.floor(mediaData.vote_average * 10)}%`;
-  const releaseYear = (mediaData: MediaData): string | undefined => (mediaData.release_date ?? mediaData.first_air_date)?.slice(0, 4);
-  const runTime = mediaData.runtime ?? mediaData.episode_run_time![0];
-  const genreNames = mediaData.genres.map(each => each.name);
+  const { backdrop, genreNames, poster, rating, releaseYear, runTime, title } = parseMediaData(mediaData);
 
   const mediaInfoPayload = {
     tmdb_id: mediaData.id,
