@@ -1,13 +1,11 @@
-import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
-import { cookies } from "next/headers";
 import AcceptInvite from "@/src/components/AcceptInvite";
 import { redirect } from "next/navigation";
 import { Typography, Paper, Avatar } from "@mui/material";
+import { getUserSession, getInvitation } from "@/src/lib";
 
 interface Props {
   searchParams: { token: string };
 }
-// http://localhost:3000/invite?token=${body.record.id}
 
 interface Invite {
   created_at: string;
@@ -24,18 +22,14 @@ interface Invite {
 }
 
 export default async function invitePage({ searchParams }: Props) {
-  const supabase = createServerComponentClient({ cookies });
+  const { data: session, error: sessionError } = await getUserSession();
 
-  const {
-    data: { session },
-    error: accountError,
-  } = await supabase.auth.getSession();
   if (!session) redirect("/login");
 
   const { token } = searchParams;
-  let { data, error } = await supabase.from("invite_user_to_group").select("*, user_public_profile ( * )").eq("id", token).single();
-  console.log(data);
-  const invitation: Invite = data;
+  const { data, error } = await getInvitation({ token });
+
+  const invitation = data as Invite;
 
   if (!invitation) return <h1>{`No invitation found for your email address`}</h1>;
 
@@ -50,7 +44,7 @@ export default async function invitePage({ searchParams }: Props) {
           sx={{ height: 100, width: 100 }}
         />
         <AcceptInvite
-          invite={invitation as Invite}
+          invite={invitation}
           key={invitation.id}
         />
       </Paper>
