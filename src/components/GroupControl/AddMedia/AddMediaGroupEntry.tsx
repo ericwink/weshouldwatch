@@ -3,11 +3,9 @@
 import { ListItem, ListItemText, IconButton, CircularProgress } from "@mui/material";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
-import { addMediaToGroup } from "../../../lib/serverActions";
 import ReasonModal from "./ReasonModal";
 import type { MediaPayload } from "../../../lib/interface";
-import { useState } from "react";
-import { toast } from "react-toastify";
+import { useAddMediaToGroup } from "@/src/hooks";
 
 interface Props {
   media_id: number;
@@ -18,30 +16,7 @@ interface Props {
 }
 
 export default function AddMediaGroupEntry({ id, media_id, group_name, group_media, mediaPayload }: Props) {
-  const [isLoading, setIsLoading] = useState(false);
-  const [reason, setReason] = useState("");
-  const [open, setOpen] = useState(false);
-
-  const handleSubmit = async () => {
-    setOpen(false);
-    setIsLoading(true);
-    const result = await addMediaToGroup(mediaPayload, id, reason);
-    if (result.error) {
-      toast.error(`${result.message}`, { theme: "colored" });
-    } else {
-      toast.success(`${result.message}`, { theme: "colored" });
-    }
-    setIsLoading(false);
-  };
-
-  const checkIfIncluded = (group_media: { media_id: number | null }[]) => {
-    for (let media of group_media) {
-      if (media.media_id === media_id) return true;
-    }
-    return false;
-  };
-
-  const isIncluded = checkIfIncluded(group_media);
+  const { handleSubmit, isLoading, open, setReason, setOpen, reason, isIncluded } = useAddMediaToGroup({ id, mediaPayload, group_media, media_id });
 
   const button = isIncluded ? <CheckCircleIcon /> : <AddCircleIcon />;
   return (
