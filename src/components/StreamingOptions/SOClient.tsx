@@ -3,14 +3,14 @@ import { useState } from "react";
 import SOChart from "./SOChart";
 import SOCountrySelect, { CountryCode } from "./SOCountrySelect";
 import { AvailabilityData, StreamOptions, ExtendedStreamOptions } from "./interfaces";
-import { Typography, Box, Paper } from "@mui/material";
+import { Typography, Box } from "@mui/material";
 
 interface Props {
   codeList: CountryCode[];
   streamingData: any;
 }
 
-export const reorderData = (obj: AvailabilityData) => {
+const reorderData = (obj: AvailabilityData) => {
   const data: StreamOptions = {};
   const dataArray: ExtendedStreamOptions[] = [];
   for (let watchOption in obj) {

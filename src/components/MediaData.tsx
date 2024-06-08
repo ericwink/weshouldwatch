@@ -17,15 +17,7 @@ interface Props {
 }
 
 const MediaData = ({ mediaData, media_id, media_type }: Props) => {
-  const { backdrop, genreNames, poster, rating, releaseYear, runTime, title } = parseMediaData(mediaData);
-
-  const mediaInfoPayload = {
-    tmdb_id: mediaData.id,
-    title: title as string,
-    poster_path: mediaData.poster_path,
-    genres: genreNames,
-    media_type: media_type,
-  };
+  const { backdrop, poster, rating, releaseYear, runTime, title, mediaInfoPayload } = parseMediaData({ media_type, mediaData });
 
   return (
     <div>
