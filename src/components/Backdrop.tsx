@@ -18,7 +18,8 @@ export default function Backdrop({ path, title }: Props) {
         src={backdrop}
         alt={`backdrop image for ${title}`}
         fill={true}
-        objectFit="cover"
+        style={{ objectFit: "cover" }}
+        // objectFit="cover"
       />
     </Box>
   );

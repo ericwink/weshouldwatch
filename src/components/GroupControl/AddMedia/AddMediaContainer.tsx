@@ -1,10 +1,8 @@
-import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
-import { cookies } from "next/headers";
-import { Database } from "@/src/lib/database.types";
 import AddMediaGroupEntry from "./AddMediaGroupEntry";
 import ListWrapper from "../../ListWrapper";
 import type { MediaPayload } from "../../../lib/interface";
 import { Typography } from "@mui/material";
+import { getUserSession, getGroupsAndMedia } from "@/src/lib";
 
 interface Props {
   media_id: number;
@@ -12,20 +10,11 @@ interface Props {
 }
 
 const AddMediaContainer = async ({ media_id, mediaPayload }: Props) => {
-  const supabase = createServerComponentClient<Database>({ cookies });
+  const { data: session, error } = await getUserSession();
 
-  const {
-    data: { session },
-    error,
-  } = await supabase.auth.getSession();
   if (!session) return <p>Log in to add media to a group!</p>;
 
-  const fetchGroupsAndMovies = async () => {
-    let { data: group, error } = await supabase.from("group").select(`
-    id, group_name, group_media ( media_id )`);
-    return group;
-  };
-  const groupsAndMovies = await fetchGroupsAndMovies();
+  const { data: groupsAndMovies, error: groupsError } = await getGroupsAndMedia();
 
   if (!groupsAndMovies || groupsAndMovies.length < 1) return <Typography>No groups yet!</Typography>;
 

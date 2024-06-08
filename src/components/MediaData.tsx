@@ -41,7 +41,8 @@ const MediaData = ({ mediaData, media_id, media_type }: Props) => {
           src={backdrop}
           alt={`backdrop image for ${title}`}
           fill={true}
-          objectFit="cover"
+          // objectFit="cover"
+          style={{ objectFit: "cover" }}
         />
       </div>
       <div className="flex flex-col gap-8 mb-8 -mt-32">
