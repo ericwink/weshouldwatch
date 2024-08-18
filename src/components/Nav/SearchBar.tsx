@@ -40,6 +40,7 @@ const SearchBar = () => {
   } = useSearchBar();
   const router = useRouter();
   console.log(suggestions);
+
   return (
     <Search>
       <form
@@ -65,17 +66,6 @@ const SearchBar = () => {
         >
           <SearchIcon />
         </IconButton>
-        <Autocomplete
-          disablePortal
-          id="combo-box-demo"
-          options={suggestions ?? []}
-          inputValue={searchTerm}
-          onInputChange={(e, newValue) => setSearchTerm(newValue)}
-          sx={{ width: 300 }}
-          loading={suggestionsLoading}
-          noOptionsText="Type to see suggestions"
-          renderInput={(params) => <TextField {...params} label="Movie" />}
-        />
       </form>
     </Search>
   );
