@@ -5,6 +5,7 @@ import { Movie, TV, TVCredits, MovieCredits } from "@/src/lib/interface";
 import PersonBio from "@/src/components/PersonBio";
 import { fetchMediaData } from "@/src/lib/tmdbHelper";
 import { fetchCredits } from "@/src/lib/tmdbHelper";
+import { isMovie, isTV } from "@/src/lib/validateMediaType";
 
 interface Props {
   params: { id: string };
@@ -14,6 +15,28 @@ const PersonPage = async ({ params: { id } }: Props) => {
   const personBio = await fetchMediaData("person", id);
   const movieCredits = await fetchCredits(id, "movie_credits");
   const tvCredits = await fetchCredits(id, "tv_credits");
+
+  const getMediaObject = (media: Movie | TV) => {
+    if (isMovie(media))
+      return {
+        poster_path: media.poster_path,
+        title: media.title,
+        vote_average: media.vote_average,
+        release_date: media.release_date,
+        id: media.id,
+        media_type: media.media_type,
+      };
+
+    if (isTV(media))
+      return {
+        poster_path: media.poster_path,
+        title: media.name,
+        vote_average: media.vote_average,
+        release_date: media.first_air_date,
+        id: media.id,
+        media_type: media.media_type,
+      };
+  };
 
   function consolidateMedia(media: (Movie | TV)[], type: "movie" | "tv") {
     interface Tracker {
@@ -25,22 +48,18 @@ const PersonPage = async ({ params: { id } }: Props) => {
     for (let each of media) {
       if (!hashmap[each.id]) {
         hashmap[each.id] = 1;
-        const mediaData = each as Movie & TV; //type assertion
-        const media = {
-          poster_path: mediaData.poster_path,
-          title: mediaData.title ?? mediaData.name,
-          vote_average: mediaData.vote_average,
-          release_date: mediaData.release_date ?? mediaData.first_air_date,
-          id: mediaData.id,
-          media_type: type,
-        };
-        if (media.release_date) result.push(media); //some entries don't have a release date so we cut them out
+
+        const media = getMediaObject(each);
+        if (media?.release_date) result.push(media); //some entries don't have a release date so we cut them out
       }
     }
     return result;
   }
 
-  const handleCredits = (credits: MovieCredits | TVCredits, type: "movie" | "tv") => {
+  const handleCredits = (
+    credits: MovieCredits | TVCredits,
+    type: "movie" | "tv"
+  ) => {
     let cast: (Movie | TV)[] = [];
     let crew: (Movie | TV)[] = [];
 
@@ -71,19 +90,13 @@ const PersonPage = async ({ params: { id } }: Props) => {
       <TabDisplay tabNames={["Bio", "Movies", "TV"]}>
         <PersonBio person={personBio} />
         <CardGrid>
-          {consolidatedMovies.map(media => (
-            <MediaCardMUI
-              media={media}
-              key={media.id}
-            />
+          {consolidatedMovies.map((media) => (
+            <MediaCardMUI media={media} key={media.id} />
           ))}
         </CardGrid>
         <CardGrid>
-          {consolidatedTV.map(media => (
-            <MediaCardMUI
-              media={media}
-              key={media.id}
-            />
+          {consolidatedTV.map((media) => (
+            <MediaCardMUI media={media} key={media.id} />
           ))}
         </CardGrid>
       </TabDisplay>
