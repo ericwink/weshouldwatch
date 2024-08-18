@@ -2,24 +2,19 @@
 
 import { z } from "zod";
 import axios from "axios";
-
-type MovieInfo = {
-  id: number;
-  name: string;
-};
+import { Person, Movie, TV } from "./interface";
 
 type ResultData = {
   page: number;
-  results: MovieInfo[] | [];
+  results: [Person | Movie | TV] | []
 };
 
 const searchTerm = z.string();
 type SearchTerm = z.infer<typeof searchTerm>;
 
 const getSearchSuggestions = async (searchTerm: SearchTerm) => {
-  console.log("we are hitting this at least right?");
   const tmdbKey = process.env.MOVIE_DB_API;
-  const url = `https://api.themoviedb.org/3/search/keyword?query=${searchTerm}&page=1&?api_key=${tmdbKey}`;
+  const url = `https://api.themoviedb.org/3/search/multi?query=${searchTerm}&include_adult=false&language=en-US&page=1`;
 
   const {
     data: { results },

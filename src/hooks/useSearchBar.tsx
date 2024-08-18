@@ -1,12 +1,10 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import getSearchSuggestions from "../lib/getSearchSuggestions";
 import useDebounce from "./useDebounce";
 
 const useSearchBar = () => {
   const [searchTerm, setSearchTerm] = useState("");
-  const tmdbKey = process.env.MOVIE_DB_API;
-  const url = `https://api.themoviedb.org/3/search/multi?api_key=${tmdbKey}&language=en-US&page=1&include_adult=false&query=${searchTerm}`;
 
   const debouncedSearch = useDebounce(searchTerm);
   const {
@@ -16,8 +14,16 @@ const useSearchBar = () => {
   } = useQuery({
     queryKey: [searchTerm],
     queryFn: async () => await getSearchSuggestions(debouncedSearch),
-    enabled: !!debouncedSearch,
+    enabled: false,
+    refetchOnWindowFocus: false,
   });
+
+  useEffect(() => {
+    if (debouncedSearch) {
+      console.log("TRIGGER THE FETCH");
+      getSuggestions();
+    }
+  }, [debouncedSearch]);
 
   return {
     setSearchTerm,

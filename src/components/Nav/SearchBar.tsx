@@ -31,13 +31,8 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 
 const SearchBar = () => {
-  const {
-    searchTerm,
-    setSearchTerm,
-    getSuggestions,
-    suggestions,
-    suggestionsLoading,
-  } = useSearchBar();
+  const { searchTerm, setSearchTerm, suggestions, suggestionsLoading } =
+    useSearchBar();
   const router = useRouter();
   console.log(suggestions);
 
@@ -47,8 +42,7 @@ const SearchBar = () => {
         action=""
         onSubmit={(e) => {
           e.preventDefault();
-          // router.push(`/search/${searchTerm}`);
-          getSuggestions();
+          router.push(`/search/${searchTerm}`);
         }}
       >
         <StyledInputBase
