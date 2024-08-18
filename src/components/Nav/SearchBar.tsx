@@ -5,6 +5,7 @@ import { styled, alpha } from "@mui/material/styles";
 import { InputBase, IconButton } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import { useRouter } from "next/navigation";
+import useSearchBar from "@/src/hooks/useSearchBar";
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -31,7 +32,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 
 const SearchBar = () => {
-  const [searchTerm, setSearchTerm] = useState("");
+  const {searchTerm,setSearchTerm} = useSearchBar()
   const router = useRouter();
 
   return (
