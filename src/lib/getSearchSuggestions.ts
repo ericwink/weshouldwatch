@@ -4,9 +4,11 @@ import { z } from "zod";
 import axios from "axios";
 import { Person, Movie, TV } from "./interface";
 
+type MergedMedia = Person | Movie | TV
+
 type ResultData = {
   page: number;
-  results: [Person | Movie | TV] | []
+  results: MergedMedia[]| []
 };
 
 const searchTerm = z.string();

@@ -16,6 +16,7 @@ const useSearchBar = () => {
     queryFn: async () => await getSearchSuggestions(debouncedSearch),
     enabled: false,
     refetchOnWindowFocus: false,
+    staleTime: Infinity,
   });
 
   useEffect(() => {

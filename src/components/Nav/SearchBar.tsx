@@ -1,10 +1,12 @@
 "use client";
 
 import { styled, alpha } from "@mui/material/styles";
-import { InputBase, IconButton, Autocomplete, TextField } from "@mui/material";
+import { IconButton, Autocomplete, TextField } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import { useRouter } from "next/navigation";
 import useSearchBar from "@/src/hooks/useSearchBar";
+import { isMovie, isPerson, isTV } from "@/src/lib/validateMediaType";
+import { useState } from "react";
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -16,51 +18,95 @@ const Search = styled("div")(({ theme }) => ({
   marginLeft: 0,
   width: "100%",
   marginRight: `${theme.spacing(2)}`,
-}));
-
-const StyledInputBase = styled(InputBase)(({ theme }) => ({
-  color: "inherit",
-  "& .MuiInputBase-input": {
-    padding: theme.spacing(1, 1, 1, 0),
-    // vertical padding + font size from searchIcon
-    paddingLeft: `calc(1em)`,
-    width: "100%",
-    position: "relative",
-    zIndex: 1,
-  },
+  display: "flex",
+  flexDirection: "row",
 }));
 
 const SearchBar = () => {
   const { searchTerm, setSearchTerm, suggestions, suggestionsLoading } =
     useSearchBar();
   const router = useRouter();
-  console.log(suggestions);
+  const [open, setOpen] = useState(false);
 
   return (
     <Search>
-      <form
-        action=""
-        onSubmit={(e) => {
-          e.preventDefault();
-          router.push(`/search/${searchTerm}`);
+      <Autocomplete
+        sx={{
+          color: "inherit",
+          width: "90%",
+          position: "relative",
+          zIndex: 1,
+          border: "none",
         }}
+        noOptionsText="Type for suggestions"
+        popupIcon={false}
+        disablePortal
+        forcePopupIcon
+        blurOnSelect
+        clearOnBlur={false}
+        open={open}
+        getOptionKey={(o) => o.id}
+        onChange={(e, value) => {
+          if (!value) return;
+          return router.push(
+            `/media/${value?.id}?media_type=${value?.media_type}`
+          );
+        }}
+        onOpen={() => {
+          setOpen(true);
+        }}
+        onClose={() => {
+          setOpen(false);
+        }}
+        filterOptions={(x) => x}
+        id="main-search"
+        options={
+          suggestions && searchTerm
+            ? suggestions.sort(
+                (a, b) => -b.media_type.localeCompare(a.media_type)
+              )
+            : []
+        }
+        getOptionLabel={(o) => {
+          if (isMovie(o)) {
+            return o.title;
+          }
+          if (isTV(o)) return o.name;
+          if (isPerson(o)) return o.name;
+          return "";
+        }}
+        groupBy={(o) => o.media_type}
+        onInputChange={(e, newValue) => setSearchTerm(newValue)}
+        renderInput={(params) => (
+          <TextField
+            {...params}
+            size="small"
+            sx={{
+              p: 1,
+              paddingLeft: `calc(1em)`,
+              "& .MuiOutlinedInput-root": {
+                "& fieldset": {
+                  border: "none", // Remove border
+                },
+                "&:hover fieldset": {
+                  border: "none", // Remove border on hover
+                },
+                "&.Mui-focused fieldset": {
+                  border: "none", // Remove border when focused
+                },
+              },
+            }}
+          />
+        )}
+      />
+      <IconButton
+        color="inherit"
+        disabled={!searchTerm}
+        type="submit"
+        onClick={() => router.push(`/search/${searchTerm}`)}
       >
-        <StyledInputBase
-          placeholder="We Should Watch..."
-          inputProps={{ "aria-label": "search" }}
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-          fullWidth
-        />
-        <IconButton
-          color="inherit"
-          disabled={!searchTerm}
-          sx={{ position: "absolute", right: 0, zIndex: 9 }}
-          type="submit"
-        >
-          <SearchIcon />
-        </IconButton>
-      </form>
+        <SearchIcon />
+      </IconButton>
     </Search>
   );
 };
