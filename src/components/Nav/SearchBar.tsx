@@ -1,8 +1,7 @@
 "use client";
 
-import { useState } from "react";
 import { styled, alpha } from "@mui/material/styles";
-import { InputBase, IconButton } from "@mui/material";
+import { InputBase, IconButton, Autocomplete, TextField } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import { useRouter } from "next/navigation";
 import useSearchBar from "@/src/hooks/useSearchBar";
@@ -32,23 +31,30 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 
 const SearchBar = () => {
-  const {searchTerm,setSearchTerm} = useSearchBar()
+  const {
+    searchTerm,
+    setSearchTerm,
+    getSuggestions,
+    suggestions,
+    suggestionsLoading,
+  } = useSearchBar();
   const router = useRouter();
-
+  console.log(suggestions);
   return (
     <Search>
       <form
         action=""
-        onSubmit={e => {
+        onSubmit={(e) => {
           e.preventDefault();
-          router.push(`/search/${searchTerm}`);
+          // router.push(`/search/${searchTerm}`);
+          getSuggestions();
         }}
       >
         <StyledInputBase
           placeholder="We Should Watch..."
           inputProps={{ "aria-label": "search" }}
           value={searchTerm}
-          onChange={e => setSearchTerm(e.target.value)}
+          onChange={(e) => setSearchTerm(e.target.value)}
           fullWidth
         />
         <IconButton
@@ -59,6 +65,17 @@ const SearchBar = () => {
         >
           <SearchIcon />
         </IconButton>
+        <Autocomplete
+          disablePortal
+          id="combo-box-demo"
+          options={suggestions ?? []}
+          inputValue={searchTerm}
+          onInputChange={(e, newValue) => setSearchTerm(newValue)}
+          sx={{ width: 300 }}
+          loading={suggestionsLoading}
+          noOptionsText="Type to see suggestions"
+          renderInput={(params) => <TextField {...params} label="Movie" />}
+        />
       </form>
     </Search>
   );
