@@ -6,7 +6,6 @@ import SearchIcon from "@mui/icons-material/Search";
 import { useRouter } from "next/navigation";
 import useSearchBar from "@/src/hooks/useSearchBar";
 import { isMovie, isPerson, isTV } from "@/src/lib/validateMediaType";
-import { useState } from "react";
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -23,25 +22,33 @@ const Search = styled("div")(({ theme }) => ({
 }));
 
 const SearchBar = () => {
-  const { searchTerm, setSearchTerm, suggestions, suggestionsLoading } =
-    useSearchBar();
+  const {
+    searchTerm,
+    setSearchTerm,
+    suggestions,
+    suggestionsLoading,
+    open,
+    setOpen,
+  } = useSearchBar();
   const router = useRouter();
-  const [open, setOpen] = useState(false);
 
   return (
     <Search>
       <Autocomplete
         sx={{
-          color: "inherit",
-          width: "90%",
+          width: "100%",
           position: "relative",
-          zIndex: 1,
-          border: "none",
+          "& .MuiAutocomplete-clearIndicator": {
+            color: "white", // Change color of the clear icon
+          },
+          "& .MuiAutocomplete-clearIndicator:hover": {
+            color: "offwhite", // Change color on hover
+          },
         }}
         noOptionsText="Type for suggestions"
         popupIcon={false}
+        loading={suggestionsLoading}
         disablePortal
-        forcePopupIcon
         blurOnSelect
         clearOnBlur={false}
         open={open}
@@ -84,6 +91,9 @@ const SearchBar = () => {
             sx={{
               p: 1,
               paddingLeft: `calc(1em)`,
+              "& .MuiInputBase-input": {
+                color: "white", // Change text color
+              },
               "& .MuiOutlinedInput-root": {
                 "& fieldset": {
                   border: "none", // Remove border

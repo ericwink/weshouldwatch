@@ -5,12 +5,13 @@ import useDebounce from "./useDebounce";
 
 const useSearchBar = () => {
   const [searchTerm, setSearchTerm] = useState("");
+  const [open, setOpen] = useState(false);
 
   const debouncedSearch = useDebounce(searchTerm);
   const {
     refetch: getSuggestions,
     data: suggestions,
-    isLoading: suggestionsLoading,
+    isFetching: suggestionsLoading,
   } = useQuery({
     queryKey: [searchTerm],
     queryFn: async () => await getSearchSuggestions(debouncedSearch),
@@ -21,7 +22,6 @@ const useSearchBar = () => {
 
   useEffect(() => {
     if (debouncedSearch) {
-      console.log("TRIGGER THE FETCH");
       getSuggestions();
     }
   }, [debouncedSearch]);
@@ -32,6 +32,8 @@ const useSearchBar = () => {
     getSuggestions,
     suggestions,
     suggestionsLoading,
+    open,
+    setOpen,
   };
 };
 
