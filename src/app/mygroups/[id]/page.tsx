@@ -13,39 +13,11 @@ import GroupDetails from "@/src/components/GroupControl/AddMedia/GroupDetails";
 import { reorganizeGroupMedia } from "@/src/lib/reorganizeGroupMedia";
 import { CondensedMedia } from "@/src/lib/interface";
 
+import { type GroupMedia, MemberData } from "@/src/types";
+
 interface Props {
   params: {
     id: string;
-  };
-}
-
-export interface MemberData {
-  user_id: string;
-  user_public_profile: {
-    user_name: string;
-    profile_pic: string;
-  };
-}
-
-export interface GroupMedia {
-  id: number;
-  created_at: string;
-  added_by: string;
-  added_reason: string;
-  watched: boolean;
-  group_id: string;
-  media_id: number;
-  media: {
-    created_at: string;
-    tmdb_id: number;
-    title: string;
-    poster_path: string;
-    genres: string[];
-    media_type: string;
-  };
-  user_public_profile: {
-    user_name: string;
-    profile_pic: string;
   };
 }
 
@@ -61,10 +33,14 @@ const groupPageById = async ({ params: { id } }: Props) => {
   if (!session.session) redirect("/login");
 
   //if user isn't subscribed, check the primary groups. If this isn't one of the primary groups, block access
-  let { data: user, error: userError } = await supabase.from("users").select("*").single();
+  let { data: user, error: userError } = await supabase
+    .from("users")
+    .select("*")
+    .single();
   let block = false;
   if (!user?.is_subscribed) {
-    if (user?.primary_created !== id && user?.primary_joined !== id) block = true;
+    if (user?.primary_created !== id && user?.primary_joined !== id)
+      block = true;
   }
 
   const fetchMediaCollection = async (id: string) => {
@@ -83,14 +59,20 @@ const groupPageById = async ({ params: { id } }: Props) => {
     return group_media as GroupMedia[];
   };
 
-  let { data: members, error } = await supabase.from("user_group_join").select("user_id, user_public_profile(user_name, profile_pic)").eq("group_id", id);
+  let { data: members, error } = await supabase
+    .from("user_group_join")
+    .select("user_id, user_public_profile(user_name, profile_pic)")
+    .eq("group_id", id);
   // console.log(members);
 
   const data = await fetchMediaCollection(id);
   const sortedData = reorganizeGroupMedia(data);
   // console.log(JSON.stringify(sortedData, null, 2));
 
-  if (block) return <h1>Either buy premium, or change this group to your primary group</h1>;
+  if (block)
+    return (
+      <h1>Either buy premium, or change this group to your primary group</h1>
+    );
   return (
     <main>
       <TabDisplay tabNames={["Movies", "TV Shows", "Group Info"]}>
@@ -99,15 +81,8 @@ const groupPageById = async ({ params: { id } }: Props) => {
           groupId={id}
           mediaType="movie"
         />
-        <CardGridFilter
-          mediaData={sortedData.tv}
-          groupId={id}
-          mediaType="tv"
-        />
-        <GroupDetails
-          groupId={id}
-          members={members as MemberData[]}
-        />
+        <CardGridFilter mediaData={sortedData.tv} groupId={id} mediaType="tv" />
+        <GroupDetails groupId={id} members={members as MemberData[]} />
       </TabDisplay>
     </main>
   );
