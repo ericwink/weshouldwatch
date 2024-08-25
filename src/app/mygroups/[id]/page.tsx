@@ -15,6 +15,7 @@ import { reorganizeGroupMedia } from "@/src/lib/reorganizeGroupMedia";
 import { CondensedMedia } from "@/src/lib/interface";
 
 import { type MemberData } from "@/src/types";
+import { getUserData } from "../_server/getUserData";
 
 interface Props {
   params: {
@@ -32,17 +33,11 @@ const groupPageById = async ({ params: { id } }: Props) => {
 
   const { data: session } = await supabase.auth.getSession();
   if (!session.session) redirect("/login");
+  const { user, error: userFetchError } = await getUserData(supabase);
+  if (!user) throw new Error("user not found");
 
-  //if user isn't subscribed, check the primary groups. If this isn't one of the primary groups, block access
-  let { data: user, error: userError } = await supabase
-    .from("users")
-    .select("*")
-    .single();
-  let block = false;
-  if (!user?.is_subscribed) {
-    if (user?.primary_created !== id && user?.primary_joined !== id)
-      block = true;
-  }
+  const isSubscribed = user.is_subscribed;
+  const isPrimary = user.primary_created === id || user.primary_joined === id;
 
   let { data: members, error } = await supabase
     .from("user_group_join")
@@ -54,7 +49,7 @@ const groupPageById = async ({ params: { id } }: Props) => {
   const sortedData = reorganizeGroupMedia(data);
   // console.log(JSON.stringify(sortedData, null, 2));
 
-  if (block)
+  if (!isSubscribed || !isPrimary)
     return (
       <h1>Either buy premium, or change this group to your primary group</h1>
     );
