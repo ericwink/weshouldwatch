@@ -5,6 +5,7 @@ import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
 import { Database } from "@/src/lib/database.types";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
+import { fetchMediaCollection } from "../_server/fetchMediaCollection";
 
 import TabDisplay from "@/src/components/TabDisplay";
 import CardGridFilter from "@/src/components/Cards/CardGridFilter";
@@ -13,7 +14,7 @@ import GroupDetails from "@/src/components/GroupControl/AddMedia/GroupDetails";
 import { reorganizeGroupMedia } from "@/src/lib/reorganizeGroupMedia";
 import { CondensedMedia } from "@/src/lib/interface";
 
-import { type GroupMedia, MemberData } from "@/src/types";
+import { type MemberData } from "@/src/types";
 
 interface Props {
   params: {
@@ -43,29 +44,13 @@ const groupPageById = async ({ params: { id } }: Props) => {
       block = true;
   }
 
-  const fetchMediaCollection = async (id: string) => {
-    let { data: group_media, error } = await supabase
-      .from("group_media")
-      .select(
-        `
-      *,
-      media (
-        *
-      ) , user_public_profile ( user_name, profile_pic )
-    `
-      )
-      .eq("group_id", id)
-      .order("id", { ascending: false });
-    return group_media as GroupMedia[];
-  };
-
   let { data: members, error } = await supabase
     .from("user_group_join")
     .select("user_id, user_public_profile(user_name, profile_pic)")
     .eq("group_id", id);
   // console.log(members);
 
-  const data = await fetchMediaCollection(id);
+  const data = await fetchMediaCollection(id, supabase);
   const sortedData = reorganizeGroupMedia(data);
   // console.log(JSON.stringify(sortedData, null, 2));
 
