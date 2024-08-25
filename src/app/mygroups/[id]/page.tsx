@@ -16,6 +16,7 @@ import { CondensedMedia } from "@/src/lib/interface";
 
 import { type MemberData } from "@/src/types";
 import { getUserData } from "../_server/getUserData";
+import { getGroupMembers } from "../_server/getGroupMembers";
 
 interface Props {
   params: {
@@ -38,16 +39,12 @@ const groupPageById = async ({ params: { id } }: Props) => {
 
   const isSubscribed = user.is_subscribed;
   const isPrimary = user.primary_created === id || user.primary_joined === id;
+  const { members, error: membersError } = await getGroupMembers(id, supabase);
 
-  let { data: members, error } = await supabase
-    .from("user_group_join")
-    .select("user_id, user_public_profile(user_name, profile_pic)")
-    .eq("group_id", id);
-  // console.log(members);
+  if (membersError) throw new Error("Could not find members");
 
   const data = await fetchMediaCollection(id, supabase);
   const sortedData = reorganizeGroupMedia(data);
-  // console.log(JSON.stringify(sortedData, null, 2));
 
   if (!isSubscribed || !isPrimary)
     return (
