@@ -19,9 +19,17 @@ const GroupMoviesPage = async ({ params }: Props) => {
     .select(`media_id,watched, media(*)`)
     .eq("group_id", `${params.id}`);
 
+  if (movies.error)
+    throw new Error("There was an error getting your movies. Please try again");
+
   console.log(movies);
 
-  return <div>Movies Page</div>;
+  return (
+    <>
+      <div>Movies Page</div>
+      {JSON.stringify(movies.data)}
+    </>
+  );
 };
 
 export default GroupMoviesPage;
