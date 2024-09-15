@@ -25,7 +25,7 @@ const GroupLayout = ({ children, params }: Props) => {
 
   return (
     <section className="w-full flex flex-col items-center">
-      <Box sx={{ width: 500 }}>
+      <div className="w-full">
         <BottomNavigation value={getNavValue()} showLabels>
           <BottomNavigationAction
             label="Movies"
@@ -46,7 +46,7 @@ const GroupLayout = ({ children, params }: Props) => {
             href={`/mygroups/${params.id}/info`}
           />
         </BottomNavigation>
-      </Box>
+      </div>
 
       {children}
     </section>

@@ -2,7 +2,7 @@ import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
 import { Database } from "@/src/lib/database.types";
-import GroupMediaCard from "../../components/GroupMediaCard";
+import GroupMediaCard from "../components/GroupMediaCard";
 interface Props {
   params: {
     id: string;
