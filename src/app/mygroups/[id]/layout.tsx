@@ -1,9 +1,7 @@
 "use client";
 
+import { Box, BottomNavigation, BottomNavigationAction } from "@mui/material";
 import Link from "next/link";
-import Box from "@mui/material/Box";
-import BottomNavigation from "@mui/material/BottomNavigation";
-import BottomNavigationAction from "@mui/material/BottomNavigationAction";
 import GroupIcon from "@mui/icons-material/Group";
 import MovieIcon from "@mui/icons-material/Movie";
 import TvIcon from "@mui/icons-material/Tv";
