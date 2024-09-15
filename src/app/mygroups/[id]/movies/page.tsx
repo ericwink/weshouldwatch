@@ -2,7 +2,7 @@ import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
 import { Database } from "@/src/lib/database.types";
-
+import GroupMediaCard from "../../components/GroupMediaCard";
 interface Props {
   params: {
     id: string;
@@ -16,18 +16,20 @@ const GroupMoviesPage = async ({ params }: Props) => {
 
   const movies = await supabase
     .from("group_media")
-    .select(`media_id,watched, media(*)`)
+    .select(`media_id,watched,added_by,media(*)`)
     .eq("group_id", `${params.id}`);
 
   if (movies.error)
     throw new Error("There was an error getting your movies. Please try again");
 
-  console.log(movies);
-
   return (
     <>
       <div>Movies Page</div>
-      {JSON.stringify(movies.data)}
+      <div className="w-full flex flex-wrap gap-2 justify-center">
+        {movies.data.map((movie) => (
+          <GroupMediaCard media={movie.media} />
+        ))}
+      </div>
     </>
   );
 };
