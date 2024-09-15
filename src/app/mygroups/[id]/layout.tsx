@@ -4,9 +4,9 @@ import Link from "next/link";
 import Box from "@mui/material/Box";
 import BottomNavigation from "@mui/material/BottomNavigation";
 import BottomNavigationAction from "@mui/material/BottomNavigationAction";
-import RestoreIcon from "@mui/icons-material/Restore";
-import FavoriteIcon from "@mui/icons-material/Favorite";
-import LocationOnIcon from "@mui/icons-material/LocationOn";
+import GroupIcon from "@mui/icons-material/Group";
+import MovieIcon from "@mui/icons-material/Movie";
+import TvIcon from "@mui/icons-material/Tv";
 import { usePathname } from "next/navigation";
 
 interface Props {
@@ -33,18 +33,18 @@ const GroupLayout = ({ children, params }: Props) => {
             label="Movies"
             LinkComponent={Link}
             href={`/mygroups/${params.id}/movies`}
-            icon={<RestoreIcon />}
+            icon={<MovieIcon />}
           />
           <BottomNavigationAction
             label="TV Shows"
             href={`/mygroups/${params.id}/tv`}
             LinkComponent={Link}
-            icon={<FavoriteIcon />}
+            icon={<TvIcon />}
           />
           <BottomNavigationAction
             label="Group Info"
             LinkComponent={Link}
-            icon={<LocationOnIcon />}
+            icon={<GroupIcon />}
             href={`/mygroups/${params.id}/info`}
           />
         </BottomNavigation>
