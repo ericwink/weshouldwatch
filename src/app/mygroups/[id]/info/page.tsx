@@ -1,5 +1,5 @@
-const InfoPage = () => {
+const GroupInfoPage = () => {
   return <div>Info Page</div>;
 };
 
-export default InfoPage;
+export default GroupInfoPage;
