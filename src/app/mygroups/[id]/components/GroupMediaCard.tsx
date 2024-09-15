@@ -11,9 +11,13 @@ interface Props {
     title: string;
     tmdb_id: number;
   } | null;
+  user: {
+    user_name: string;
+    profile_pic: string | null;
+  } | null;
 }
 
-const GroupMediaCard = ({ media }: Props) => {
+const GroupMediaCard = ({ media, user }: Props) => {
   if (!media) return null;
 
   return (
@@ -27,7 +31,7 @@ const GroupMediaCard = ({ media }: Props) => {
             style={{ borderTopRightRadius: "4px", borderTopLeftRadius: "4px" }}
           />
           <Avatar
-            // src={media.added_by.profile_pic}
+            src={user?.profile_pic ?? ""}
             sx={{
               height: 45,
               width: 45,

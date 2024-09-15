@@ -16,21 +16,20 @@ const GroupMoviesPage = async ({ params }: Props) => {
 
   const movies = await supabase
     .from("group_media")
-    .select(`media_id,watched,added_by,media(*)`)
+    .select(
+      `media_id,watched,added_by,media(*), user_public_profile ( user_name, profile_pic )`
+    )
     .eq("group_id", `${params.id}`);
 
   if (movies.error)
     throw new Error("There was an error getting your movies. Please try again");
 
   return (
-    <>
-      <div>Movies Page</div>
-      <div className="w-full flex flex-wrap gap-2 justify-center">
-        {movies.data.map((movie) => (
-          <GroupMediaCard media={movie.media} />
-        ))}
-      </div>
-    </>
+    <div className="w-full flex flex-wrap gap-2 justify-center">
+      {movies.data.map((movie) => (
+        <GroupMediaCard media={movie.media} user={movie.user_public_profile} />
+      ))}
+    </div>
   );
 };
 

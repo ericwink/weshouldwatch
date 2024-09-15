@@ -25,7 +25,7 @@ const GroupLayout = ({ children, params }: Props) => {
 
   return (
     <section className="w-full flex flex-col items-center">
-      <div className="w-full">
+      <div className="w-full mb-1 mt-1">
         <BottomNavigation value={getNavValue()} showLabels>
           <BottomNavigationAction
             label="Movies"
