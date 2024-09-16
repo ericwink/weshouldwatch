@@ -2,6 +2,7 @@ import { Paper, Box, Avatar, Typography } from "@mui/material";
 import Grid from "@mui/material/Unstable_Grid2"; // Grid version 2
 import getPoster from "@/src/lib/getPoster";
 import Image from "next/image";
+import GroupMediaCardMenu from "./GroupMediaCardMenu";
 
 interface Props {
   media: {
@@ -43,19 +44,9 @@ const GroupMediaCard = ({ media, user }: Props) => {
               borderStyle: "solid",
             }}
           ></Avatar>
-          {/* <Box
-            position="absolute"
-            bottom="2px"
-            right="2px"
-          >
-            <CardMenu
-              groupId={groupId}
-              media={media}
-              setChatIsOpen={setChatIsOpen}
-              setShowReasonModal={setShowReasonModal}
-              setShowDeleteModal={setShowDeleteModal}
-            />
-          </Box> */}
+          <Box position="absolute" bottom="2px" right="2px">
+            <GroupMediaCardMenu />
+          </Box>
         </Box>
         <Grid container p={1}>
           <Grid xs={12}>

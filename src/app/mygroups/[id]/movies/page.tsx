@@ -16,9 +16,7 @@ const GroupMoviesPage = async ({ params }: Props) => {
 
   const movies = await supabase
     .from("group_media")
-    .select(
-      `media_id,watched,added_by,media(*), user_public_profile ( user_name, profile_pic )`
-    )
+    .select(`*,media(*), user_public_profile ( user_name, profile_pic )`)
     .eq("group_id", `${params.id}`);
 
   if (movies.error)
