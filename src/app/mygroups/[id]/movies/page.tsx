@@ -3,6 +3,9 @@ import { redirect } from "next/navigation";
 import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
 import { Database } from "@/src/lib/database.types";
 import GroupMediaCard from "../components/GroupMediaCard";
+import GroupMediaCardDrawer from "../components/GroupMediaCardDrawer";
+import GroupMediaCardMenuHeader from "../components/GroupMediaCardMenuHeader";
+
 interface Props {
   params: {
     id: string;
@@ -35,7 +38,15 @@ const GroupMoviesPage = async ({ params, searchParams }: Props) => {
           media={movie.media}
           user={movie.user_public_profile}
           key={movie.id}
-        />
+        >
+          <GroupMediaCardDrawer>
+            <GroupMediaCardMenuHeader
+              added_reason={movie.added_reason}
+              user={movie.user_public_profile}
+            />
+            <div>this is where the stuff will go</div>
+          </GroupMediaCardDrawer>
+        </GroupMediaCard>
       ))}
     </div>
   );
