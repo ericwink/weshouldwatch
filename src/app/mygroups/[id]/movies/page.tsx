@@ -7,17 +7,23 @@ interface Props {
   params: {
     id: string;
   };
+  searchParams: { [key: string]: string | string[] | undefined };
 }
 
-const GroupMoviesPage = async ({ params }: Props) => {
+const GroupMoviesPage = async ({ params, searchParams }: Props) => {
   const supabase = createServerComponentClient<Database>({ cookies });
   const { data: session } = await supabase.auth.getSession();
   if (!session.session) redirect("/login");
+  const watched = searchParams?.watched === "true";
 
-  const movies = await supabase
+  let query = supabase
     .from("group_media")
     .select(`*,media(*), user_public_profile ( user_name, profile_pic )`)
     .eq("group_id", `${params.id}`);
+
+  if (searchParams?.watched) query.eq("watched", watched);
+
+  const movies = await query;
 
   if (movies.error)
     throw new Error("There was an error getting your movies. Please try again");
@@ -25,7 +31,11 @@ const GroupMoviesPage = async ({ params }: Props) => {
   return (
     <div className="w-full flex flex-wrap gap-2 justify-center">
       {movies.data.map((movie) => (
-        <GroupMediaCard media={movie.media} user={movie.user_public_profile} />
+        <GroupMediaCard
+          media={movie.media}
+          user={movie.user_public_profile}
+          key={movie.id}
+        />
       ))}
     </div>
   );
