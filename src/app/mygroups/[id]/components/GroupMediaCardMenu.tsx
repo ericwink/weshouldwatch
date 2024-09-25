@@ -1,11 +1,8 @@
 "use client";
 
 import {
-  Box,
   List,
   ListItem,
-  Avatar,
-  Typography,
   Divider,
   ListItemButton,
   ListItemIcon,
@@ -18,91 +15,83 @@ import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
+import { useUserStore } from "@/src/lib/store";
 
-const GroupMediaCardMenu = async () => {
+interface MenuItemProps {
+  onClick: () => void;
+  label: string;
+  icon: React.ReactNode;
+}
+
+const MenuItem = ({ onClick, label, icon }: MenuItemProps) => {
+  return (
+    <ListItem disablePadding>
+      <ListItemButton onClick={onClick}>
+        <ListItemIcon>{icon}</ListItemIcon>
+        <ListItemText primary={label} />
+      </ListItemButton>
+    </ListItem>
+  );
+};
+
+interface CardMenuProps {
+  mediaType: string;
+  mediaId: number;
+  watched: boolean;
+  addedByUserId: string;
+}
+
+const GroupMediaCardMenu = ({
+  mediaId,
+  mediaType,
+  watched,
+  addedByUserId,
+}: CardMenuProps) => {
+  const user = useUserStore((state) => state.user);
+
+  const isAddedByCurrentUser = addedByUserId === user?.id;
+
   return (
     <>
-      <Box
-        display="flex"
-        flexDirection="column"
-        width="100%"
-        justifyContent="center"
-        alignItems="center"
-        mt={2}
-        mb={2}
-      >
-        <Avatar
-          //   src={media.added_by.profile_pic}
-          //   alt={media.added_by.user_name}
-          sx={{ height: 100, width: 100 }}
-        />
-        <Typography variant="caption">Added By User Name</Typography>
-        {data.added_reason && (
-          <Typography
-            textAlign="center"
-            variant="h6"
-          >{`"${media?.added_reason}"`}</Typography>
-        )}
-      </Box>
       <Divider />
 
       <List>
         <Link
           className="flex"
-          href={`/media/${media.media_id}/?media_type=${media.media_type}`}
+          href={`/media/${mediaId}/?media_type=${mediaType}`}
         >
-          <ListItem disablePadding>
-            <ListItemButton>
-              <ListItemIcon>
-                <InfoIcon />
-              </ListItemIcon>
-              <ListItemText primary={"See Details"} />
-            </ListItemButton>
-          </ListItem>
+          <MenuItem
+            label="See Details"
+            onClick={() => null}
+            icon={<InfoIcon />}
+          />
         </Link>
 
-        <ListItem disablePadding>
-          <ListItemButton onClick={chatToggle}>
-            <ListItemIcon>
-              <ChatIcon />
-            </ListItemIcon>
-            <ListItemText primary={"Show Chat"} />
-          </ListItemButton>
-        </ListItem>
+        <MenuItem
+          label="Show Chat"
+          onClick={() => console.log("toggle chat")}
+          icon={<ChatIcon />}
+        />
 
-        <ListItem disablePadding>
-          <ListItemButton onClick={() => toggleWatched()}>
-            <ListItemIcon>
-              {!media.watched ? <VisibilityIcon /> : <VisibilityOffIcon />}
-            </ListItemIcon>
-            <ListItemText
-              primary={
-                !media.watched
-                  ? "Mark as Watched by Group"
-                  : "Mark as Not Watched by Group"
-              }
-            />
-          </ListItemButton>
-        </ListItem>
+        <MenuItem
+          label={`Mark as ${!watched && "Not"} Watched by Group`}
+          onClick={() => console.log("toggle watched")}
+          icon={watched ? <VisibilityOffIcon /> : <VisibilityIcon />}
+        />
 
-        {media.added_by.user_id === user?.id && (
+        {isAddedByCurrentUser && (
           <>
-            <ListItem disablePadding>
-              <ListItemButton onClick={() => setShowReasonModal(true)}>
-                <ListItemIcon>
-                  <EditIcon />
-                </ListItemIcon>
-                <ListItemText primary={"Edit Reason"} />
-              </ListItemButton>
-            </ListItem>
-            <ListItem disablePadding>
-              <ListItemButton onClick={() => setShowDeleteModal(true)}>
-                <ListItemIcon>
-                  <DeleteForeverIcon />
-                </ListItemIcon>
-                <ListItemText primary={"Remove From Group"} />
-              </ListItemButton>
-            </ListItem>
+            <MenuItem
+              label="Edit Reason"
+              onClick={() => "show reason modal"}
+              icon={<EditIcon />}
+            />
+
+            <MenuItem
+              label="Remove From Group"
+              onClick={() => "show delete modal"}
+              icon={<DeleteForeverIcon />}
+            />
           </>
         )}
       </List>

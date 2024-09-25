@@ -5,6 +5,7 @@ import { Database } from "@/src/lib/database.types";
 import GroupMediaCard from "../components/GroupMediaCard";
 import GroupMediaCardDrawer from "../components/GroupMediaCardDrawer";
 import GroupMediaCardMenuHeader from "../components/GroupMediaCardMenuHeader";
+import GroupMediaCardMenu from "../components/GroupMediaCardMenu";
 
 interface Props {
   params: {
@@ -44,7 +45,12 @@ const GroupMoviesPage = async ({ params, searchParams }: Props) => {
               added_reason={movie.added_reason}
               user={movie.user_public_profile}
             />
-            <div>this is where the stuff will go</div>
+            <GroupMediaCardMenu
+              addedByUserId={movie.added_by}
+              mediaId={movie.media_id}
+              mediaType="movie"
+              watched={movie.watched}
+            />
           </GroupMediaCardDrawer>
         </GroupMediaCard>
       ))}
