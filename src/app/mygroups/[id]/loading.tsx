@@ -1,36 +1,23 @@
 "use client";
 
-import TabDisplay from "@/src/components/TabDisplay";
-import CardSkeleton from "@/src/components/Cards/CardSkeleton";
-import CardGrid from "@/src/components/Cards/CardGrid";
-import { CircularProgress, Box, Typography, Container, Skeleton } from "@mui/material";
+import { Skeleton } from "@mui/material";
 
-const mainPageLoading = () => {
-  const cardSkeleton = Array.from({ length: 12 }, (_, i) => <CardSkeleton key={i} />);
-
-  const cardsLoader = (
-    <Container maxWidth="md">
-      <Skeleton
-        height={50}
-        width="100%"
-        animation="wave"
-      />
-      <CardGrid>{cardSkeleton}</CardGrid>
-    </Container>
-  );
+const MediaLoader = () => {
+  const cardSkeleton = Array.from({ length: 10 }, (_, i) => (
+    <Skeleton
+      variant="rectangular"
+      animation="wave"
+      height={180}
+      width={135}
+      key={i}
+    />
+  ));
 
   return (
-    <>
-      <TabDisplay tabNames={["Movies", "TV Shows", "Group Info"]}>
-        {cardsLoader}
-        {cardsLoader}
-        <Box sx={{ display: "flex", flexDirection: "column", gap: 2, justifyContent: "center", alignItems: "center" }}>
-          <Typography>Loading Group Info...</Typography>
-          <CircularProgress />
-        </Box>
-      </TabDisplay>
-    </>
+    <div className="w-full flex flex-wrap gap-2 justify-center">
+      {cardSkeleton}
+    </div>
   );
 };
 
-export default mainPageLoading;
+export default MediaLoader;
