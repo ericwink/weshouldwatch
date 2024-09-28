@@ -38,8 +38,8 @@ const GroupMediaCardDrawer = ({ children }: Props) => {
         <Box
           sx={{ width: "auto" }}
           role="presentation"
-          onClick={toggleDrawer}
-          onKeyDown={toggleDrawer}
+          // onClick={toggleDrawer}
+          // onKeyDown={toggleDrawer}
         >
           {children}
         </Box>

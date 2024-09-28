@@ -1,14 +1,6 @@
 "use client";
 
-import {
-  List,
-  ListItem,
-  Divider,
-  ListItemButton,
-  ListItemIcon,
-  ListItemText,
-  Typography,
-} from "@mui/material";
+import { List, Divider, Typography } from "@mui/material";
 import InfoIcon from "@mui/icons-material/Info";
 import ChatIcon from "@mui/icons-material/Chat";
 import Link from "next/link";
@@ -18,26 +10,11 @@ import EditIcon from "@mui/icons-material/Edit";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import { useUserStore } from "@/src/lib/store";
 import { toggleWatched } from "./toggleWatched.server";
-import { ReactNode, useTransition } from "react";
+import { useTransition } from "react";
+import FullScreenLoader from "@/src/components/FullScreenLoader";
+import GroupCardMenuItem from "./GroupCardMenuItem";
 
-interface MenuItemProps {
-  onClick: () => void;
-  label: string | ReactNode;
-  icon: React.ReactNode;
-}
-
-const MenuItem = ({ onClick, label, icon }: MenuItemProps) => {
-  return (
-    <ListItem disablePadding>
-      <ListItemButton onClick={onClick}>
-        <ListItemIcon>{icon}</ListItemIcon>
-        <ListItemText primary={label} />
-      </ListItemButton>
-    </ListItem>
-  );
-};
-
-interface CardMenuProps {
+interface Props {
   mediaType: string;
   mediaId: number;
   watched: boolean;
@@ -51,17 +28,20 @@ const GroupMediaCardMenu = ({
   watched,
   addedByUserId,
   groupId,
-}: CardMenuProps) => {
+}: Props) => {
   const user = useUserStore((state) => state.user);
   const [isPending, startTransition] = useTransition();
 
   const handleToggleWatched = async () => {
     startTransition(async () => {
-      const error = await toggleWatched({
+      const result = await toggleWatched({
         mediaId,
         watched: !watched,
         groupId,
       });
+      if (result?.error) {
+        alert(result.error);
+      }
     });
   };
 
@@ -69,6 +49,7 @@ const GroupMediaCardMenu = ({
 
   return (
     <>
+      <FullScreenLoader isLoading={isPending} />
       <Divider />
 
       <List>
@@ -76,20 +57,20 @@ const GroupMediaCardMenu = ({
           className="flex"
           href={`/media/${mediaId}/?media_type=${mediaType}`}
         >
-          <MenuItem
+          <GroupCardMenuItem
             label="See Details"
             onClick={() => null}
             icon={<InfoIcon />}
           />
         </Link>
 
-        <MenuItem
+        <GroupCardMenuItem
           label="Show Chat"
           onClick={() => console.log("toggle chat")}
           icon={<ChatIcon />}
         />
 
-        <MenuItem
+        <GroupCardMenuItem
           label={
             <Typography>
               Mark as {watched ? <b>Not Watched</b> : <b>Watched</b>} by Group
@@ -101,13 +82,13 @@ const GroupMediaCardMenu = ({
 
         {isAddedByCurrentUser && (
           <>
-            <MenuItem
+            <GroupCardMenuItem
               label="Edit Reason"
               onClick={() => "show reason modal"}
               icon={<EditIcon />}
             />
 
-            <MenuItem
+            <GroupCardMenuItem
               label="Remove From Group"
               onClick={() => "show delete modal"}
               icon={<DeleteForeverIcon />}
