@@ -1,15 +1,36 @@
 "use client";
 
 import MenuIcon from "@mui/icons-material/Menu";
-import { IconButton, Box, Drawer } from "@mui/material";
-import { useState, ReactNode } from "react";
+import { IconButton, Box, Drawer, Divider } from "@mui/material";
+import { useState } from "react";
+import GroupMediaCardMenuHeader from "./GroupMediaCardMenuHeader";
+import GroupMediaCardMenu from "./GroupMediaCardMenu";
+import FullScreenLoader from "@/src/components/FullScreenLoader";
 
 interface Props {
-  children: ReactNode;
+  user: {
+    created_at: string;
+    profile_pic: string | null;
+    user_id: string;
+    user_name: string;
+  } | null;
+  added_reason: string | null | undefined;
+  mediaType: string;
+  mediaId: number;
+  watched: boolean;
+  groupId: string;
 }
 
-const GroupMediaCardDrawer = ({ children }: Props) => {
+const GroupMediaCardDrawer = ({
+  user,
+  added_reason,
+  groupId,
+  mediaId,
+  mediaType,
+  watched,
+}: Props) => {
   const [state, setState] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const toggleDrawer = (event: React.KeyboardEvent | React.MouseEvent) => {
     if (
@@ -25,6 +46,7 @@ const GroupMediaCardDrawer = ({ children }: Props) => {
 
   return (
     <div>
+      <FullScreenLoader isLoading={isLoading} />
       <IconButton
         onClick={toggleDrawer}
         sx={{
@@ -38,10 +60,19 @@ const GroupMediaCardDrawer = ({ children }: Props) => {
         <Box
           sx={{ width: "auto" }}
           role="presentation"
-          // onClick={toggleDrawer}
-          // onKeyDown={toggleDrawer}
+          onClick={toggleDrawer}
+          onKeyDown={toggleDrawer}
         >
-          {children}
+          <GroupMediaCardMenuHeader added_reason={added_reason} user={user} />
+          <Divider />
+          <GroupMediaCardMenu
+            addedByUserId={user?.user_id ?? ""}
+            mediaId={mediaId}
+            mediaType={mediaType}
+            watched={watched}
+            groupId={groupId}
+            setIsLoading={setIsLoading}
+          />
         </Box>
       </Drawer>
     </div>

@@ -1,6 +1,6 @@
 "use client";
 
-import { List, Divider, Typography } from "@mui/material";
+import { List, Typography } from "@mui/material";
 import InfoIcon from "@mui/icons-material/Info";
 import ChatIcon from "@mui/icons-material/Chat";
 import Link from "next/link";
@@ -10,8 +10,6 @@ import EditIcon from "@mui/icons-material/Edit";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import { useUserStore } from "@/src/lib/store";
 import { toggleWatched } from "./toggleWatched.server";
-import { useTransition } from "react";
-import FullScreenLoader from "@/src/components/FullScreenLoader";
 import GroupCardMenuItem from "./GroupCardMenuItem";
 
 interface Props {
@@ -20,6 +18,7 @@ interface Props {
   watched: boolean;
   addedByUserId: string;
   groupId: string;
+  setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const GroupMediaCardMenu = ({
@@ -28,75 +27,74 @@ const GroupMediaCardMenu = ({
   watched,
   addedByUserId,
   groupId,
+  setIsLoading,
 }: Props) => {
   const user = useUserStore((state) => state.user);
-  const [isPending, startTransition] = useTransition();
 
   const handleToggleWatched = async () => {
-    startTransition(async () => {
+    setIsLoading(true);
+
+    try {
       const result = await toggleWatched({
         mediaId,
         watched: !watched,
         groupId,
       });
-      if (result?.error) {
-        alert(result.error);
-      }
-    });
+      if (result?.error) throw new Error(result.error);
+    } catch (error) {
+      alert(error);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const isAddedByCurrentUser = addedByUserId === user?.id;
 
   return (
-    <>
-      <FullScreenLoader isLoading={isPending} />
-      <Divider />
+    <List>
+      <Link
+        className="flex"
+        href={`/media/${mediaId}/?media_type=${mediaType}`}
+      >
+        <GroupCardMenuItem
+          label="See Details"
+          onClick={() => null}
+          icon={<InfoIcon />}
+        />
+      </Link>
 
-      <List>
-        <Link
-          className="flex"
-          href={`/media/${mediaId}/?media_type=${mediaType}`}
-        >
+      <GroupCardMenuItem
+        label="Show Chat"
+        onClick={() => console.log("toggle chat")}
+        icon={<ChatIcon />}
+      />
+
+      <GroupCardMenuItem
+        label={
+          <Typography>
+            Mark as {watched ? <b>Not Watched</b> : <b>Watched</b>} by Group
+          </Typography>
+        }
+        onClick={() => handleToggleWatched()}
+        icon={watched ? <VisibilityOffIcon /> : <VisibilityIcon />}
+      />
+
+      {isAddedByCurrentUser && (
+        <>
           <GroupCardMenuItem
-            label="See Details"
-            onClick={() => null}
-            icon={<InfoIcon />}
+            label="Edit Reason"
+            onClick={() => "show reason modal"}
+            icon={<EditIcon />}
           />
-        </Link>
 
-        <GroupCardMenuItem
-          label="Show Chat"
-          onClick={() => console.log("toggle chat")}
-          icon={<ChatIcon />}
-        />
-
-        <GroupCardMenuItem
-          label={
-            <Typography>
-              Mark as {watched ? <b>Not Watched</b> : <b>Watched</b>} by Group
-            </Typography>
-          }
-          onClick={() => handleToggleWatched()}
-          icon={watched ? <VisibilityOffIcon /> : <VisibilityIcon />}
-        />
-
-        {isAddedByCurrentUser && (
-          <>
-            <GroupCardMenuItem
-              label="Edit Reason"
-              onClick={() => "show reason modal"}
-              icon={<EditIcon />}
-            />
-
-            <GroupCardMenuItem
-              label="Remove From Group"
-              onClick={() => "show delete modal"}
-              icon={<DeleteForeverIcon />}
-            />
-          </>
-        )}
-      </List>
-    </>
+          <GroupCardMenuItem
+            label="Remove From Group"
+            onClick={() => "show delete modal"}
+            icon={<DeleteForeverIcon />}
+          />
+        </>
+      )}
+    </List>
   );
 };
 

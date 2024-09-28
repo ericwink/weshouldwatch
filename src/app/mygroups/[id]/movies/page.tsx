@@ -4,8 +4,6 @@ import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
 import { Database } from "@/src/lib/database.types";
 import GroupMediaCard from "../components/GroupMediaCard";
 import GroupMediaCardDrawer from "../components/GroupMediaCardDrawer";
-import GroupMediaCardMenuHeader from "../components/GroupMediaCardMenuHeader";
-import GroupMediaCardMenu from "../components/GroupMediaCardMenu";
 
 interface Props {
   params: {
@@ -22,7 +20,7 @@ const GroupMoviesPage = async ({ params, searchParams }: Props) => {
 
   let query = supabase
     .from("group_media")
-    .select(`*,media(*), user_public_profile ( user_name, profile_pic )`)
+    .select(`*,media(*), user_public_profile ( * )`)
     .eq("group_id", `${params.id}`);
 
   if (searchParams?.watched) query.eq("watched", watched);
@@ -40,19 +38,14 @@ const GroupMoviesPage = async ({ params, searchParams }: Props) => {
           user={movie.user_public_profile}
           key={movie.id}
         >
-          <GroupMediaCardDrawer>
-            <GroupMediaCardMenuHeader
-              added_reason={movie.added_reason}
-              user={movie.user_public_profile}
-            />
-            <GroupMediaCardMenu
-              addedByUserId={movie.added_by}
-              mediaId={movie.media_id}
-              mediaType="movie"
-              watched={movie.watched}
-              groupId={params.id}
-            />
-          </GroupMediaCardDrawer>
+          <GroupMediaCardDrawer
+            added_reason={movie.added_reason}
+            user={movie.user_public_profile}
+            groupId={params.id}
+            mediaId={movie.media_id}
+            mediaType="movie"
+            watched={movie.watched}
+          />
         </GroupMediaCard>
       ))}
     </div>
