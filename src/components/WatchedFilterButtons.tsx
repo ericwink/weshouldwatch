@@ -8,7 +8,10 @@ interface Props {
   watchedFilter: string;
 }
 
-export default function WatchedFilterButtons({ setWatchedFilter, watchedFilter }: Props) {
+export default function WatchedFilterButtons({
+  setWatchedFilter,
+  watchedFilter,
+}: Props) {
   return (
     <>
       <Grid>
