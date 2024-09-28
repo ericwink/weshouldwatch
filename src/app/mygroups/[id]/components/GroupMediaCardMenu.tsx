@@ -16,6 +16,8 @@ import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import { useUserStore } from "@/src/lib/store";
+import { toggleWatched } from "./toggleWatched.server";
+import { useTransition } from "react";
 
 interface MenuItemProps {
   onClick: () => void;
@@ -39,6 +41,7 @@ interface CardMenuProps {
   mediaId: number;
   watched: boolean;
   addedByUserId: string;
+  groupId: string;
 }
 
 const GroupMediaCardMenu = ({
@@ -46,8 +49,18 @@ const GroupMediaCardMenu = ({
   mediaType,
   watched,
   addedByUserId,
+  groupId,
 }: CardMenuProps) => {
   const user = useUserStore((state) => state.user);
+  const [isPending, startTransition] = useTransition();
+
+  const handleToggleWatched = async () => {
+    const error = await toggleWatched({
+      mediaId,
+      watched: !watched,
+      groupId,
+    });
+  };
 
   const isAddedByCurrentUser = addedByUserId === user?.id;
 
