@@ -1,39 +1,61 @@
-import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
-import { Database } from "@/src/lib/database.types";
-import { cookies } from "next/headers";
-import { redirect } from "next/navigation";
-import { ReactNode } from "react";
-import MainGroupNav from "./MainGroupNav";
+"use client";
+
+import { BottomNavigation, BottomNavigationAction } from "@mui/material";
+import Link from "next/link";
+import GroupIcon from "@mui/icons-material/Group";
+import MovieIcon from "@mui/icons-material/Movie";
+import TvIcon from "@mui/icons-material/Tv";
+import { usePathname } from "next/navigation";
+import WatchedNavigation from "./components/WatchedNavigation";
+import { Suspense } from "react";
 
 interface Props {
-  children: ReactNode;
+  children: React.ReactNode;
   params: {
     id: string;
   };
 }
 
-const GroupLayout = async ({ params, children }: Props) => {
-  const supabase = createServerComponentClient<Database>({ cookies });
+const GroupLayout = ({ children, params }: Props) => {
+  const pathname = usePathname();
 
-  const { data: session } = await supabase.auth.getSession();
-  if (!session.session) redirect("/login");
-
-  //if user isn't subscribed, check the primary groups. If this isn't one of the primary groups, block access
-  let { data: user, error: userError } = await supabase
-    .from("users")
-    .select("*")
-    .single();
-  if (!user?.is_subscribed) {
-    if (
-      user?.primary_created !== params.id &&
-      user?.primary_joined !== params.id
-    )
-      redirect("/accessDenied");
-  }
+  const getNavValue = () => {
+    if (pathname.includes("movies")) return 0;
+    if (pathname.includes("tv")) return 1;
+    return 2;
+  };
 
   return (
     <section className="w-full flex flex-col items-center justify-center gap-3">
-      <MainGroupNav groupId={params.id} />
+      <div className="w-full mb-1 mt-1">
+        <BottomNavigation value={getNavValue()} showLabels>
+          <BottomNavigationAction
+            label="Movies"
+            LinkComponent={Link}
+            href={`/mygroups/${params.id}/movies`}
+            icon={<MovieIcon />}
+          />
+          <BottomNavigationAction
+            label="TV Shows"
+            href={`/mygroups/${params.id}/tv`}
+            LinkComponent={Link}
+            icon={<TvIcon />}
+          />
+          <BottomNavigationAction
+            label="Group Info"
+            LinkComponent={Link}
+            icon={<GroupIcon />}
+            href={`/mygroups/${params.id}/info`}
+          />
+        </BottomNavigation>
+      </div>
+
+      {!pathname.includes("info") && (
+        <Suspense fallback={<div>Loading...</div>}>
+          <WatchedNavigation />
+        </Suspense>
+      )}
+
       {children}
     </section>
   );

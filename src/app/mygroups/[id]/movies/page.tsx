@@ -1,5 +1,4 @@
 import { cookies } from "next/headers";
-import { redirect } from "next/navigation";
 import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
 import { Database } from "@/src/lib/database.types";
 import GroupMediaCard from "../components/GroupMediaCard";
@@ -14,8 +13,6 @@ interface Props {
 
 const GroupMoviesPage = async ({ params, searchParams }: Props) => {
   const supabase = createServerComponentClient<Database>({ cookies });
-  const { data: session } = await supabase.auth.getSession();
-  if (!session.session) redirect("/login");
   const watched = searchParams?.watched === "true";
 
   let query = supabase

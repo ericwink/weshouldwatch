@@ -1,5 +1,4 @@
 import { cookies } from "next/headers";
-import { redirect } from "next/navigation";
 import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
 import { Database } from "@/src/lib/database.types";
 import { Typography, Avatar } from "@mui/material";
@@ -33,8 +32,6 @@ const MemberDisplay = (member: MemberDisplayProps) => {
 
 const GroupInfoPage = async ({ params }: Props) => {
   const supabase = createServerComponentClient<Database>({ cookies });
-  const { data: session } = await supabase.auth.getSession();
-  if (!session.session) redirect("/login");
   let { data, error } = await supabase
     .from("user_group_join")
     .select("user_id, user_public_profile(user_name, profile_pic)")
@@ -50,6 +47,7 @@ const GroupInfoPage = async ({ params }: Props) => {
         <MemberDisplay
           user_id={member.user_id}
           user_public_profile={member.user_public_profile}
+          key={member.user_id}
         />
       ))}
       <InviteToAGroup groupId={params.id} />
