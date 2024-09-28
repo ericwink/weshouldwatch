@@ -1,6 +1,14 @@
 "use client";
 
-import { TextField, Button, CircularProgress, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from "@mui/material";
+import {
+  TextField,
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+} from "@mui/material";
 import { useState } from "react";
 import { toast } from "react-toastify";
 import { useMutation } from "@tanstack/react-query";
@@ -22,13 +30,17 @@ export default function InviteToAGroup({ groupId }: { groupId: string }) {
     setEmail("");
   };
 
-  const userEmail = z.string().email({ message: "Please enter a valid email address" });
+  const userEmail = z
+    .string()
+    .email({ message: "Please enter a valid email address" });
 
   const { mutate: sendInvite, isLoading } = useMutation({
     mutationFn: async () => {
       userEmail.parse(email);
-      const result = await axios.post("/api/group/inviteUser", { group_id: groupId, email: email });
-      console.log(result);
+      await axios.post("/api/group/inviteUser", {
+        group_id: groupId,
+        email: email,
+      });
     },
     onSuccess: () => {
       toast.success("Invitation sent successfully!", { theme: "colored" });
@@ -38,33 +50,32 @@ export default function InviteToAGroup({ groupId }: { groupId: string }) {
       if (error instanceof z.ZodError) {
         toast.error(error.issues[0].message, { theme: "colored" });
       } else {
-        toast.error(error.response?.data || error.message, { theme: "colored" });
+        toast.error(error.response?.data || error.message, {
+          theme: "colored",
+        });
       }
     },
   });
 
   return (
     <div>
-      <Button
-        onClick={handleClickOpen}
-        sx={{ display: "flex", gap: 1 }}
-      >
+      <Button onClick={handleClickOpen} sx={{ display: "flex", gap: 1 }}>
         <AddCircleOutlineIcon />
         Invite A New Group Member
       </Button>
-      <Dialog
-        open={open}
-        onClose={handleClose}
-      >
+      <Dialog open={open} onClose={handleClose}>
         <DialogTitle>Send an invitation</DialogTitle>
         <DialogContent>
-          <DialogContentText>Enter an email address and hit submit!</DialogContentText>
+          <DialogContentText>
+            Enter an email address and hit submit!
+          </DialogContentText>
           <TextField
             label="email"
             value={email}
-            onChange={e => setEmail(e.target.value)}
+            onChange={(e) => setEmail(e.target.value)}
             fullWidth
             sx={{ mt: 1 }}
+            disabled={isLoading}
           />
         </DialogContent>
         <DialogActions>
