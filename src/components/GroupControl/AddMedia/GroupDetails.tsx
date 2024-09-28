@@ -23,7 +23,7 @@ const GroupDetails = ({ groupId, members }: Props) => {
       sx={{ display: "flex", flexDirection: "column", gap: 2 }}
     >
       <Typography>Members: </Typography>
-      {members.map(member => memberDisplay(member))}
+      {members.map((member) => memberDisplay(member))}
       <InviteToAGroup groupId={groupId} />
     </Container>
   );
