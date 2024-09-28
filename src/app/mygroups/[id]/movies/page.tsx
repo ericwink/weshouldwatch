@@ -21,7 +21,8 @@ const GroupMoviesPage = async ({ params, searchParams }: Props) => {
   let query = supabase
     .from("group_media")
     .select(`*,media(*), user_public_profile ( * )`)
-    .eq("group_id", `${params.id}`);
+    .eq("group_id", `${params.id}`)
+    .eq("media.media_type", "movie");
 
   if (searchParams?.watched) query.eq("watched", watched);
 
