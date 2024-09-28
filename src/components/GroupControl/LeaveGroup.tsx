@@ -1,6 +1,6 @@
 "use client";
 
-import { IconButton } from "@mui/material";
+import { Button, Typography } from "@mui/material";
 import ConfirmDelete from "../ConfirmDelete";
 import { useState } from "react";
 import { useMutation } from "@tanstack/react-query";
@@ -32,12 +32,13 @@ const LeaveGroup = ({ id, group_name }: Props) => {
 
   return (
     <div>
-      <IconButton
-        color="error"
-        onClick={() => setShowDeleteModal(true)}
-      >
+      <Button size="small" color="error" sx={{ display: "flex", gap: 1 }}>
+        <Typography onClick={() => setShowDeleteModal(true)}>
+          Delete Group
+        </Typography>
         <LogoutIcon />
-      </IconButton>
+      </Button>
+
       <ConfirmDelete
         confirmDelete={() => leaveTheGroup()}
         showDeleteModal={showDeleteModal}

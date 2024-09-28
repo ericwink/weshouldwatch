@@ -1,6 +1,6 @@
 "use client";
 
-import { IconButton } from "@mui/material";
+import { Typography, Button } from "@mui/material";
 import ConfirmDelete from "../ConfirmDelete";
 import { useState } from "react";
 import { useMutation } from "@tanstack/react-query";
@@ -31,13 +31,14 @@ const DeleteGroup = ({ id, group_name }: Props) => {
   });
 
   return (
-    <div>
-      <IconButton
-        color="error"
-        onClick={() => setShowDeleteModal(true)}
-      >
+    <>
+      <Button size="small" color="error" sx={{ display: "flex", gap: 1 }}>
+        <Typography onClick={() => setShowDeleteModal(true)}>
+          Delete Group
+        </Typography>
         <DeleteForeverIcon />
-      </IconButton>
+      </Button>
+
       <ConfirmDelete
         confirmDelete={() => deleteThisGroup()}
         showDeleteModal={showDeleteModal}
@@ -47,7 +48,7 @@ const DeleteGroup = ({ id, group_name }: Props) => {
         extraSecureCheck={group_name as string}
         isLoading={isLoading}
       />
-    </div>
+    </>
   );
 };
 
