@@ -1,6 +1,6 @@
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { UserAccount } from "./interface";
-import { GroupMedia } from "../app/mygroups/[id]/page";
+import { GroupMedia } from "../app/mygroups/[id]/layout";
 
 const supabase = createClientComponentClient();
 

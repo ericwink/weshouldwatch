@@ -1,4 +1,4 @@
-import { GroupMedia, Sorted } from "../app/mygroups/[id]/page";
+import { GroupMedia, Sorted } from "../app/mygroups/[id]/layout";
 
 export const reorganizeGroupMedia = (data: GroupMedia[] | null) => {
   const sorted: Sorted = { movie: [], tv: [] };
