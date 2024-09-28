@@ -50,6 +50,7 @@ const GroupMoviesPage = async ({ params, searchParams }: Props) => {
               mediaId={movie.media_id}
               mediaType="movie"
               watched={movie.watched}
+              groupId={params.id}
             />
           </GroupMediaCardDrawer>
         </GroupMediaCard>

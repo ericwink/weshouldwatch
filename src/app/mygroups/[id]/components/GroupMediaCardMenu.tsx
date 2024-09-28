@@ -7,6 +7,7 @@ import {
   ListItemButton,
   ListItemIcon,
   ListItemText,
+  Typography,
 } from "@mui/material";
 import InfoIcon from "@mui/icons-material/Info";
 import ChatIcon from "@mui/icons-material/Chat";
@@ -17,11 +18,11 @@ import EditIcon from "@mui/icons-material/Edit";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import { useUserStore } from "@/src/lib/store";
 import { toggleWatched } from "./toggleWatched.server";
-import { useTransition } from "react";
+import { ReactNode, useTransition } from "react";
 
 interface MenuItemProps {
   onClick: () => void;
-  label: string;
+  label: string | ReactNode;
   icon: React.ReactNode;
 }
 
@@ -55,10 +56,12 @@ const GroupMediaCardMenu = ({
   const [isPending, startTransition] = useTransition();
 
   const handleToggleWatched = async () => {
-    const error = await toggleWatched({
-      mediaId,
-      watched: !watched,
-      groupId,
+    startTransition(async () => {
+      const error = await toggleWatched({
+        mediaId,
+        watched: !watched,
+        groupId,
+      });
     });
   };
 
@@ -87,8 +90,12 @@ const GroupMediaCardMenu = ({
         />
 
         <MenuItem
-          label={`Mark as ${!watched && "Not"} Watched by Group`}
-          onClick={() => console.log("toggle watched")}
+          label={
+            <Typography>
+              Mark as {watched ? <b>Not Watched</b> : <b>Watched</b>} by Group
+            </Typography>
+          }
+          onClick={() => handleToggleWatched()}
           icon={watched ? <VisibilityOffIcon /> : <VisibilityIcon />}
         />
 
