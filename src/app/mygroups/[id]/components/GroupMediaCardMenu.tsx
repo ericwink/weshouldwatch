@@ -11,6 +11,7 @@ import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import { useUserStore } from "@/src/lib/store";
 import { toggleWatched } from "./toggleWatched.server";
 import GroupCardMenuItem from "./GroupCardMenuItem";
+import { TransitionStartFunction } from "react";
 
 interface Props {
   mediaType: string;
@@ -18,7 +19,7 @@ interface Props {
   watched: boolean;
   addedByUserId: string;
   groupId: string;
-  setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
+  startTransition: TransitionStartFunction;
 }
 
 const GroupMediaCardMenu = ({
@@ -27,24 +28,22 @@ const GroupMediaCardMenu = ({
   watched,
   addedByUserId,
   groupId,
-  setIsLoading,
+  startTransition,
 }: Props) => {
   const user = useUserStore((state) => state.user);
 
   const handleToggleWatched = async () => {
-    setIsLoading(true);
-
     try {
-      const result = await toggleWatched({
-        mediaId,
-        watched: !watched,
-        groupId,
+      startTransition(async () => {
+        const result = await toggleWatched({
+          mediaId,
+          watched: !watched,
+          groupId,
+        });
+        if (result?.error) throw new Error(result.error);
       });
-      if (result?.error) throw new Error(result.error);
     } catch (error) {
       alert(error);
-    } finally {
-      setIsLoading(false);
     }
   };
 

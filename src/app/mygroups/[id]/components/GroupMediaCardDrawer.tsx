@@ -1,8 +1,8 @@
 "use client";
 
 import MenuIcon from "@mui/icons-material/Menu";
-import { IconButton, Box, Drawer, Divider } from "@mui/material";
-import { useState } from "react";
+import { IconButton, Box, Divider, Drawer } from "@mui/material";
+import { useState, useTransition } from "react";
 import GroupMediaCardMenuHeader from "./GroupMediaCardMenuHeader";
 import GroupMediaCardMenu from "./GroupMediaCardMenu";
 import FullScreenLoader from "@/src/components/FullScreenLoader";
@@ -30,7 +30,7 @@ const GroupMediaCardDrawer = ({
   watched,
 }: Props) => {
   const [state, setState] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isPending, startTransition] = useTransition();
 
   const toggleDrawer = (event: React.KeyboardEvent | React.MouseEvent) => {
     if (
@@ -46,7 +46,7 @@ const GroupMediaCardDrawer = ({
 
   return (
     <div>
-      <FullScreenLoader isLoading={isLoading} />
+      <FullScreenLoader isLoading={isPending} />
       <IconButton
         onClick={toggleDrawer}
         sx={{
@@ -71,7 +71,7 @@ const GroupMediaCardDrawer = ({
             mediaType={mediaType}
             watched={watched}
             groupId={groupId}
-            setIsLoading={setIsLoading}
+            startTransition={startTransition}
           />
         </Box>
       </Drawer>
