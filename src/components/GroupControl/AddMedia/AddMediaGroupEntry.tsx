@@ -9,7 +9,7 @@ import {
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import { addMediaToGroup } from "../../../lib/serverActions";
-import ReasonModal from "../../../app/mygroups/[id]/components/ReasonModal";
+import ReasonModal from "../../../app/mygroups/[id]/_components/ReasonModal";
 import type { MediaPayload } from "../../../lib/interface";
 import { useState } from "react";
 import { toast } from "react-toastify";

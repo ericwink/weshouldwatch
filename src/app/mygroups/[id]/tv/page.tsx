@@ -1,8 +1,6 @@
-import { cookies } from "next/headers";
-import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
-import { Database } from "@/src/lib/database.types";
-import GroupMediaCard from "../components/GroupMediaCard/GroupMediaCard";
-import GroupMediaCardDrawer from "../components/GroupMediaCard/GroupMediaCardDrawer";
+import GroupMediaCard from "../_components/GroupMediaCard/GroupMediaCard";
+import GroupMediaCardDrawer from "../_components/GroupMediaCard/GroupMediaCardDrawer";
+import { getMedia } from "../_server/getMedia.server";
 
 interface Props {
   params: {
@@ -12,18 +10,11 @@ interface Props {
 }
 
 const GroupTvPage = async ({ params, searchParams }: Props) => {
-  const supabase = createServerComponentClient<Database>({ cookies });
-  const watched = searchParams?.watched === "true";
-
-  let query = supabase
-    .from("group_media")
-    .select(`*,media(*), user_public_profile ( * )`)
-    .eq("group_id", `${params.id}`)
-    .eq("media.media_type", "tv");
-
-  if (searchParams?.watched) query.eq("watched", watched);
-
-  const tvShows = await query;
+  const tvShows = await getMedia({
+    groupId: params.id,
+    mediaType: "tv",
+    searchParams,
+  });
 
   if (tvShows.error)
     throw new Error(

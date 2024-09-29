@@ -6,7 +6,7 @@ import GroupIcon from "@mui/icons-material/Group";
 import MovieIcon from "@mui/icons-material/Movie";
 import TvIcon from "@mui/icons-material/Tv";
 import { usePathname } from "next/navigation";
-import WatchedNavigation from "./components/WatchedNavigation";
+import WatchedNavigation from "./_components/WatchedNavigation";
 import { Suspense } from "react";
 
 interface Props {

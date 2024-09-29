@@ -9,6 +9,7 @@ import FullScreenLoader from "@/src/components/FullScreenLoader";
 import useGroupMediaMenu from "../hooks/useGroupMediaMenu";
 import ChatModal from "../Chat/ChatModal";
 import ReasonModal from "../ReasonModal";
+import ConfirmDelete from "../../../components/ConfirmDelete";
 
 interface Props {
   user: {
@@ -59,8 +60,8 @@ const GroupMediaCardDrawer = ({
         prevReason={"old reason"}
         isLoading={isPending}
       />
-      {/*
-      <ConfirmDelete
+
+      {/* <ConfirmDelete
         showDeleteModal={showDeleteModal}
         setShowDeleteModal={setShowDeleteModal}
         confirmDelete={() => removeMedia()}

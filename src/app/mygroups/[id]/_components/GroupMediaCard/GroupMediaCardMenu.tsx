@@ -9,7 +9,7 @@ import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import { useUserStore } from "@/src/lib/store";
-import { toggleWatched } from "./toggleWatched.server";
+import { toggleWatched } from "../../_server/toggleWatched.server";
 import GroupCardMenuItem from "./GroupCardMenuItem";
 import { TransitionStartFunction } from "react";
 
