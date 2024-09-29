@@ -57,7 +57,7 @@ const GroupMediaCardDrawer = ({
         open={menuState.reasonActive}
         toggleModal={toggleReasonModal}
         handleSubmit={() => console.log("submit reason")}
-        prevReason={"old reason"}
+        prevReason={added_reason || ""}
         isLoading={isPending}
       />
 

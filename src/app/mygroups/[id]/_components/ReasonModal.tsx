@@ -47,6 +47,7 @@ export default function ReasonModal({
             placeholder="I want to watch this because...."
             onChange={(e) => setReason(e.target.value)}
             helperText={"Reason is optional"}
+            value={reason}
           />
           <SpinnerButton
             onClick={() => handleSubmit()}

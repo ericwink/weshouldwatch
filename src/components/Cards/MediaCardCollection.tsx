@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import ChatModal from "../Chat/ChatModal";
+import ChatModal from "@/src/app/mygroups/[id]/_components/Chat/ChatModal";
 import ReasonModal from "../../app/mygroups/[id]/_components/ReasonModal";
 import ConfirmDelete from "../../app/mygroups/components/ConfirmDelete";
 import { toast } from "react-toastify";
