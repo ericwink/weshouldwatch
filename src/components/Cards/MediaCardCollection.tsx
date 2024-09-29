@@ -3,7 +3,7 @@
 import { useState } from "react";
 import ChatModal from "../Chat/ChatModal";
 import ReasonModal from "../GroupControl/AddMedia/ReasonModal";
-import ConfirmDelete from "../ConfirmDelete";
+import ConfirmDelete from "../../app/mygroups/components/ConfirmDelete";
 import { toast } from "react-toastify";
 import { CondensedMedia } from "@/src/lib/interface";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
@@ -28,22 +28,37 @@ const MediaCardCollection = ({ media, groupId, listView }: Props) => {
   const { mutate: removeMedia, isLoading } = useMutation({
     mutationFn: async () => await removeMediaFromGroup(media.entry_id, groupId),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["groupMedia", { id: groupId }, { type: media.media_type }] });
+      queryClient.invalidateQueries({
+        queryKey: ["groupMedia", { id: groupId }, { type: media.media_type }],
+      });
       setShowDeleteModal(false);
       toast.success("Media removed from group!");
     },
-    onError: () => toast.error("There was an error, please try again!", { theme: "colored" }),
+    onError: () =>
+      toast.error("There was an error, please try again!", {
+        theme: "colored",
+      }),
   });
 
   const { mutate: updateReason, isLoading: reasonLoading } = useMutation({
-    mutationFn: async () => await axios.post("/api/group/editMedia", { columnToUpdate: "added_reason", newValue: newReason, rowId: media.entry_id }),
+    mutationFn: async () =>
+      await axios.post("/api/group/editMedia", {
+        columnToUpdate: "added_reason",
+        newValue: newReason,
+        rowId: media.entry_id,
+      }),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["groupMedia", { id: groupId }, { type: media.media_type }] });
+      queryClient.invalidateQueries({
+        queryKey: ["groupMedia", { id: groupId }, { type: media.media_type }],
+      });
       setShowReasonModal(false);
       setNewReason("");
       toast.success("Reason updated!", { theme: "colored" });
     },
-    onError: () => toast.error("There was an error, please try again!", { theme: "colored" }),
+    onError: () =>
+      toast.error("There was an error, please try again!", {
+        theme: "colored",
+      }),
   });
 
   return (

@@ -1,28 +1,28 @@
 "use client";
 
-import { Typography, Button } from "@mui/material";
-import ConfirmDelete from "../ConfirmDelete";
+import { Button, Typography } from "@mui/material";
+import ConfirmDelete from "./ConfirmDelete";
 import { useState } from "react";
 import { useMutation } from "@tanstack/react-query";
 import { toast } from "react-toastify";
-import { deleteGroup } from "@/src/lib/serverActions";
-import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
+import { leaveGroup } from "@/src/lib/serverActions";
+import LogoutIcon from "@mui/icons-material/Logout";
 
 interface Props {
   group_name: string | null;
   id: string;
 }
 
-const DeleteGroup = ({ id, group_name }: Props) => {
+const LeaveGroup = ({ id, group_name }: Props) => {
   const [showDeleteModal, setShowDeleteModal] = useState(false);
 
-  const { mutate: deleteThisGroup, isLoading } = useMutation({
+  const { mutate: leaveTheGroup, isLoading } = useMutation({
     mutationFn: async () => {
-      const result = await deleteGroup(id);
+      const result = await leaveGroup(id);
       if (result.error) throw new Error(result.message);
     },
     onSuccess: () => {
-      toast.success("Group deleted successfully", { theme: "colored" });
+      toast.success("You've left the group!", { theme: "colored" });
       setShowDeleteModal(false);
     },
     onError: (error: any) => {
@@ -31,25 +31,25 @@ const DeleteGroup = ({ id, group_name }: Props) => {
   });
 
   return (
-    <>
+    <div>
       <Button size="small" color="error" sx={{ display: "flex", gap: 1 }}>
         <Typography onClick={() => setShowDeleteModal(true)}>
           Delete Group
         </Typography>
-        <DeleteForeverIcon />
+        <LogoutIcon />
       </Button>
 
       <ConfirmDelete
-        confirmDelete={() => deleteThisGroup()}
+        confirmDelete={() => leaveTheGroup()}
         showDeleteModal={showDeleteModal}
         setShowDeleteModal={setShowDeleteModal}
-        warningMessage="This action will delete ALL group data and cannot be undone."
+        warningMessage="This action will remove you from the group! Are you sure you want to proceed?"
         extraSecure={true}
         extraSecureCheck={group_name as string}
         isLoading={isLoading}
       />
-    </>
+    </div>
   );
 };
 
-export default DeleteGroup;
+export default LeaveGroup;

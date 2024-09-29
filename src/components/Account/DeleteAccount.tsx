@@ -1,7 +1,7 @@
 "use client";
 
 import { Button, Box } from "@mui/material";
-import ConfirmDelete from "../ConfirmDelete";
+import ConfirmDelete from "../../app/mygroups/components/ConfirmDelete";
 import { useState } from "react";
 import { useMutation } from "@tanstack/react-query";
 import { toast } from "react-toastify";
@@ -18,11 +18,14 @@ interface Props {
 const DeleteAccount = ({ user }: Props) => {
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const router = useRouter();
-  const setUser = useUserStore(state => state.setUser);
+  const setUser = useUserStore((state) => state.setUser);
 
   const { mutate: deleteAccount, isLoading } = useMutation({
     mutationFn: async () => {
-      await axios.post("/api/user/deleteAccount", { userId: user.id, stripeId: user.stripe_customer });
+      await axios.post("/api/user/deleteAccount", {
+        userId: user.id,
+        stripeId: user.stripe_customer,
+      });
     },
     onSuccess: () => {
       toast.success("Account deleted successfully", { theme: "colored" });
@@ -31,7 +34,8 @@ const DeleteAccount = ({ user }: Props) => {
       router.push("/");
     },
     onError: (error: any) => {
-      const message = error.response.data || "There was an error, please try again";
+      const message =
+        error.response.data || "There was an error, please try again";
       toast.error(message, { theme: "colored" });
     },
   });

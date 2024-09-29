@@ -1,6 +1,15 @@
 "use client";
 
-import { IconButton, Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, CircularProgress } from "@mui/material";
+import {
+  IconButton,
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  CircularProgress,
+} from "@mui/material";
 import LockIcon from "@mui/icons-material/Lock";
 import LockOpenIcon from "@mui/icons-material/LockOpen";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
@@ -9,7 +18,7 @@ import { useUserStore } from "@/src/lib/store";
 import { updatePrimary } from "@/src/lib/serverActions";
 import { toast } from "react-toastify";
 import { useState } from "react";
-import SpinnerButton from "../SpinnerButton";
+import SpinnerButton from "../../../components/SpinnerButton";
 
 interface Props {
   groupId: string;
@@ -18,7 +27,7 @@ interface Props {
 
 const GroupLock = ({ groupId, created_by }: Props) => {
   const supabase = createClientComponentClient();
-  const user = useUserStore(state => state.user);
+  const user = useUserStore((state) => state.user);
   const queryClient = useQueryClient();
   const [showModal, setShowModal] = useState(false);
 
@@ -26,13 +35,17 @@ const GroupLock = ({ groupId, created_by }: Props) => {
     setShowModal(false);
   };
 
-  const groupType = created_by === user?.id ? "primary_created" : "primary_joined";
+  const groupType =
+    created_by === user?.id ? "primary_created" : "primary_joined";
   const groupTypeModal = created_by === user?.id ? "Created" : "Joined";
 
   const { data: primaryGroups, isLoading } = useQuery({
     queryKey: ["primaryGroups"],
     queryFn: async () => {
-      let { data: users, error } = await supabase.from("users").select("primary_created, primary_joined").single();
+      let { data: users, error } = await supabase
+        .from("users")
+        .select("primary_created, primary_joined")
+        .single();
       return users;
     },
   });
@@ -51,33 +64,24 @@ const GroupLock = ({ groupId, created_by }: Props) => {
   });
 
   const unlocked = (
-    <IconButton
-      sx={{ mt: -2 }}
-      disabled
-    >
+    <IconButton sx={{ mt: -2 }} disabled>
       <LockOpenIcon />
     </IconButton>
   );
 
   const locked = (
-    <IconButton
-      onClick={() => setShowModal(true)}
-      sx={{ mt: -2 }}
-    >
+    <IconButton onClick={() => setShowModal(true)} sx={{ mt: -2 }}>
       <LockIcon />
     </IconButton>
   );
 
-  if (isLoading)
-    return (
-      <CircularProgress
-        size={25}
-        sx={{ mt: -2 }}
-      />
-    );
+  if (isLoading) return <CircularProgress size={25} sx={{ mt: -2 }} />;
   return (
     <div>
-      {groupId === primaryGroups?.primary_created || groupId === primaryGroups?.primary_joined ? unlocked : locked}
+      {groupId === primaryGroups?.primary_created ||
+      groupId === primaryGroups?.primary_joined
+        ? unlocked
+        : locked}
 
       <Dialog
         open={showModal}
@@ -86,7 +90,9 @@ const GroupLock = ({ groupId, created_by }: Props) => {
         aria-describedby="alert-dialog-description"
       >
         <DialogTitle id="alert-dialog-title">{`Unlock ${groupTypeModal} Group`}</DialogTitle>
-        <DialogContent sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
+        <DialogContent
+          sx={{ display: "flex", flexDirection: "column", gap: 1 }}
+        >
           <DialogContentText id="alert-dialog-description">{`Since you are no longer a Premium member, you are only allowed one Created Group and one Joined Group. Since you belong to numerous groups, once every 30 days you are permitted to update which group you would like to access. Would you like to proceed?`}</DialogContentText>
         </DialogContent>
         <DialogActions>
@@ -97,10 +103,7 @@ const GroupLock = ({ groupId, created_by }: Props) => {
             {`Unlock ${groupTypeModal} Group`}
           </SpinnerButton>
 
-          <Button
-            onClick={handleClose}
-            autoFocus
-          >
+          <Button onClick={handleClose} autoFocus>
             Cancel
           </Button>
         </DialogActions>

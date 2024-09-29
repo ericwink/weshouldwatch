@@ -4,13 +4,13 @@ export const revalidate = 0;
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
-import MakeGroup from "../../components/GroupControl/MakeGroup";
-import GroupCard from "@/src/components/GroupControl/GroupCard";
+import MakeGroup from "./components/MakeGroup";
+import GroupCard from "./components/GroupCard";
 import { Database } from "@/src/lib/database.types";
 import { Container, Typography } from "@mui/material";
 import Grid from "@mui/material/Unstable_Grid2"; // Grid version 2
 
-const groupsPage = async () => {
+const GroupsPage = async () => {
   const supabase = createServerComponentClient<Database>({ cookies });
   const { data: session } = await supabase.auth.getSession();
   if (!session) redirect("/login");
@@ -88,4 +88,4 @@ const groupsPage = async () => {
   );
 };
 
-export default groupsPage;
+export default GroupsPage;

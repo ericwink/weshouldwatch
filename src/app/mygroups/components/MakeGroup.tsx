@@ -1,11 +1,19 @@
 "use client";
-import { TextField, Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from "@mui/material";
+import {
+  TextField,
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+} from "@mui/material";
 import { useState } from "react";
-import { createGroup } from "../../lib/serverActions";
+import { createGroup } from "../../../lib/serverActions";
 import { useMutation } from "@tanstack/react-query";
 import { toast } from "react-toastify";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
-import SpinnerButton from "../SpinnerButton";
+import SpinnerButton from "../../../components/SpinnerButton";
 
 const MakeGroup = () => {
   const [name, setName] = useState("");
@@ -37,24 +45,20 @@ const MakeGroup = () => {
 
   return (
     <div>
-      <Button
-        onClick={handleClickOpen}
-        sx={{ display: "flex", gap: 1 }}
-      >
+      <Button onClick={handleClickOpen} sx={{ display: "flex", gap: 1 }}>
         <AddCircleOutlineIcon />
         Create A Group
       </Button>
-      <Dialog
-        open={open}
-        onClose={handleClose}
-      >
+      <Dialog open={open} onClose={handleClose}>
         <DialogTitle>Create a New Group</DialogTitle>
         <DialogContent>
-          <DialogContentText>Enter a name for your group and hit submit!</DialogContentText>
+          <DialogContentText>
+            Enter a name for your group and hit submit!
+          </DialogContentText>
           <TextField
             label="Group name..."
             value={name}
-            onChange={e => setName(e.target.value)}
+            onChange={(e) => setName(e.target.value)}
             fullWidth
             sx={{ mt: 1 }}
           />

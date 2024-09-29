@@ -1,12 +1,14 @@
+import {
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  TextField,
+} from "@mui/material";
+import SpinnerButton from "../../../components/SpinnerButton";
 import { useState } from "react";
-import Button from "@mui/material/Button";
-import Dialog from "@mui/material/Dialog";
-import DialogActions from "@mui/material/DialogActions";
-import DialogContent from "@mui/material/DialogContent";
-import DialogContentText from "@mui/material/DialogContentText";
-import DialogTitle from "@mui/material/DialogTitle";
-import { TextField } from "@mui/material";
-import SpinnerButton from "./SpinnerButton";
 
 interface Props {
   confirmDelete: () => void;
@@ -18,7 +20,15 @@ interface Props {
   isLoading: boolean;
 }
 
-export default function ConfirmDelete({ showDeleteModal, setShowDeleteModal, warningMessage, confirmDelete, extraSecure = false, extraSecureCheck, isLoading }: Props) {
+export default function ConfirmDelete({
+  showDeleteModal,
+  setShowDeleteModal,
+  warningMessage,
+  confirmDelete,
+  extraSecure = false,
+  extraSecureCheck,
+  isLoading,
+}: Props) {
   const [input, setInput] = useState("");
 
   const handleClose = () => {
@@ -44,7 +54,7 @@ export default function ConfirmDelete({ showDeleteModal, setShowDeleteModal, war
           <>
             <DialogContentText>{`Enter "${extraSecureCheck}" below to proceed.`}</DialogContentText>
             <TextField
-              onChange={e => setInput(e.target.value)}
+              onChange={(e) => setInput(e.target.value)}
               value={input}
             />
           </>
@@ -59,10 +69,7 @@ export default function ConfirmDelete({ showDeleteModal, setShowDeleteModal, war
           Delete
         </SpinnerButton>
 
-        <Button
-          onClick={handleClose}
-          autoFocus
-        >
+        <Button onClick={handleClose} autoFocus>
           Cancel
         </Button>
       </DialogActions>

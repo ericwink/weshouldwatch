@@ -1,34 +1,15 @@
 import { cookies } from "next/headers";
 import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
 import { Database } from "@/src/lib/database.types";
-import { Typography, Avatar } from "@mui/material";
-import InviteToAGroup from "@/src/components/GroupControl/InviteToAGroup";
+import { Typography } from "@mui/material";
+import InviteToAGroup from "./components/InviteToAGroup";
+import MemberDisplay from "./components/MemberDisplay";
 
 interface Props {
   params: {
     id: string;
   };
 }
-
-interface MemberDisplayProps {
-  user_id: string;
-  user_public_profile: {
-    user_name: string;
-    profile_pic: string | null;
-  } | null;
-}
-
-const MemberDisplay = (member: MemberDisplayProps) => {
-  if (!member.user_public_profile)
-    return <Typography>No profile found</Typography>;
-
-  return (
-    <div className="flex gap-2 items-center">
-      <Avatar src={member.user_public_profile.profile_pic || ""} />
-      <Typography>{member.user_public_profile.user_name}</Typography>
-    </div>
-  );
-};
 
 const GroupInfoPage = async ({ params }: Props) => {
   const supabase = createServerComponentClient<Database>({ cookies });

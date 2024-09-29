@@ -1,7 +1,7 @@
 "use client";
 
 import { Container, Avatar, Typography, Box } from "@mui/material";
-import InviteToAGroup from "../InviteToAGroup";
+import InviteToAGroup from "../../../app/mygroups/[id]/info/components/InviteToAGroup";
 import { MemberData } from "@/src/app/mygroups/[id]/page";
 
 interface Props {
