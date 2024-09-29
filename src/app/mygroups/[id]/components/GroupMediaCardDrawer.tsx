@@ -2,10 +2,11 @@
 
 import MenuIcon from "@mui/icons-material/Menu";
 import { IconButton, Box, Divider, Drawer } from "@mui/material";
-import { useState, useTransition } from "react";
+import { useTransition } from "react";
 import GroupMediaCardMenuHeader from "./GroupMediaCardMenuHeader";
 import GroupMediaCardMenu from "./GroupMediaCardMenu";
 import FullScreenLoader from "@/src/components/FullScreenLoader";
+import useGroupMediaMenu from "./hooks/useGroupMediaMenu";
 
 interface Props {
   user: {
@@ -29,20 +30,8 @@ const GroupMediaCardDrawer = ({
   mediaType,
   watched,
 }: Props) => {
-  const [state, setState] = useState(false);
+  const { menuState, toggleDrawer } = useGroupMediaMenu();
   const [isPending, startTransition] = useTransition();
-
-  const toggleDrawer = (event: React.KeyboardEvent | React.MouseEvent) => {
-    if (
-      event.type === "keydown" &&
-      ((event as React.KeyboardEvent).key === "Tab" ||
-        (event as React.KeyboardEvent).key === "Shift")
-    ) {
-      return;
-    }
-
-    setState((prev) => !prev);
-  };
 
   return (
     <div>
@@ -56,7 +45,11 @@ const GroupMediaCardDrawer = ({
       >
         <MenuIcon />
       </IconButton>
-      <Drawer anchor="bottom" open={state} onClose={toggleDrawer}>
+      <Drawer
+        anchor="bottom"
+        open={menuState.menuActive}
+        onClose={toggleDrawer}
+      >
         <Box
           sx={{ width: "auto" }}
           role="presentation"
