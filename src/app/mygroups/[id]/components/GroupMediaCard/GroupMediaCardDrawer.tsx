@@ -6,7 +6,9 @@ import { useTransition } from "react";
 import GroupMediaCardMenuHeader from "./GroupMediaCardMenuHeader";
 import GroupMediaCardMenu from "./GroupMediaCardMenu";
 import FullScreenLoader from "@/src/components/FullScreenLoader";
-import useGroupMediaMenu from "./hooks/useGroupMediaMenu";
+import useGroupMediaMenu from "../hooks/useGroupMediaMenu";
+import ChatModal from "../Chat/ChatModal";
+import ReasonModal from "../ReasonModal";
 
 interface Props {
   user: {
@@ -30,12 +32,42 @@ const GroupMediaCardDrawer = ({
   mediaType,
   watched,
 }: Props) => {
-  const { menuState, toggleDrawer } = useGroupMediaMenu();
+  const {
+    menuState,
+    toggleDrawer,
+    toggleChat,
+    toggleDeleteModal,
+    toggleReasonModal,
+  } = useGroupMediaMenu();
   const [isPending, startTransition] = useTransition();
 
   return (
     <div>
       <FullScreenLoader isLoading={isPending} />
+
+      {/* <ChatModal
+        chatIsOpen={menuState.chatActive}
+        groupId={groupId}
+        media={{}}
+        toggleChat={toggleChat}
+      /> */}
+
+      <ReasonModal
+        open={menuState.reasonActive}
+        toggleModal={toggleReasonModal}
+        handleSubmit={() => console.log("submit reason")}
+        prevReason={"old reason"}
+        isLoading={isPending}
+      />
+      {/*
+      <ConfirmDelete
+        showDeleteModal={showDeleteModal}
+        setShowDeleteModal={setShowDeleteModal}
+        confirmDelete={() => removeMedia()}
+        warningMessage="This media and all associated chats will be removed forever."
+        isLoading={isLoading}
+      /> */}
+
       <IconButton
         onClick={toggleDrawer}
         sx={{
@@ -65,6 +97,8 @@ const GroupMediaCardDrawer = ({
             watched={watched}
             groupId={groupId}
             startTransition={startTransition}
+            toggleChat={toggleChat}
+            toggleReasonModal={toggleReasonModal}
           />
         </Box>
       </Drawer>

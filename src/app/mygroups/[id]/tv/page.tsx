@@ -1,8 +1,8 @@
 import { cookies } from "next/headers";
 import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
 import { Database } from "@/src/lib/database.types";
-import GroupMediaCard from "../components/GroupMediaCard";
-import GroupMediaCardDrawer from "../components/GroupMediaCardDrawer";
+import GroupMediaCard from "../components/GroupMediaCard/GroupMediaCard";
+import GroupMediaCardDrawer from "../components/GroupMediaCard/GroupMediaCardDrawer";
 
 interface Props {
   params: {

@@ -1,6 +1,7 @@
 import * as React from "react";
-import { TextField, Button, Modal, Typography, Box } from "@mui/material";
-import SpinnerButton from "../../SpinnerButton";
+import { TextField, Modal, Typography, Box } from "@mui/material";
+import SpinnerButton from "../../../../components/SpinnerButton";
+import { useState } from "react";
 
 const style = {
   position: "absolute" as "absolute",
@@ -16,41 +17,35 @@ const style = {
 
 interface Props {
   open: boolean;
-  setOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  setReason: React.Dispatch<React.SetStateAction<string>>;
-  handleSubmit: () => Promise<void>;
-  reason: string;
+  handleSubmit: () => void;
   isLoading?: boolean;
+  toggleModal: () => void;
+  prevReason: string;
 }
 
-export default function ReasonModal({ open, setOpen, reason, setReason, handleSubmit, isLoading = false }: Props) {
-  const handleClose = () => setOpen(false);
-
+export default function ReasonModal({
+  open,
+  handleSubmit,
+  isLoading = false,
+  toggleModal,
+  prevReason,
+}: Props) {
+  const [reason, setReason] = useState(prevReason);
   return (
     <div>
       <Modal
         open={open}
-        onClose={handleClose}
+        onClose={toggleModal}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
-        <Box
-          sx={style}
-          display="flex"
-          flexDirection="column"
-          gap={1}
-        >
-          <Typography
-            id="modal-modal-title"
-            variant="h6"
-            component="h2"
-            mb={2}
-          >
+        <Box sx={style} display="flex" flexDirection="column" gap={1}>
+          <Typography id="modal-modal-title" variant="h6" component="h2" mb={2}>
             Why are you adding this?
           </Typography>
           <TextField
             placeholder="I want to watch this because...."
-            onChange={e => setReason(e.target.value)}
+            onChange={(e) => setReason(e.target.value)}
             helperText={"Reason is optional"}
           />
           <SpinnerButton

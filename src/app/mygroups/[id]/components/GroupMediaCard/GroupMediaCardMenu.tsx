@@ -20,6 +20,8 @@ interface Props {
   addedByUserId: string;
   groupId: string;
   startTransition: TransitionStartFunction;
+  toggleChat: () => void;
+  toggleReasonModal: () => void;
 }
 
 const GroupMediaCardMenu = ({
@@ -29,6 +31,8 @@ const GroupMediaCardMenu = ({
   addedByUserId,
   groupId,
   startTransition,
+  toggleChat,
+  toggleReasonModal,
 }: Props) => {
   const user = useUserStore((state) => state.user);
 
@@ -64,7 +68,7 @@ const GroupMediaCardMenu = ({
 
       <GroupCardMenuItem
         label="Show Chat"
-        onClick={() => console.log("toggle chat")}
+        onClick={toggleChat}
         icon={<ChatIcon />}
       />
 
@@ -82,7 +86,7 @@ const GroupMediaCardMenu = ({
         <>
           <GroupCardMenuItem
             label="Edit Reason"
-            onClick={() => "show reason modal"}
+            onClick={toggleReasonModal}
             icon={<EditIcon />}
           />
 

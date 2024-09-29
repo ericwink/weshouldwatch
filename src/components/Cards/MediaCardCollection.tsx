@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import ChatModal from "../Chat/ChatModal";
-import ReasonModal from "../GroupControl/AddMedia/ReasonModal";
+import ReasonModal from "../../app/mygroups/[id]/components/ReasonModal";
 import ConfirmDelete from "../../app/mygroups/components/ConfirmDelete";
 import { toast } from "react-toastify";
 import { CondensedMedia } from "@/src/lib/interface";

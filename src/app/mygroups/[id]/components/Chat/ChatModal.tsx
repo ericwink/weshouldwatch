@@ -1,12 +1,16 @@
 "use client";
 
 import * as React from "react";
-import { IconButton, Typography, Box } from "@mui/material";
-import Dialog from "@mui/material/Dialog";
-import AppBar from "@mui/material/AppBar";
-import Toolbar from "@mui/material/Toolbar";
+import {
+  IconButton,
+  Typography,
+  Box,
+  Dialog,
+  AppBar,
+  Toolbar,
+  Slide,
+} from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
-import Slide from "@mui/material/Slide";
 import { TransitionProps } from "@mui/material/transitions";
 import ChatWindow from "./ChatWindow";
 import ChatTextbox from "./ChatTextbox";
@@ -16,7 +20,7 @@ interface Props {
   media: CondensedMedia;
   groupId: string;
   chatIsOpen: boolean;
-  setChatIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  toggleChat: () => void;
 }
 
 const Transition = React.forwardRef(function Transition(
@@ -25,25 +29,15 @@ const Transition = React.forwardRef(function Transition(
   },
   ref: React.Ref<unknown>
 ) {
-  return (
-    <Slide
-      direction="up"
-      ref={ref}
-      {...props}
-    />
-  );
+  return <Slide direction="up" ref={ref} {...props} />;
 });
 
-const ChatModal = ({ media, groupId, chatIsOpen, setChatIsOpen }: Props) => {
-  const handleClose = () => {
-    setChatIsOpen(false);
-  };
-
+const ChatModal = ({ media, groupId, chatIsOpen, toggleChat }: Props) => {
   return (
     <Dialog
       fullScreen
       open={chatIsOpen}
-      onClose={handleClose}
+      onClose={toggleChat}
       TransitionComponent={Transition}
     >
       <AppBar sx={{ position: "fixed", top: 0 }}>
@@ -51,30 +45,20 @@ const ChatModal = ({ media, groupId, chatIsOpen, setChatIsOpen }: Props) => {
           <IconButton
             edge="start"
             color="inherit"
-            onClick={handleClose}
+            onClick={toggleChat}
             aria-label="close"
           >
             <CloseIcon />
           </IconButton>
-          <Typography
-            sx={{ ml: 2, flex: 1 }}
-            variant="h6"
-            component="div"
-          >
+          <Typography sx={{ ml: 2, flex: 1 }} variant="h6" component="div">
             {`${media.title}`}
           </Typography>
         </Toolbar>
       </AppBar>
       <Toolbar />
-      <ChatWindow
-        groupId={groupId}
-        mediaId={media.media_id}
-      />
+      <ChatWindow groupId={groupId} mediaId={media.media_id} />
       <Box sx={{ position: "fixed", bottom: 0, width: "100%" }}>
-        <ChatTextbox
-          groupId={groupId}
-          mediaId={media.media_id}
-        />
+        <ChatTextbox groupId={groupId} mediaId={media.media_id} />
       </Box>
     </Dialog>
   );

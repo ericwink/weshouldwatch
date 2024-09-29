@@ -4,12 +4,14 @@ type MenuControl = {
   menuActive: boolean;
   chatActive: boolean;
   reasonActive: boolean;
+  deleteActive: boolean;
 };
 
 const defaultMenuState: MenuControl = {
   chatActive: false,
   menuActive: false,
   reasonActive: false,
+  deleteActive: false,
 };
 
 const useGroupMediaMenu = () => {
@@ -26,7 +28,22 @@ const useGroupMediaMenu = () => {
     setMenuState((prev) => ({ ...prev, menuActive: !prev.menuActive }));
   };
 
-  return { toggleDrawer, menuState };
+  const toggleChat = () =>
+    setMenuState((prev) => ({ ...prev, chatActive: !prev.chatActive }));
+
+  const toggleReasonModal = () =>
+    setMenuState((prev) => ({ ...prev, reasonActive: !prev.reasonActive }));
+
+  const toggleDeleteModal = () =>
+    setMenuState((prev) => ({ ...prev, deleteActive: !prev.deleteActive }));
+
+  return {
+    toggleDrawer,
+    menuState,
+    toggleChat,
+    toggleDeleteModal,
+    toggleReasonModal,
+  };
 };
 
 export default useGroupMediaMenu;

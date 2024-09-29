@@ -2,7 +2,7 @@
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { TextField, Button, CircularProgress, Box } from "@mui/material";
 import { ChangeEvent, useState } from "react";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 
 interface Props {
   groupId: string;
@@ -12,7 +12,6 @@ interface Props {
 const ChatTextbox = ({ groupId, mediaId }: Props) => {
   const [comment, setComment] = useState<string>("");
   const supabase = createClientComponentClient();
-  // const queryClient = useQueryClient();
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     setComment(e.target.value);
@@ -20,26 +19,31 @@ const ChatTextbox = ({ groupId, mediaId }: Props) => {
 
   const { mutate: addComment, isLoading } = useMutation({
     mutationFn: async () => {
-      const { data, error } = await supabase.from("comments").insert([{ group_id: groupId, media_id: mediaId, comment: comment }]);
+      const { data, error } = await supabase
+        .from("comments")
+        .insert([{ group_id: groupId, media_id: mediaId, comment: comment }]);
       if (error) {
         throw new Error(error.message);
       }
       return "success";
     },
     onSuccess: () => {
-      //   queryClient.invalidateQueries({ queryKey: ["comments", { group_id: 36 }, { media_id: 385687 }] });
       setComment("");
     },
   });
 
   return (
-    <Box sx={{ width: "100%", display: "flex", justifyContent: "space-between", gap: 1, p: 1, backgroundColor: "white" }}>
-      <TextField
-        value={comment}
-        onChange={handleChange}
-        fullWidth
-        multiline
-      />
+    <Box
+      sx={{
+        width: "100%",
+        display: "flex",
+        justifyContent: "space-between",
+        gap: 1,
+        p: 1,
+        backgroundColor: "white",
+      }}
+    >
+      <TextField value={comment} onChange={handleChange} fullWidth multiline />
       <Button
         disabled={isLoading}
         variant="contained"

@@ -1,10 +1,15 @@
 "use client";
 
-import { ListItem, ListItemText, IconButton, CircularProgress } from "@mui/material";
+import {
+  ListItem,
+  ListItemText,
+  IconButton,
+  CircularProgress,
+} from "@mui/material";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import { addMediaToGroup } from "../../../lib/serverActions";
-import ReasonModal from "./ReasonModal";
+import ReasonModal from "../../../app/mygroups/[id]/components/ReasonModal";
 import type { MediaPayload } from "../../../lib/interface";
 import { useState } from "react";
 import { toast } from "react-toastify";
@@ -17,7 +22,13 @@ interface Props {
   mediaPayload: MediaPayload;
 }
 
-export default function AddMediaGroupEntry({ id, media_id, group_name, group_media, mediaPayload }: Props) {
+export default function AddMediaGroupEntry({
+  id,
+  media_id,
+  group_name,
+  group_media,
+  mediaPayload,
+}: Props) {
   const [isLoading, setIsLoading] = useState(false);
   const [reason, setReason] = useState("");
   const [open, setOpen] = useState(false);
