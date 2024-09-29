@@ -8,7 +8,7 @@ import GroupMediaCardMenu from "./GroupMediaCardMenu";
 import FullScreenLoader from "@/src/components/FullScreenLoader";
 import useGroupMediaMenu from "../hooks/useGroupMediaMenu";
 import ChatModal from "../Chat/ChatModal";
-import ReasonModal from "../UpdateReasonModal";
+import UpdateReasonModal from "../UpdateReasonModal";
 import ConfirmDelete from "../../../components/ConfirmDelete";
 
 interface Props {
@@ -53,7 +53,7 @@ const GroupMediaCardDrawer = ({
         toggleChat={toggleChat}
       /> */}
 
-      <ReasonModal
+      <UpdateReasonModal
         open={menuState.reasonActive}
         toggleModal={toggleReasonModal}
         prevReason={added_reason || ""}
