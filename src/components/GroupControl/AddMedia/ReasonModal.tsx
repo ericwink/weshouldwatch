@@ -1,7 +1,6 @@
 import * as React from "react";
-import { TextField, Modal, Typography, Box } from "@mui/material";
-import SpinnerButton from "../../../../components/SpinnerButton";
-import { useState } from "react";
+import { TextField, Button, Modal, Typography, Box } from "@mui/material";
+import SpinnerButton from "../../SpinnerButton";
 
 const style = {
   position: "absolute" as "absolute",
@@ -17,29 +16,28 @@ const style = {
 
 interface Props {
   open: boolean;
+  setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  setReason: React.Dispatch<React.SetStateAction<string>>;
+  handleSubmit: () => Promise<void>;
+  reason: string;
   isLoading?: boolean;
-  toggleModal: () => void;
-  prevReason: string;
 }
 
 export default function ReasonModal({
   open,
+  setOpen,
+  reason,
+  setReason,
+  handleSubmit,
   isLoading = false,
-  toggleModal,
-  prevReason,
 }: Props) {
-  const [reason, setReason] = useState(prevReason);
-
-  const updateReason = () => {
-    console.log("new reason:", reason);
-    toggleModal();
-  };
+  const handleClose = () => setOpen(false);
 
   return (
     <div>
       <Modal
         open={open}
-        onClose={toggleModal}
+        onClose={handleClose}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
@@ -51,11 +49,9 @@ export default function ReasonModal({
             placeholder="I want to watch this because...."
             onChange={(e) => setReason(e.target.value)}
             helperText={"Reason is optional"}
-            value={reason}
-            disabled={isLoading}
           />
           <SpinnerButton
-            onClick={() => updateReason()}
+            onClick={() => handleSubmit()}
             isLoading={isLoading}
             disabled={isLoading}
           >

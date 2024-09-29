@@ -1,7 +1,7 @@
 "use client";
 
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
-import { Database } from "../../lib/database.types";
+import { Database } from "@/src/lib/database.types";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { Box, Paper, Typography, Avatar } from "@mui/material";
 import { useRef, useEffect } from "react";
@@ -67,7 +67,11 @@ const ChatWindow = ({ groupId, mediaId }: Props) => {
   const { isLoading, error, data } = useQuery({
     queryKey: ["comments", { group_id: groupId }, { media_id: mediaId }],
     queryFn: async () => {
-      let { data: comments, error } = await supabase.from("comments").select("*, user_public_profile (*)").eq("group_id", groupId).eq("media_id", mediaId);
+      let { data: comments, error } = await supabase
+        .from("comments")
+        .select("*, user_public_profile (*)")
+        .eq("group_id", groupId)
+        .eq("media_id", mediaId);
       let aggregatedComments = aggregateComments(comments);
       if (error) {
         console.log(error);
@@ -89,9 +93,20 @@ const ChatWindow = ({ groupId, mediaId }: Props) => {
 
   const comments = supabase
     .channel(`channel_for_${groupId}_${mediaId}`)
-    .on("postgres_changes", { event: "*", schema: "public", table: "comments", filter: `group_id=eq.${groupId}` }, payload => {
-      queryClient.invalidateQueries({ queryKey: ["comments", { group_id: groupId }, { media_id: mediaId }] });
-    })
+    .on(
+      "postgres_changes",
+      {
+        event: "*",
+        schema: "public",
+        table: "comments",
+        filter: `group_id=eq.${groupId}`,
+      },
+      (payload) => {
+        queryClient.invalidateQueries({
+          queryKey: ["comments", { group_id: groupId }, { media_id: mediaId }],
+        });
+      }
+    )
     .subscribe();
 
   if (isLoading) return <div>{`Loading...`}</div>;
@@ -109,19 +124,13 @@ const ChatWindow = ({ groupId, mediaId }: Props) => {
           ref={i === data.length - 1 ? bottomEl : null}
         >
           <Box sx={{ alignSelf: "flex-end" }}>
-            <Avatar
-              src={comment.profile_pic ?? ""}
-              alt={comment.user_name}
-            />
+            <Avatar src={comment.profile_pic ?? ""} alt={comment.user_name} />
           </Box>
           <Paper sx={{ p: 1 }}>
-            <Typography
-              variant="subtitle1"
-              mb={1}
-            >
+            <Typography variant="subtitle1" mb={1}>
               {comment.user_name}
             </Typography>
-            {comment.comments.map(each => (
+            {comment.comments.map((each) => (
               <div key={each}>
                 <Typography>{each}</Typography>
               </div>

@@ -1,8 +1,8 @@
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { UserAccount } from "./interface";
-import { GroupMedia } from "../app/mygroups/[id]/badlayout";
+import { Database } from "@/database.types";
 
-const supabase = createClientComponentClient();
+const supabase = createClientComponentClient<Database>();
 
 async function getSession() {
   const {
@@ -82,7 +82,8 @@ export async function fetchMediaCollection(id: string) {
     .eq("group_id", id)
     .order("id", { ascending: false });
   if (error) throw new Error(error.message);
-  return group_media as GroupMedia[];
+  // return group_media as GroupMedia[];
+  return group_media;
 }
 
 export async function removeMediaFromGroup(rowId: number, groupId: string) {

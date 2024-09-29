@@ -2,13 +2,13 @@
 
 import MenuIcon from "@mui/icons-material/Menu";
 import { IconButton, Box, Divider, Drawer } from "@mui/material";
-import { useTransition } from "react";
+import { ReactNode, Suspense, useTransition } from "react";
 import GroupMediaCardMenuHeader from "./GroupMediaCardMenuHeader";
 import GroupMediaCardMenu from "./GroupMediaCardMenu";
 import FullScreenLoader from "@/src/components/FullScreenLoader";
 import useGroupMediaMenu from "../hooks/useGroupMediaMenu";
 import ChatModal from "../Chat/ChatModal";
-import ReasonModal from "../ReasonModal";
+import ReasonModal from "../UpdateReasonModal";
 import ConfirmDelete from "../../../components/ConfirmDelete";
 
 interface Props {

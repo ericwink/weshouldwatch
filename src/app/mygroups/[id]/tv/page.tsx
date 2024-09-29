@@ -1,12 +1,13 @@
-import GroupMediaCard from "../_components/GroupMediaCard/GroupMediaCard";
-import GroupMediaCardDrawer from "../_components/GroupMediaCard/GroupMediaCardDrawer";
 import { getMedia } from "../_server/getMedia.server";
+import TvReturn from "./TvReturn";
+import MediaLoader from "../_components/MediaLoader";
+import { Suspense } from "react";
 
 interface Props {
   params: {
     id: string;
   };
-  searchParams: { [key: string]: string | string[] | undefined };
+  searchParams: { watched?: string };
 }
 
 const GroupTvPage = async ({ params, searchParams }: Props) => {
@@ -23,22 +24,12 @@ const GroupTvPage = async ({ params, searchParams }: Props) => {
 
   return (
     <div className="w-full flex flex-wrap gap-2 justify-center">
-      {tvShows.data.map((show) => (
-        <GroupMediaCard
-          media={show.media}
-          user={show.user_public_profile}
-          key={show.id}
-        >
-          <GroupMediaCardDrawer
-            added_reason={show.added_reason}
-            user={show.user_public_profile}
-            groupId={params.id}
-            mediaId={show.media_id}
-            mediaType="tv"
-            watched={show.watched}
-          />
-        </GroupMediaCard>
-      ))}
+      <div className="w-full flex flex-wrap gap-2 justify-center">
+        <Suspense key={searchParams?.watched || ""} fallback={<MediaLoader />}>
+          {/* @ts-expect-error Server Component */}
+          <TvReturn groupId={params.id} searchParams={searchParams} />
+        </Suspense>
+      </div>
     </div>
   );
 };
