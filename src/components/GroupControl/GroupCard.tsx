@@ -10,7 +10,7 @@ import DeleteGroup from "./DeleteGroup";
 import LeaveGroup from "./LeaveGroup";
 import { useUserStore } from "@/src/lib/store";
 import GroupLock from "./GroupLock";
-import { useRouter } from "next/navigation";
+import { ReactNode } from "react";
 
 interface Props {
   id: string;
@@ -20,6 +20,28 @@ interface Props {
   members: number;
   showLock: boolean;
 }
+
+const buttonFormat = {
+  display: "flex",
+  flexDirection: { xs: "column", sm: "row" },
+  gap: { xs: 0, sm: 1 },
+};
+
+const innerButtonFormat = {
+  display: "flex",
+  gap: 1,
+};
+
+interface FormattedButtonProps {
+  link: string;
+  children: ReactNode;
+}
+
+const FormattedButton = ({ children, link }: FormattedButtonProps) => (
+  <Button sx={buttonFormat} LinkComponent={Link} href={link}>
+    {children}
+  </Button>
+);
 
 const GroupCard = ({
   group_name,
@@ -41,42 +63,33 @@ const GroupCard = ({
           {showLock && <GroupLock groupId={id} created_by={created_by} />}
         </Box>
         <div className="flex justify-between gap-2">
-          <Button
-            sx={{ display: "flex", justifyContent: "center", gap: 2 }}
-            LinkComponent={Link}
-            href={`/mygroups/${id}/info`}
-          >
-            <GroupIcon />
-            <Typography>{members}</Typography>
-            <Typography sx={{ display: { xs: "none", sm: "block" } }}>
-              Members
-            </Typography>
-          </Button>
-          <Divider orientation="vertical" flexItem />
-          <Button
-            sx={{ display: "flex", justifyContent: "center", gap: 2 }}
-            LinkComponent={Link}
-            href={`/mygroups/${id}/movies?watched=false`}
-          >
-            <MovieIcon />
-            <Typography>{group_media.movie}</Typography>
-            <Typography sx={{ display: { xs: "none", sm: "block" } }}>
-              Movies
-            </Typography>
-          </Button>
+          <FormattedButton link={`/mygroups/${id}/info`}>
+            <Box sx={innerButtonFormat}>
+              <GroupIcon />
+              <Typography>{members}</Typography>
+            </Box>
+            <Typography>Members</Typography>
+          </FormattedButton>
+
           <Divider orientation="vertical" flexItem />
 
-          <Button
-            sx={{ display: "flex", justifyContent: "center", gap: 2 }}
-            LinkComponent={Link}
-            href={`/mygroups/${id}/tv?watched=false`}
-          >
-            <TvIcon />
-            <Typography>{group_media.tv}</Typography>
-            <Typography sx={{ display: { xs: "none", sm: "block" } }}>
-              TV Shows
-            </Typography>
-          </Button>
+          <FormattedButton link={`/mygroups/${id}/movies?watched=false`}>
+            <Box sx={innerButtonFormat}>
+              <MovieIcon />
+              <Typography>{group_media.movie}</Typography>
+            </Box>
+            <Typography>Movies</Typography>
+          </FormattedButton>
+
+          <Divider orientation="vertical" flexItem />
+
+          <FormattedButton link={`/mygroups/${id}/tv?watched=false`}>
+            <Box sx={innerButtonFormat}>
+              <TvIcon />
+              <Typography>{group_media.tv}</Typography>
+            </Box>
+            <Typography>TV Shows</Typography>
+          </FormattedButton>
         </div>
 
         <div className="min-w-full flex justify-end mt-5">
@@ -86,10 +99,6 @@ const GroupCard = ({
             <LeaveGroup group_name={group_name} id={id} />
           )}
         </div>
-
-        {/* <Link className="flex" href={`/mygroups/${id}`}>
-              <Button>View Details</Button>
-            </Link> */}
       </Paper>
     </Grid>
   );
