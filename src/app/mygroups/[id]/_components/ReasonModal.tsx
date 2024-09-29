@@ -17,7 +17,6 @@ const style = {
 
 interface Props {
   open: boolean;
-  handleSubmit: () => void;
   isLoading?: boolean;
   toggleModal: () => void;
   prevReason: string;
@@ -25,12 +24,17 @@ interface Props {
 
 export default function ReasonModal({
   open,
-  handleSubmit,
   isLoading = false,
   toggleModal,
   prevReason,
 }: Props) {
   const [reason, setReason] = useState(prevReason);
+
+  const updateReason = () => {
+    console.log("new reason:", reason);
+    toggleModal();
+  };
+
   return (
     <div>
       <Modal
@@ -48,9 +52,10 @@ export default function ReasonModal({
             onChange={(e) => setReason(e.target.value)}
             helperText={"Reason is optional"}
             value={reason}
+            disabled={isLoading}
           />
           <SpinnerButton
-            onClick={() => handleSubmit()}
+            onClick={() => updateReason()}
             isLoading={isLoading}
             disabled={isLoading}
           >
