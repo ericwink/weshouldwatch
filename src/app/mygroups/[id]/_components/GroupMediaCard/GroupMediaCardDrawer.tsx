@@ -103,6 +103,8 @@ const GroupMediaCardDrawer = ({
             startTransition={startTransition}
             toggleChat={toggleChat}
             toggleReasonModal={toggleReasonModal}
+            rowId={rowId}
+            userId={user?.user_id ?? ""}
           />
         </Box>
       </Drawer>

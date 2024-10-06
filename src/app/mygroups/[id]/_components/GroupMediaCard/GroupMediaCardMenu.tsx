@@ -9,9 +9,9 @@ import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import { useUserStore } from "@/src/lib/store";
-import { toggleWatched } from "../../_server/toggleWatched.server";
 import GroupCardMenuItem from "./GroupCardMenuItem";
 import { TransitionStartFunction } from "react";
+import useToggleWatched from "./hooks/useToggleWatched";
 
 interface Props {
   mediaType: string;
@@ -22,6 +22,8 @@ interface Props {
   startTransition: TransitionStartFunction;
   toggleChat: () => void;
   toggleReasonModal: () => void;
+  userId: string;
+  rowId: number;
 }
 
 const GroupMediaCardMenu = ({
@@ -33,23 +35,11 @@ const GroupMediaCardMenu = ({
   startTransition,
   toggleChat,
   toggleReasonModal,
+  rowId,
+  userId,
 }: Props) => {
   const user = useUserStore((state) => state.user);
-
-  const handleToggleWatched = async () => {
-    try {
-      startTransition(async () => {
-        const result = await toggleWatched({
-          mediaId,
-          watched: !watched,
-          groupId,
-        });
-        if (result?.error) throw new Error(result.error);
-      });
-    } catch (error) {
-      alert(error);
-    }
-  };
+  const handleToggleWatched = useToggleWatched();
 
   const isAddedByCurrentUser = addedByUserId === user?.id;
 
@@ -78,7 +68,15 @@ const GroupMediaCardMenu = ({
             Mark as {watched ? <b>Not Watched</b> : <b>Watched</b>} by Group
           </Typography>
         }
-        onClick={() => handleToggleWatched()}
+        onClick={() =>
+          handleToggleWatched({
+            groupId,
+            rowId,
+            startTransition,
+            userId,
+            watched,
+          })
+        }
         icon={watched ? <VisibilityOffIcon /> : <VisibilityIcon />}
       />
 

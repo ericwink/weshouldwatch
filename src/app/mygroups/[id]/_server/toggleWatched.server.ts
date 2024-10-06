@@ -8,8 +8,9 @@ import { revalidatePath } from "next/cache";
 
 const toggleWatchedInput = z.object({
   groupId: z.string(),
-  mediaId: z.number(),
   watched: z.boolean(),
+  rowId: z.number(),
+  userId: z.string(),
 });
 
 type ToggleWatchedInput = z.infer<typeof toggleWatchedInput>;
@@ -17,21 +18,31 @@ type ToggleWatchedInput = z.infer<typeof toggleWatchedInput>;
 export const toggleWatched = async (input: ToggleWatchedInput) => {
   const supabase = createRouteHandlerClient<Database>({ cookies });
   const parsedInpput = toggleWatchedInput.safeParse(input);
+  if (parsedInpput.error) {
+    return { error: parsedInpput.error.issues };
+  }
 
   const {
     data: { user },
   } = await supabase.auth.getUser();
   if (!user) return { error: "You are not authorized to make this request" };
 
-  if (parsedInpput.error) return { error: parsedInpput.error.message };
+  const isInGroup = supabase
+    .from("user_group_join")
+    .select("*")
+    .eq("user_id", parsedInpput.data.userId)
+    .eq("group_id", parsedInpput.data.groupId)
+    .single();
+
+  if (!isInGroup)
+    return { error: "You are not in this group and cannot make this change" };
 
   const { data, error } = await supabase
     .from("group_media")
     .update({ watched: parsedInpput.data.watched })
-    .eq("group_id", parsedInpput.data.groupId)
-    .eq("media_id", parsedInpput.data.mediaId);
+    .eq("id", parsedInpput.data.rowId);
 
   if (error) return { error: error.message };
 
-  revalidatePath('mygroups/[id]/movies')
+  revalidatePath("mygroups/[id]/movies");
 };
