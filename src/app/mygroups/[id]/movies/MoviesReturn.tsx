@@ -30,8 +30,9 @@ const MoviesReturn = async ({ groupId, searchParams }: Props) => {
             user={movie.user_public_profile}
             groupId={groupId}
             mediaId={movie.media_id}
-            mediaType="movie"
+            mediaType="movies"
             watched={movie.watched}
+            rowId={movie.id}
           />
         </GroupMediaCard>
       ))}

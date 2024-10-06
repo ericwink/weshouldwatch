@@ -25,7 +25,7 @@ export const updateReason = async (input: UpdateReasonInputType) => {
 
     const { data: parsedData, error: parsedError } =
       updateReasonInput.safeParse(input);
-    if (parsedError) return parsedError.issues;
+    if (parsedError) return { error: parsedError.issues };
 
     const { data: groupMediaEntry, error: groupMediaError } = await supabase
       .from("group_media")

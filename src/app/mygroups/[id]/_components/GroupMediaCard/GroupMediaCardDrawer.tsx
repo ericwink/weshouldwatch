@@ -19,10 +19,11 @@ interface Props {
     user_name: string;
   } | null;
   added_reason: string | null | undefined;
-  mediaType: string;
+  mediaType: "movies" | "tv";
   mediaId: number;
   watched: boolean;
   groupId: string;
+  rowId: number;
 }
 
 const GroupMediaCardDrawer = ({
@@ -32,6 +33,7 @@ const GroupMediaCardDrawer = ({
   mediaId,
   mediaType,
   watched,
+  rowId,
 }: Props) => {
   const {
     menuState,
@@ -56,8 +58,10 @@ const GroupMediaCardDrawer = ({
       <UpdateReasonModal
         open={menuState.reasonActive}
         toggleModal={toggleReasonModal}
-        prevReason={added_reason || ""}
-        isLoading={isPending}
+        mediaType={mediaType}
+        groupId={groupId}
+        rowId={rowId}
+        userId={user?.user_id || ""}
       />
 
       {/* <ConfirmDelete

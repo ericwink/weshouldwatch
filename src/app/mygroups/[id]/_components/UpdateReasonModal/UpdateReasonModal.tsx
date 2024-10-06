@@ -2,6 +2,9 @@ import * as React from "react";
 import { TextField, Modal, Typography, Box } from "@mui/material";
 import SpinnerButton from "../../../../../components/SpinnerButton";
 import { useState } from "react";
+import { updateReason } from "./updateReason.server";
+import { toast } from "react-toastify";
+import { useTransition } from "react";
 
 const style = {
   position: "absolute" as "absolute",
@@ -17,45 +20,79 @@ const style = {
 
 interface Props {
   open: boolean;
-  isLoading?: boolean;
   toggleModal: () => void;
-  prevReason: string;
+  mediaType: "tv" | "movies";
+  rowId: number;
+  groupId: string;
+  userId: string;
 }
 const UpdateReasonModal = ({
   open,
-  isLoading = false,
   toggleModal,
-  prevReason,
+  mediaType,
+  rowId,
+  groupId,
+  userId,
 }: Props) => {
-  const [reason, setReason] = useState(prevReason);
+  const [reason, setReason] = useState("");
+  const [isPending, startTransition] = useTransition();
 
-  const updateReason = () => {
+  const closeModal = () => {
+    setReason("");
     toggleModal();
+  };
+
+  const handleSubmit = () => {
+    startTransition(async () => {
+      try {
+        const result = await updateReason({
+          groupId,
+          mediaType,
+          newReason: reason,
+          rowId,
+          userId,
+        });
+
+        if (result?.error) {
+          if (Array.isArray(result.error)) {
+            result.error.forEach((e) => {
+              toast.error(e.message);
+            });
+          } else {
+            toast.error(result.error);
+          }
+        }
+        toast.success("Reason updated!");
+        closeModal();
+      } catch (error) {
+        toast.error("Something went wrong. Please try again");
+      }
+    });
   };
 
   return (
     <div>
       <Modal
         open={open}
-        onClose={toggleModal}
+        onClose={closeModal}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
         <Box sx={style} display="flex" flexDirection="column" gap={1}>
           <Typography id="modal-modal-title" variant="h6" component="h2" mb={2}>
-            Why are you adding this?
+            Why is this on your list?
           </Typography>
           <TextField
             placeholder="I want to watch this because...."
             onChange={(e) => setReason(e.target.value)}
             helperText={"Reason is optional"}
             value={reason}
-            disabled={isLoading}
+            disabled={isPending}
           />
           <SpinnerButton
-            onClick={() => updateReason()}
-            isLoading={isLoading}
-            disabled={isLoading}
+            onClick={() => handleSubmit()}
+            isLoading={isPending}
+            disabled={isPending}
           >
             Submit
           </SpinnerButton>
