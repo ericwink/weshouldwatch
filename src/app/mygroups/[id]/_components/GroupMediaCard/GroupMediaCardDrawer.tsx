@@ -6,9 +6,9 @@ import { ReactNode, Suspense, useTransition } from "react";
 import GroupMediaCardMenuHeader from "./GroupMediaCardMenuHeader";
 import GroupMediaCardMenu from "./GroupMediaCardMenu";
 import FullScreenLoader from "@/src/components/FullScreenLoader";
-import useGroupMediaMenu from "../hooks/useGroupMediaMenu";
+import useGroupMediaMenu from "./hooks/useGroupMediaMenu";
 import ChatModal from "../Chat/ChatModal";
-import UpdateReasonModal from "../UpdateReasonModal";
+import UpdateReasonModal from "../UpdateReasonModal/UpdateReasonModal";
 import ConfirmDelete from "../../../components/ConfirmDelete";
 
 interface Props {

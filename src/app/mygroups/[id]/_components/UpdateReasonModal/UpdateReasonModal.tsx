@@ -1,6 +1,6 @@
 import * as React from "react";
 import { TextField, Modal, Typography, Box } from "@mui/material";
-import SpinnerButton from "../../../../components/SpinnerButton";
+import SpinnerButton from "../../../../../components/SpinnerButton";
 import { useState } from "react";
 
 const style = {
