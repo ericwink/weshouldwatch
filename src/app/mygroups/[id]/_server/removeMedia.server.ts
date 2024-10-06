@@ -6,19 +6,18 @@ import { Database } from "@/src/lib/database.types";
 import { z } from "zod";
 import { revalidatePath } from "next/cache";
 
-const toggleWatchedInput = z.object({
+const removeMediaInput = z.object({
   groupId: z.string(),
-  watched: z.boolean(),
   rowId: z.number(),
   userId: z.string(),
   mediaType: z.enum(["movies", "tv"]),
 });
 
-type ToggleWatchedInput = z.infer<typeof toggleWatchedInput>;
+type RemoveMediaInputType = z.infer<typeof removeMediaInput>;
 
-export const toggleWatched = async (input: ToggleWatchedInput) => {
+export const removeMedia = async (input: RemoveMediaInputType) => {
   const supabase = createRouteHandlerClient<Database>({ cookies });
-  const parsedInpput = toggleWatchedInput.safeParse(input);
+  const parsedInpput = removeMediaInput.safeParse(input);
   if (parsedInpput.error) {
     return { error: parsedInpput.error.issues };
   }
@@ -38,12 +37,12 @@ export const toggleWatched = async (input: ToggleWatchedInput) => {
   if (!isInGroup)
     return { error: "You are not in this group and cannot make this change" };
 
-  const { data, error } = await supabase
+  const result = await supabase
     .from("group_media")
-    .update({ watched: parsedInpput.data.watched })
+    .delete()
     .eq("id", parsedInpput.data.rowId);
 
-  if (error) return { error: error.message };
+  if (result.error) return { error: "There was an error, please try again" };
 
   revalidatePath(`mygroups/[id]/${input.mediaType}`);
 };

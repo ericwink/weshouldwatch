@@ -14,7 +14,7 @@ import { TransitionStartFunction } from "react";
 import useToggleWatched from "./hooks/useToggleWatched";
 
 interface Props {
-  mediaType: string;
+  mediaType: "movies" | "tv";
   mediaId: number;
   watched: boolean;
   addedByUserId: string;
@@ -75,6 +75,7 @@ const GroupMediaCardMenu = ({
             startTransition,
             userId,
             watched,
+            mediaType,
           })
         }
         icon={watched ? <VisibilityOffIcon /> : <VisibilityIcon />}

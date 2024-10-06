@@ -8,6 +8,7 @@ interface Args {
   startTransition: TransitionStartFunction;
   userId: string;
   rowId: number;
+  mediaType: "movies" | "tv";
 }
 
 const useToggleWatched = () => {
@@ -17,6 +18,7 @@ const useToggleWatched = () => {
     groupId,
     rowId,
     userId,
+    mediaType,
   }: Args) => {
     try {
       startTransition(async () => {
@@ -25,6 +27,7 @@ const useToggleWatched = () => {
           groupId,
           rowId,
           userId,
+          mediaType,
         });
         if (result?.error) {
           if (Array.isArray(result.error)) {
