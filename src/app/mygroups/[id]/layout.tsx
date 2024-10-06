@@ -20,7 +20,7 @@ const GroupLayout = ({ children, params }: Props) => {
   const pathname = usePathname();
 
   const getNavValue = () => {
-    if (pathname.includes("movies")) return 0;
+    if (pathname.includes("movie")) return 0;
     if (pathname.includes("tv")) return 1;
     return 2;
   };
@@ -32,7 +32,7 @@ const GroupLayout = ({ children, params }: Props) => {
           <BottomNavigationAction
             label="Movies"
             LinkComponent={Link}
-            href={`/mygroups/${params.id}/movies`}
+            href={`/mygroups/${params.id}/movie`}
             icon={<MovieIcon />}
           />
           <BottomNavigationAction

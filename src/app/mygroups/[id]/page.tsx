@@ -7,7 +7,7 @@ interface Props {
 }
 
 const GroupPage = ({ params }: Props) => {
-  redirect(`/mygroups/${params.id}/movies?watched=false`);
+  redirect(`/mygroups/${params.id}/movie?watched=false`);
 };
 
 export default GroupPage;
