@@ -6,8 +6,14 @@ const AccessDeniedPage = () => {
     <section className="w-full pt-4 flex flex-col justify-center items-center">
       <Warning fontSize="large" />
       <Typography variant="h4">
-        Either buy premium, or change this group to your primary group
+        You are not permitted to access this group.
       </Typography>
+      <div>
+        <Typography>Potential solutions:</Typography>
+        <Typography>- Buy premium</Typography>
+        <Typography>- Make this group your primary group</Typography>
+        <Typography>- Request to be invited by a group member</Typography>
+      </div>
     </section>
   );
 };

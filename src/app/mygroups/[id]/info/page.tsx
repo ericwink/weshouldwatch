@@ -4,6 +4,8 @@ import { Database } from "@/src/lib/database.types";
 import { Typography } from "@mui/material";
 import InviteToAGroup from "./components/InviteToAGroup";
 import MemberDisplay from "./components/MemberDisplay";
+import { userIsGroupMember } from "../_server/userIsGroupMember.server";
+import { redirect } from "next/navigation";
 
 interface Props {
   params: {
@@ -12,7 +14,11 @@ interface Props {
 }
 
 const GroupInfoPage = async ({ params }: Props) => {
+  const isMember = await userIsGroupMember(params.id);
+  if (!isMember) redirect("/accessDenied");
+
   const supabase = createServerComponentClient<Database>({ cookies });
+
   let { data, error } = await supabase
     .from("user_group_join")
     .select("user_id, user_public_profile(user_name, profile_pic)")

@@ -1,6 +1,8 @@
 import { Suspense } from "react";
 import MoviesReturn from "./MoviesReturn";
 import MediaLoader from "../_components/MediaLoader";
+import { userIsGroupMember } from "../_server/userIsGroupMember.server";
+import { redirect } from "next/navigation";
 
 interface Props {
   params: {
@@ -9,7 +11,10 @@ interface Props {
   searchParams: { watched?: string };
 }
 
-const GroupMoviesPage = ({ params, searchParams }: Props) => {
+const GroupMoviesPage = async ({ params, searchParams }: Props) => {
+  const isMember = await userIsGroupMember(params.id);
+  if (!isMember) redirect("/accessDenied");
+
   return (
     <div className="w-full flex flex-wrap gap-2 justify-center">
       <Suspense key={searchParams?.watched || ""} fallback={<MediaLoader />}>

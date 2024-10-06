@@ -34,6 +34,7 @@ const TvReturn = async ({ groupId, searchParams }: Props) => {
             mediaId={show.media_id}
             mediaType="tv"
             watched={show.watched}
+            rowId={show.id}
           />
         </GroupMediaCard>
       ))}
