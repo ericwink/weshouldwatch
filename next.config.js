@@ -3,6 +3,9 @@ const nextConfig = {
   reactStrictMode: true,
   experimental: {
     appDir: true,
+    staleTimes: {
+      dynamic: 3600
+    }
   },
   images: {
     unoptimized: true,

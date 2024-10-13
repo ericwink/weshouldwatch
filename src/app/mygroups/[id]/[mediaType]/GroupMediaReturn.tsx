@@ -1,4 +1,4 @@
-import GroupMediaCard from "./GroupMediaCard";
+import GroupMediaCard from "../_components/GroupMediaCard/GroupMediaCard";
 import { MediaOptions } from "./page";
 import { getMedia } from "../_server/getMedia.server";
 

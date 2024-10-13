@@ -2,25 +2,18 @@ import { Paper, Box, Avatar, Typography } from "@mui/material";
 import Grid from "@mui/material/Unstable_Grid2"; // Grid version 2
 import getPoster from "@/src/lib/getPoster";
 import Image from "next/image";
-import { ReactNode } from "react";
+import GroupMediaCardDrawer from "./GroupMediaCardDrawer";
+import { type MediaData } from "../../_server/getMedia.server";
 
 interface Props {
-  media: {
-    created_at: string;
-    media_type: string;
-    poster_path: string;
-    title: string;
-    tmdb_id: number;
-  } | null;
-  user: {
-    user_name: string;
-    profile_pic: string | null;
-  } | null;
-  children: ReactNode;
+  mediaData: MediaData;
 }
 
-const GroupMediaCard = ({ media, user, children }: Props) => {
-  if (!media) return null;
+const GroupMediaCard = ({ mediaData }: Props) => {
+  if (!mediaData || !mediaData.media || !mediaData.user_public_profile)
+    return null;
+
+  const { user_public_profile: user, media } = mediaData;
 
   return (
     <Grid>
@@ -46,7 +39,7 @@ const GroupMediaCard = ({ media, user, children }: Props) => {
             }}
           ></Avatar>
           <Box position="absolute" bottom="2px" right="2px">
-            {children}
+            <GroupMediaCardDrawer mediaData={mediaData} />
           </Box>
         </Box>
         <Grid container p={1}>
