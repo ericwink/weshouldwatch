@@ -12,42 +12,33 @@ import { useUserStore } from "@/src/lib/store";
 import GroupCardMenuItem from "./GroupCardMenuItem";
 import { TransitionStartFunction } from "react";
 import useToggleWatched from "./hooks/useToggleWatched";
+import { type MediaData } from "../../_server/getMedia.server";
 
 interface Props {
-  mediaType: "movies" | "tv";
-  mediaId: number;
-  watched: boolean;
-  addedByUserId: string;
-  groupId: string;
   startTransition: TransitionStartFunction;
   toggleChat: () => void;
   toggleReasonModal: () => void;
-  userId: string;
-  rowId: number;
+  mediaData: MediaData;
 }
 
 const GroupMediaCardMenu = ({
-  mediaId,
-  mediaType,
-  watched,
-  addedByUserId,
-  groupId,
   startTransition,
   toggleChat,
   toggleReasonModal,
-  rowId,
-  userId,
+  mediaData,
 }: Props) => {
   const user = useUserStore((state) => state.user);
+  if (!user) throw new Error("no user");
+
   const handleToggleWatched = useToggleWatched();
 
-  const isAddedByCurrentUser = addedByUserId === user?.id;
+  const isAddedByCurrentUser = mediaData.added_by === user?.id;
 
   return (
     <List>
       <Link
         className="flex"
-        href={`/media/${mediaId}/?media_type=${mediaType}`}
+        href={`/media/${mediaData.media_id}/?media_type=${mediaData.media?.media_type}`}
       >
         <GroupCardMenuItem
           label="See Details"
@@ -65,20 +56,21 @@ const GroupMediaCardMenu = ({
       <GroupCardMenuItem
         label={
           <Typography>
-            Mark as {watched ? <b>Not Watched</b> : <b>Watched</b>} by Group
+            Mark as {mediaData.watched ? <b>Not Watched</b> : <b>Watched</b>} by
+            Group
           </Typography>
         }
         onClick={() =>
           handleToggleWatched({
-            groupId,
-            rowId,
+            groupId: mediaData.group_id,
+            rowId: mediaData.id,
             startTransition,
-            userId,
-            watched,
-            mediaType,
+            userId: user?.id,
+            watched: mediaData.watched,
+            mediaType: mediaData.media?.media_type,
           })
         }
-        icon={watched ? <VisibilityOffIcon /> : <VisibilityIcon />}
+        icon={mediaData.watched ? <VisibilityOffIcon /> : <VisibilityIcon />}
       />
 
       {isAddedByCurrentUser && (

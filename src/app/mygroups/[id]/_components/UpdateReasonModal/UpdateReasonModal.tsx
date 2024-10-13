@@ -5,6 +5,7 @@ import { useState } from "react";
 import { updateReason } from "./updateReason.server";
 import { toast } from "react-toastify";
 import { useTransition } from "react";
+import type { MediaData } from "../../_server/getMedia.server";
 
 const style = {
   position: "absolute" as "absolute",
@@ -21,19 +22,9 @@ const style = {
 interface Props {
   open: boolean;
   toggleModal: () => void;
-  mediaType: "tv" | "movies";
-  rowId: number;
-  groupId: string;
-  userId: string;
+  mediaData: MediaData;
 }
-const UpdateReasonModal = ({
-  open,
-  toggleModal,
-  mediaType,
-  rowId,
-  groupId,
-  userId,
-}: Props) => {
+const UpdateReasonModal = ({ open, toggleModal, mediaData }: Props) => {
   const [reason, setReason] = useState("");
   const [isPending, startTransition] = useTransition();
 
@@ -46,11 +37,8 @@ const UpdateReasonModal = ({
     startTransition(async () => {
       try {
         const result = await updateReason({
-          groupId,
-          mediaType,
           newReason: reason,
-          rowId,
-          userId,
+          rowId: mediaData.id,
         });
 
         if (result?.error) {

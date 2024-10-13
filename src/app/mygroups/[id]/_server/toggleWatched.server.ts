@@ -11,7 +11,7 @@ const toggleWatchedInput = z.object({
   watched: z.boolean(),
   rowId: z.number(),
   userId: z.string(),
-  mediaType: z.enum(["movies", "tv"]),
+  mediaType: z.enum(["movie", "tv"]),
 });
 
 type ToggleWatchedInput = z.infer<typeof toggleWatchedInput>;

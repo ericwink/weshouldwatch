@@ -8,7 +8,7 @@ interface Args {
   startTransition: TransitionStartFunction;
   userId: string;
   rowId: number;
-  mediaType: "movies" | "tv";
+  mediaType: string | undefined;
 }
 
 const useToggleWatched = () => {
@@ -21,6 +21,10 @@ const useToggleWatched = () => {
     mediaType,
   }: Args) => {
     try {
+      if (!mediaType) throw new Error("No media types defined");
+      if (mediaType !== "movie" && mediaType !== "tv")
+        throw new Error("Only Movie or TV permitted as media type");
+
       startTransition(async () => {
         const result = await toggleWatched({
           watched: !watched,

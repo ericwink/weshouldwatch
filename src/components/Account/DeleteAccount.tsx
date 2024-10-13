@@ -1,7 +1,7 @@
 "use client";
 
 import { Button, Box } from "@mui/material";
-import ConfirmDelete from "../../app/mygroups/components/ConfirmDelete";
+import ConfirmDelete from "../../app/mygroups/_components/ConfirmDelete";
 import { useState } from "react";
 import { useMutation } from "@tanstack/react-query";
 import { toast } from "react-toastify";

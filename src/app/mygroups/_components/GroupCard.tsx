@@ -73,7 +73,7 @@ const GroupCard = ({
 
           <Divider orientation="vertical" flexItem />
 
-          <FormattedButton link={`/mygroups/${id}/movies?watched=false`}>
+          <FormattedButton link={`/mygroups/${id}/movie?watched=false`}>
             <Box sx={innerButtonFormat}>
               <MovieIcon />
               <Typography>{group_media.movie}</Typography>

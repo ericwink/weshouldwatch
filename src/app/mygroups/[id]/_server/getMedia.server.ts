@@ -6,13 +6,12 @@ import { Database } from "@/src/lib/database.types";
 
 interface Args {
   groupId: string;
-  searchParams: { watched?: string };
+  watched: boolean | undefined;
   mediaType: "movie" | "tv";
 }
 
-export const getMedia = async ({ groupId, searchParams, mediaType }: Args) => {
+export const getMedia = async ({ groupId, watched, mediaType }: Args) => {
   const supabase = createServerComponentClient<Database>({ cookies });
-  const watched = searchParams?.watched === "true";
 
   let query = supabase
     .from("group_media")
@@ -20,7 +19,17 @@ export const getMedia = async ({ groupId, searchParams, mediaType }: Args) => {
     .eq("group_id", groupId)
     .eq("media.media_type", mediaType);
 
-  if (searchParams?.watched) query.eq("watched", watched);
+  if (watched !== undefined) query.eq("watched", watched);
 
-  return await query;
+  const { data, error } = await query;
+
+  if (error) {
+    console.log("error in getMedia", error);
+    throw new Error("There was an error getting your media. Please try again");
+  }
+
+  return data;
 };
+
+type MediaArray = Awaited<ReturnType<typeof getMedia>>;
+export type MediaData = MediaArray[number];

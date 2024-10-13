@@ -4,8 +4,8 @@ export const revalidate = 0;
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
-import MakeGroup from "./components/MakeGroup";
-import GroupCard from "./components/GroupCard";
+import MakeGroup from "./_components/MakeGroup";
+import GroupCard from "./_components/GroupCard";
 import { Database } from "@/src/lib/database.types";
 import { Container, Typography } from "@mui/material";
 import Grid from "@mui/material/Unstable_Grid2"; // Grid version 2

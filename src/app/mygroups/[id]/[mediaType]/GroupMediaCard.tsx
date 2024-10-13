@@ -1,23 +1,19 @@
-import { Paper, Box, Avatar, Typography, IconButton } from "@mui/material";
-import MenuIcon from "@mui/icons-material/Menu";
+import { Paper, Box, Avatar, Typography } from "@mui/material";
 import Grid from "@mui/material/Unstable_Grid2"; // Grid version 2
 import getPoster from "@/src/lib/getPoster";
 import Image from "next/image";
-import Link from "next/link";
+import GroupMediaCardDrawer from "../_components/GroupMediaCard/GroupMediaCardDrawer";
+import { type MediaData } from "../_server/getMedia.server";
 
 interface Props {
-  groupMediaId: number;
-  media: {
-    poster_path: string;
-    title: string;
-  } | null;
-  user: {
-    profile_pic: string | null;
-  } | null;
+  mediaData: MediaData;
 }
 
-const GroupMediaCard = ({ media, user, groupMediaId }: Props) => {
-  if (!media) return null;
+const GroupMediaCard = ({ mediaData }: Props) => {
+  if (!mediaData || !mediaData.media || !mediaData.user_public_profile)
+    return null;
+
+  const { user_public_profile: user, media } = mediaData;
 
   return (
     <Grid>
@@ -43,16 +39,7 @@ const GroupMediaCard = ({ media, user, groupMediaId }: Props) => {
             }}
           ></Avatar>
           <Box position="absolute" bottom="2px" right="2px">
-            <IconButton
-              LinkComponent={Link}
-              href={`/groupMedia/${groupMediaId}`}
-              sx={{
-                backgroundColor: "#ffffff74",
-                "&:hover": { backgroundColor: "#ffffffa6" },
-              }}
-            >
-              <MenuIcon />
-            </IconButton>
+            <GroupMediaCardDrawer mediaData={mediaData} />
           </Box>
         </Box>
         <Grid container p={1}>

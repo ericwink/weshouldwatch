@@ -2,39 +2,21 @@
 
 import MenuIcon from "@mui/icons-material/Menu";
 import { IconButton, Box, Divider, Drawer } from "@mui/material";
-import { ReactNode, Suspense, useTransition } from "react";
+import { useTransition } from "react";
 import GroupMediaCardMenuHeader from "./GroupMediaCardMenuHeader";
 import GroupMediaCardMenu from "./GroupMediaCardMenu";
 import FullScreenLoader from "@/src/components/FullScreenLoader";
 import useGroupMediaMenu from "./hooks/useGroupMediaMenu";
 import ChatModal from "../Chat/ChatModal";
 import UpdateReasonModal from "../UpdateReasonModal/UpdateReasonModal";
-import ConfirmDelete from "../../../components/ConfirmDelete";
+import ConfirmDelete from "../../../_components/ConfirmDelete";
+import { type MediaData } from "../../_server/getMedia.server";
 
 interface Props {
-  user: {
-    created_at: string;
-    profile_pic: string | null;
-    user_id: string;
-    user_name: string;
-  } | null;
-  added_reason: string | null | undefined;
-  mediaType: "movies" | "tv";
-  mediaId: number;
-  watched: boolean;
-  groupId: string;
-  rowId: number;
+  mediaData: MediaData;
 }
 
-const GroupMediaCardDrawer = ({
-  user,
-  added_reason,
-  groupId,
-  mediaId,
-  mediaType,
-  watched,
-  rowId,
-}: Props) => {
+const GroupMediaCardDrawer = ({ mediaData }: Props) => {
   const {
     menuState,
     toggleDrawer,
@@ -58,10 +40,7 @@ const GroupMediaCardDrawer = ({
       <UpdateReasonModal
         open={menuState.reasonActive}
         toggleModal={toggleReasonModal}
-        mediaType={mediaType}
-        groupId={groupId}
-        rowId={rowId}
-        userId={user?.user_id || ""}
+        mediaData={mediaData}
       />
 
       {/* <ConfirmDelete
@@ -92,19 +71,16 @@ const GroupMediaCardDrawer = ({
           onClick={toggleDrawer}
           onKeyDown={toggleDrawer}
         >
-          <GroupMediaCardMenuHeader added_reason={added_reason} user={user} />
+          <GroupMediaCardMenuHeader
+            added_reason={mediaData.added_reason}
+            user={mediaData.user_public_profile}
+          />
           <Divider />
           <GroupMediaCardMenu
-            addedByUserId={user?.user_id ?? ""}
-            mediaId={mediaId}
-            mediaType={mediaType}
-            watched={watched}
-            groupId={groupId}
+            mediaData={mediaData}
             startTransition={startTransition}
             toggleChat={toggleChat}
             toggleReasonModal={toggleReasonModal}
-            rowId={rowId}
-            userId={user?.user_id ?? ""}
           />
         </Box>
       </Drawer>

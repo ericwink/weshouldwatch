@@ -1,44 +1,25 @@
-import { cookies } from "next/headers";
-import { Database } from "@/src/lib/database.types";
-import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
 import GroupMediaCard from "./GroupMediaCard";
+import { MediaOptions } from "./page";
+import { getMedia } from "../_server/getMedia.server";
 
 interface Props {
   groupId: string;
-  mediaType: "movie" | "tv";
+  mediaType: MediaOptions;
   watched: boolean | undefined;
 }
 
 const GroupMediaReturn = async ({ groupId, watched, mediaType }: Props) => {
-  const supabase = createServerComponentClient<Database>({ cookies });
-
-  let query = supabase
-    .from("group_media")
-    .select(
-      `id, media (title, poster_path), user_public_profile ( profile_pic )`
-    )
-    .eq("group_id", groupId)
-    .eq("media.media_type", mediaType);
-
-  if (watched) query.eq("watched", watched);
-
-  const media = await query;
-
-  if (media.error)
-    throw new Error(`There was an error getting your media. Please try again`);
+  const media = await getMedia({ groupId, mediaType, watched });
 
   return (
     <>
-      {media.data.map((m) => (
-        <GroupMediaCard
-          media={m.media}
-          user={m.user_public_profile}
-          key={m.id}
-          groupMediaId={m.id}
-        />
+      {media.map((m) => (
+        <GroupMediaCard mediaData={m} key={m.id} />
       ))}
     </>
   );
 };
 
 export default GroupMediaReturn;
+
+export type MediaReturn = Awaited<ReturnType<typeof getMedia>>;

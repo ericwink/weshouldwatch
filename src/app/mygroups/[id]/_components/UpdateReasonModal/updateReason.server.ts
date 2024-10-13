@@ -8,15 +8,13 @@ import { revalidatePath } from "next/cache";
 
 const updateReasonInput = z.object({
   newReason: z.string(),
-  groupId: z.string(),
   rowId: z.number(),
-  userId: z.string(),
-  mediaType: z.enum(["movies", "tv"]),
 });
 
 type UpdateReasonInputType = z.infer<typeof updateReasonInput>;
 
 export const updateReason = async (input: UpdateReasonInputType) => {
+  let mediaType = "";
   try {
     const supabase = createServerActionClient<Database>({ cookies });
     const { data: session } = await supabase.auth.getSession();
@@ -29,13 +27,14 @@ export const updateReason = async (input: UpdateReasonInputType) => {
 
     const { data: groupMediaEntry, error: groupMediaError } = await supabase
       .from("group_media")
-      .select("*")
+      .select("*, media(media_type)")
       .eq("id", parsedData.rowId)
       .single();
 
     if (groupMediaError) throw groupMediaError;
 
-    const isAddedByRequestor = parsedData.userId === groupMediaEntry.added_by;
+    const isAddedByRequestor =
+      session.session?.user.id === groupMediaEntry.added_by;
 
     if (!isAddedByRequestor)
       return { error: "You are not authorized to make this change" };
@@ -46,10 +45,11 @@ export const updateReason = async (input: UpdateReasonInputType) => {
       .eq("id", parsedData.rowId);
 
     if (result.error) throw result.error;
+    mediaType = groupMediaEntry.media?.media_type as string;
   } catch (error) {
     console.log("Error in updateReason.server", error);
     return { error: "Something went wrong. Please try again" };
   }
 
-  revalidatePath(`/mygroups/[id]/${input.mediaType}`);
+  revalidatePath(`/mygroups/[id]/${mediaType}`);
 };
